@@ -1,26 +1,35 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+	<el-config-provider :locale="i18nLocale" :button="config" :size="assemblySize">
+		<router-view></router-view>
+	</el-config-provider>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup lang="ts">
+import { reactive, computed } from "vue";
+import { GlobalStore } from "@/stores";
+import { useTheme } from "@/hooks/useTheme";
+import { getBrowserLang } from "@/utils/util";
+import { ElConfigProvider } from "element-plus";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
+import en from "element-plus/es/locale/lang/en";
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+// 初始化主题配置
+const { initTheme } = useTheme();
+initTheme();
+
+const globalStore = GlobalStore();
+// 配置element按钮文字中间是否有空格
+const config = reactive({
+	autoInsertSpace: false
+});
+
+// element 语言配置
+const i18nLocale = computed(() => {
+	if (globalStore.language && globalStore.language == "zh") return zhCn;
+	if (globalStore.language == "en") return en;
+	return getBrowserLang() == "zh" ? zhCn : en;
+});
+
+// 配置全局组件大小
+const assemblySize = computed(() => globalStore.assemblySize);
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
