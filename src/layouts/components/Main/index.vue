@@ -10,9 +10,9 @@
 			</transition>
 		</router-view>
 	</el-main>
-	<el-footer v-if="themeConfig.footer">
+	<!-- <el-footer v-if="themeConfig.footer">
 		<Footer />
-	</el-footer>
+	</el-footer> -->
 </template>
 
 <script setup lang="ts">
@@ -22,7 +22,7 @@ import { GlobalStore } from "@/stores";
 import { KeepAliveStore } from "@/stores/modules/keepAlive";
 import Maximize from "./components/Maximize.vue";
 import Tabs from "@/layouts/components/Tabs/index.vue";
-import Footer from "@/layouts/components/Footer/index.vue";
+// import Footer from "@/layouts/components/Footer/index.vue";
 
 const globalStore = GlobalStore();
 const keepAliveStore = KeepAliveStore();

@@ -33,13 +33,14 @@
 		</el-form-item>
 		<el-form-item>
 			<el-button type="primary" @click="onSubmit">Create</el-button>
-			<el-button>Cancel</el-button>
+			<el-button @click="chanagevisible">Cancel</el-button>
 		</el-form-item>
 	</el-form>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
+import { reactive, defineEmits } from "vue";
+const emits = defineEmits(["change_dialog_visible"]);
 
 // do not use same name with ref
 const form = reactive({
@@ -55,5 +56,9 @@ const form = reactive({
 const onSubmit = () => {
 	console.log("submit!");
 	console.log("showme", form);
+};
+
+const chanagevisible = () => {
+	emits("change_dialog_visible", false);
 };
 </script>

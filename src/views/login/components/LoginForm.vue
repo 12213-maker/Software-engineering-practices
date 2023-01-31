@@ -22,14 +22,8 @@
 		</el-button>
 	</div>
 
-	<el-dialog v-model="dialogVisible" title="Register" width="40%">
-		<register />
-		<!-- <template #footer>
-			<span class="dialog-footer">
-				<el-button @click="dialogVisible = false">Cancel</el-button>
-				<el-button type="primary" @click="dialogVisible = false"> Confirm </el-button>
-			</span>
-		</template> -->
+	<el-dialog destroy-on-close="true" v-model="dialogVisible" title="Register" width="40%">
+		<register @change_dialog_visible="changeDialogvisible" />
 	</el-dialog>
 </template>
 
@@ -87,7 +81,7 @@ const login = (formEl: FormInstance | undefined) => {
 			router.push(HOME_URL);
 			ElNotification({
 				title: getTimeState(),
-				message: "欢迎登录 Geeker-Admin",
+				message: "欢迎登录 没课去哪儿",
 				type: "success",
 				duration: 3000
 			});
@@ -97,10 +91,9 @@ const login = (formEl: FormInstance | undefined) => {
 	});
 };
 
-// register
-// const register = () => {
-// 	dialogVisible = true;
-// };
+const changeDialogvisible = (value: any) => {
+	dialogVisible.value = value;
+};
 
 onMounted(() => {
 	// 监听enter事件（调用登录）

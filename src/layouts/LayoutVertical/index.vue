@@ -4,8 +4,8 @@
 		<el-aside>
 			<div class="menu" :style="{ width: isCollapse ? '65px' : '210px' }">
 				<div class="logo flx-center">
-					<img src="@/assets/images/logo.svg" alt="logo" />
-					<span v-show="!isCollapse">Geeker Admin</span>
+					<img src="@/assets/lnl_images/Snipaste_2023-01-31_17-16-21.png" alt="logo" />
+					<span v-show="!isCollapse">没课去哪儿</span>
 				</div>
 				<el-scrollbar>
 					<el-menu
