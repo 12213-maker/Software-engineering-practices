@@ -1,0 +1,37 @@
+.el-row {
+	margin-bottom: 20px;
+}
+.el-row:last-child {
+	margin-bottom: 0;
+}
+.el-col {
+	border-radius: 4px;
+}
+.grid-content {
+	min-height: 36px;
+	border-radius: 4px;
+}
+.time {
+	font-size: 12px;
+	color: #999999;
+}
+.bottom {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 13px;
+	line-height: 12px;
+}
+.button {
+	min-height: auto;
+	padding: 0;
+}
+.image {
+	display: block;
+	width: 100%;
+}
+.elRow {
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 20px 100px;
+}

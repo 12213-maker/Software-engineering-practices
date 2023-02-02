@@ -53,7 +53,7 @@
 				<el-tabs v-model="tabActive2" class="demo-tabs">
 					<el-tab-pane v-for="item in tab1" :key="item.name" :label="item.label" :name="item.name">
 						<div class="curve-echarts">
-							<Curve ref="curveRef" />
+							<Curve ref="curveRef" :curveData="curveData" />
 						</div>
 					</el-tab-pane>
 				</el-tabs>
@@ -68,13 +68,12 @@ import Curve from "./components/curve.vue";
 
 const tabActive = ref(1);
 const tabActive2 = ref(1);
-// const pieRef = ref();
 const curveRef = ref();
 const value1 = ref(5);
 
 onMounted(() => {
-	// pieRef.value.initChart(pieData);
-	curveRef.value.initChart(curveData);
+	// console.log(curveRef.value, "curveref");
+	// curveRef.value.initChart(curveData);
 });
 
 const tab = [
@@ -161,15 +160,11 @@ const tab = [
 ];
 
 const tab1 = [
-	{ label: "总游客排行榜", name: 1 },
-	{ label: "2023春节游客排行榜", name: 2 }
+	{ label: "总游客排行榜", name: 1 }
+	// { label: "2023春节游客排行榜", name: 2 }
 ];
-// const pieData = [
-// 	{ value: 5000, name: "Gitee 访问量" },
-// 	{ value: 5000, name: "GitHub 访问量" }
-// ];
 const curveData = [
-	{ value: 5387.59, spotName: "四川" },
+	{ value: 5387, spotName: "四川" },
 	{ value: 4514, spotName: "云南" },
 	{ value: 4135, spotName: "江苏" },
 	{ value: 3375, spotName: "河南" },

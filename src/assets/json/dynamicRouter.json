@@ -34,8 +34,8 @@
 			"name": "proTable",
 			"redirect": "/proTable/useProTable",
 			"meta": {
-				"icon": "MessageBox",
-				"title": "超级表格",
+				"icon": "Sunny",
+				"title": "游玩推荐",
 				"isLink": "",
 				"isHide": false,
 				"isFull": false,
@@ -44,12 +44,69 @@
 			},
 			"children": [
 				{
+					"path": "/proTable/lnl-eat",
+					"name": "eat",
+					"component": "/proTable/lnl-eat/index",
+					"meta": {
+						"icon": "KnifeFork",
+						"title": "美食推荐",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
+				},
+				{
+					"path": "/proTable/lnl-play",
+					"name": "lnl-play",
+					"component": "/proTable/lnl-play/index",
+					"meta": {
+						"icon": "Bicycle",
+						"title": "娱乐推荐",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
+				},
+				{
+					"path": "/proTable/lnl-view",
+					"name": "lnl-view",
+					"component": "/proTable/lnl-view/index",
+					"meta": {
+						"icon": "Bicycle",
+						"title": "景点推荐",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
+				},
+				{
+					"path": "/proTable/lnl-slpee",
+					"name": "lnl-slpee",
+					"component": "/proTable/lnl-slpee/index",
+					"meta": {
+						"icon": "House",
+						"title": "住宿推荐",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
+				},
+
+				{
 					"path": "/proTable/useProTable",
 					"name": "useProTable",
 					"component": "/proTable/useProTable/index",
 					"meta": {
-						"icon": "Menu",
-						"title": "使用 ProTable",
+						"icon": "KnifeFork",
+						"title": "原页面-美食推荐",
 						"isLink": "",
 						"isHide": false,
 						"isFull": false,
@@ -79,8 +136,8 @@
 					"name": "useTreeFilter",
 					"component": "/proTable/useTreeFilter/index",
 					"meta": {
-						"icon": "Menu",
-						"title": "使用 TreeFilter",
+						"icon": "Bicycle",
+						"title": "娱乐推荐",
 						"isLink": "",
 						"isHide": false,
 						"isFull": false,
@@ -94,7 +151,7 @@
 					"component": "/proTable/useTreeFilter/detail",
 					"meta": {
 						"icon": "Menu",
-						"title": "TreeFilter 详情",
+						"title": "景点推荐",
 						"activeMenu": "/proTable/useTreeFilter",
 						"isLink": "",
 						"isHide": true,
@@ -108,8 +165,8 @@
 					"name": "useSelectFilter",
 					"component": "/proTable/useSelectFilter/index",
 					"meta": {
-						"icon": "Menu",
-						"title": "使用 SelectFilter",
+						"icon": "View",
+						"title": "景点推荐",
 						"isLink": "",
 						"isHide": false,
 						"isFull": false,
@@ -122,23 +179,9 @@
 					"name": "complexProTable",
 					"component": "/proTable/complexProTable/index",
 					"meta": {
-						"icon": "Menu",
-						"title": "复杂 ProTable",
+						"icon": "House",
+						"title": "住宿推荐",
 						"isLink": "",
-						"isHide": false,
-						"isFull": false,
-						"isAffix": false,
-						"isKeepAlive": true
-					}
-				},
-				{
-					"path": "/proTable/document",
-					"name": "proTableDocument",
-					"component": "/proTable/document/index",
-					"meta": {
-						"icon": "Menu",
-						"title": "ProTable 文档",
-						"isLink": "https://juejin.cn/post/7166068828202336263/#heading-14",
 						"isHide": false,
 						"isFull": false,
 						"isAffix": false,
@@ -152,8 +195,8 @@
 			"name": "auth",
 			"redirect": "/auth/menu",
 			"meta": {
-				"icon": "Lock",
-				"title": "权限管理",
+				"icon": "Promotion",
+				"title": "校园社区",
 				"isLink": "",
 				"isHide": false,
 				"isFull": false,
@@ -196,8 +239,8 @@
 			"name": "assembly",
 			"redirect": "/assembly/guide",
 			"meta": {
-				"icon": "Briefcase",
-				"title": "常用组件",
+				"icon": "User",
+				"title": "我的",
 				"isLink": "",
 				"isHide": false,
 				"isFull": false,
@@ -338,8 +381,8 @@
 			"name": "dashboard",
 			"redirect": "/dashboard/dataVisualize",
 			"meta": {
-				"icon": "Odometer",
-				"title": "Dashboard",
+				"icon": "Setting",
+				"title": "系统管理",
 				"isLink": "",
 				"isHide": false,
 				"isFull": false,

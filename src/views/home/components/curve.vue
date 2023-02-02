@@ -3,9 +3,11 @@
 	<div class="echarts" ref="echartsRef"></div>
 </template>
 <script setup lang="ts" name="cure">
-import { ref } from "vue";
+import { ref, defineProps, onMounted } from "vue";
 import * as echarts from "echarts";
 import { useEcharts } from "@/hooks/useEcharts";
+
+const props = defineProps(["curveData"]);
 
 const echartsRef = ref<HTMLElement>();
 const initChart = (data: any) => {
@@ -143,6 +145,9 @@ const initChart = (data: any) => {
 	};
 	useEcharts(myChart, option);
 };
+onMounted(() => {
+	initChart(props.curveData);
+});
 defineExpose({
 	initChart
 });
