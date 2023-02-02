@@ -1,27 +1,48 @@
 <template>
-	<el-row class="elRow" :gutter="20">
-		<el-col class="elCol" :span="5" v-for="o in 10" :key="o">
-			<div class="grid-content ep-bg-purple" />
-			<el-card :body-style="{ padding: '0px' }">
-				<img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image" />
-				<div style="padding: 14px">
-					<span>Yummy hamburger</span>
-					<div class="bottom">
-						<time class="time">{{ currentDate }}</time>
-						<el-button text class="button">Operating</el-button>
-					</div>
-				</div>
-			</el-card></el-col
-		>
-	</el-row>
+	<div>
+		<Layout :data="data" />
+	</div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from "vue";
-
-const currentDate = ref(new Date());
+<script setup lang="ts" name="useProTableDetail">
+import { reactive } from "vue";
+import Layout from "../components/layout.vue";
+const data = reactive([
+	{
+		title: "时令佳肴",
+		foods: [
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+		]
+	},
+	{
+		title: "肉食精选",
+		foods: [
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+		]
+	},
+	{
+		title: "健康素食",
+		foods: [
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+		]
+	},
+	{
+		title: "烘焙",
+		foods: [
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+		]
+	}
+]);
 </script>
-
-<style scoped lang="scss">
-@import "./index.scss";
-</style>

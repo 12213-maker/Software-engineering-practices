@@ -1,30 +1,75 @@
 <template>
-	<el-row v-for="item in props.data" :key="item" class="elRow" :gutter="20">
-		<div class="eltitle">{{ item.title }}</div>
-		<el-col class="elCol" :span="5" v-for="item2 in 4" :key="item2">
+	<div class="input">
+		<el-input v-model="input2" width="200px" class="w-50 m-2" placeholder="Type something" />
+	</div>
+	<el-row v-for="item in data" :key="item" class="elRow" :gutter="20">
+		<span class="eltitle">{{ item.title }}</span>
+		<el-col class="elCol" :span="5" v-for="item2 in item.foods" :key="item2">
 			<div class="grid-content ep-bg-purple" />
 			<el-card :body-style="{ padding: '0px' }">
-				<img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image" />
-				<div style="padding: 14px">
-					<span>Yummy hamburger</span>
-					<div class="bottom">
-						<time class="time">{{ currentDate }}</time>
-						<el-button text class="button">Operating</el-button>
-					</div>
+				<div class="imgOuter">
+					<img :src="getIcon(item2.url)" class="image" />
 				</div>
-			</el-card></el-col
-		>
+				<div style="padding: 14px">
+					<span>{{ item2.des }}</span>
+					<div class="bottom">
+						<time class="time">{{ item2.origin }}</time>
+						<br />
+						<el-rate disabled v-model="value1" score-template="{value} points" />
+					</div>
+				</div> </el-card
+		></el-col>
 	</el-row>
 </template>
 
 <script lang="ts" setup>
-import { ref, defineProps } from "vue";
+import { ref, reactive } from "vue";
 
-// eslint-disable-next-line vue/require-prop-types
-const props = defineProps(["data"]);
-console.log(props.data);
+const input2 = ref("");
+const value1 = ref(5);
 
-const currentDate = ref(new Date());
+const data = reactive([
+	{
+		title: "时令佳肴",
+		foods: [
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+		]
+	},
+	{
+		title: "肉食精选",
+		foods: [
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+		]
+	},
+	{
+		title: "健康素食",
+		foods: [
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+		]
+	},
+	{
+		title: "烘焙",
+		foods: [
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
+			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+		]
+	}
+]);
+
+const getIcon = (name: string) => {
+	return new URL(name, import.meta.url).href;
+};
 </script>
 
 <style scoped lang="scss">
@@ -56,18 +101,32 @@ const currentDate = ref(new Date());
 	min-height: auto;
 	padding: 0;
 }
-.image {
-	display: block;
-	width: 100%;
+.imgOuter {
+	height: 360px;
+	background-color: pink;
+	.image {
+		display: block;
+		width: 100%;
+		height: 100%;
+	}
+}
+.input {
+	width: 50%;
+	padding: 20px 0;
+	margin: auto;
+	overflow: hidden;
 }
 .elRow {
+	position: relative;
 	flex-wrap: wrap;
 	justify-content: center;
 	padding: 20px 80px;
-	background-color: pink;
 	.eltitle {
-		font-size: 22px;
-		color: #999999;
+		position: relative;
+		bottom: 15px;
+		left: 100px;
+		font-size: 24px;
+		color: #6d6d6d;
 	}
 }
 </style>

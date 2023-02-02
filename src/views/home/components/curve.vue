@@ -3,7 +3,7 @@
 	<div class="echarts" ref="echartsRef"></div>
 </template>
 <script setup lang="ts" name="cure">
-import { ref, defineProps, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import * as echarts from "echarts";
 import { useEcharts } from "@/hooks/useEcharts";
 

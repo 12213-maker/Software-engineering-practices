@@ -78,39 +78,6 @@ onMounted(() => {
 
 const tab = [
 	{
-		label: "四川",
-		cities: [
-			{ name: "九寨沟黄龙", url: "", des: "", tourists: 1221 },
-			{ name: "青城山都江堰", url: "", des: "", tourists: 1221 },
-			{ name: "峨眉乐山", url: "", des: "", tourists: 1221 },
-			{ name: "四姑娘山", url: "", des: "", tourists: 1221 }
-		],
-		url: "https://img1.baidu.com/it/u=399418045,3672495203&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=934",
-		name: 1
-	},
-	{
-		label: "云南",
-		cities: [
-			{ name: "丽江", url: "", des: "", tourists: 1221 },
-			{ name: "西双版纳", url: "", des: "", tourists: 1221 },
-			{ name: "大理", url: "", des: "", tourists: 1221 },
-			{ name: "昆明", url: "", des: "", tourists: 1221 }
-		],
-		url: "https://img1.baidu.com/it/u=4278221815,4014350372&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800",
-		name: 2
-	},
-	{
-		label: "重庆",
-		cities: [
-			{ name: "大足石刻", url: "", des: "", tourists: 1221 },
-			{ name: "酉阳桃花源", url: "", des: "", tourists: 1221 },
-			{ name: "洪崖洞", url: "", des: "", tourists: 1221 },
-			{ name: "凤凰古城", url: "", des: "", tourists: 1221 }
-		],
-		url: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201910%2F19%2F20191019090541_niytw.thumb.700_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1677823664&t=ab6dddefb77d855e2de1a23b2bd78399",
-		name: 3
-	},
-	{
 		label: "西藏",
 		cities: [
 			{
@@ -139,6 +106,39 @@ const tab = [
 			}
 		],
 		url: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201812%2F31%2F20181231151301_an4h3.jpeg&refer=http%3A%2F%2Fb-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1677824635&t=2e7d997c31a4e390d07754e70f7138b0",
+		name: 1
+	},
+	{
+		label: "四川",
+		cities: [
+			{ name: "九寨沟黄龙", url: "", des: "", tourists: 1221 },
+			{ name: "青城山都江堰", url: "", des: "", tourists: 1221 },
+			{ name: "峨眉乐山", url: "", des: "", tourists: 1221 },
+			{ name: "四姑娘山", url: "", des: "", tourists: 1221 }
+		],
+		url: "https://img1.baidu.com/it/u=399418045,3672495203&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=934",
+		name: 2
+	},
+	{
+		label: "云南",
+		cities: [
+			{ name: "丽江", url: "", des: "", tourists: 1221 },
+			{ name: "西双版纳", url: "", des: "", tourists: 1221 },
+			{ name: "大理", url: "", des: "", tourists: 1221 },
+			{ name: "昆明", url: "", des: "", tourists: 1221 }
+		],
+		url: "https://img1.baidu.com/it/u=4278221815,4014350372&fm=253&fmt=auto&app=120&f=JPEG?w=1422&h=800",
+		name: 3
+	},
+	{
+		label: "重庆",
+		cities: [
+			{ name: "大足石刻", url: "", des: "", tourists: 1221 },
+			{ name: "酉阳桃花源", url: "", des: "", tourists: 1221 },
+			{ name: "洪崖洞", url: "", des: "", tourists: 1221 },
+			{ name: "凤凰古城", url: "", des: "", tourists: 1221 }
+		],
+		url: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fitem%2F201910%2F19%2F20191019090541_niytw.thumb.700_0.jpg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1677823664&t=ab6dddefb77d855e2de1a23b2bd78399",
 		name: 4
 	},
 	{
