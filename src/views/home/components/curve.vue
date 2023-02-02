@@ -7,6 +7,7 @@ import { ref, defineProps, onMounted } from "vue";
 import * as echarts from "echarts";
 import { useEcharts } from "@/hooks/useEcharts";
 
+// eslint-disable-next-line vue/require-prop-types
 const props = defineProps(["curveData"]);
 
 const echartsRef = ref<HTMLElement>();

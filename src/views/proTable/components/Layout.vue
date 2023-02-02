@@ -1,6 +1,6 @@
 <template>
 	<el-row v-for="item in props.data" :key="item" class="elRow" :gutter="20">
-		<div>{{ item.title }}</div>
+		<div class="eltitle">{{ item.title }}</div>
 		<el-col class="elCol" :span="5" v-for="item2 in 4" :key="item2">
 			<div class="grid-content ep-bg-purple" />
 			<el-card :body-style="{ padding: '0px' }">
@@ -63,7 +63,11 @@ const currentDate = ref(new Date());
 .elRow {
 	flex-wrap: wrap;
 	justify-content: center;
-	padding: 20px 100px;
+	padding: 20px 80px;
 	background-color: pink;
+	.eltitle {
+		font-size: 22px;
+		color: #999999;
+	}
 }
 </style>
