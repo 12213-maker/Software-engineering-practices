@@ -76,7 +76,7 @@
 					"name": "lnl-view",
 					"component": "/proTable/lnl-view/index",
 					"meta": {
-						"icon": "Bicycle",
+						"icon": "Picture",
 						"title": "景点推荐",
 						"isLink": "",
 						"isHide": false,
