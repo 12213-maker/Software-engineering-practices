@@ -23,9 +23,14 @@
 				<el-button type="danger">Danger</el-button>
 			</div>
 		</div>
-		<el-row v-for="item in data" :key="item" class="elRow" :gutter="20">
+		<el-row v-for="(item, index) in data" :key="item" class="elRow" :gutter="20">
 			<div class="elRowOuter">
-				<span class="eltitle">{{ item.title }}</span>
+				<div class="more">
+					<span class="eltitle showmore" @click="routerpush(index)">{{ item.title }} </span>
+					<div class="showmore" @click="routerpush(index)">
+						更多<el-icon><ArrowRight /></el-icon>
+					</div>
+				</div>
 				<div class="elcolouter">
 					<el-col class="elCol" :span="5" v-for="item2 in item.foods" :key="item2">
 						<div class="grid-content ep-bg-purple" />
@@ -34,7 +39,7 @@
 								<img :src="getIcon(item2.url)" class="image" />
 							</div>
 							<div style="padding: 14px">
-								<span>{{ item2.des }}</span>
+								<div class="item2des">{{ item2.des }}</div>
 								<div class="bottom">
 									<time class="time">{{ item2.origin }}</time>
 									<br />
@@ -69,14 +74,32 @@ const options = [
 
 const data = reactive([
 	{
-		title: "时令佳肴",
+		title: "西藏",
 		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
+			{
+				url: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				des: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				origin: "1221"
+			},
 			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
 			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
 			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
 		]
 	},
+	// {
+	// 	id: 1,
+	// 	type1: 1,
+	// 	type2: 1,
+	// 	name: "阳光家常菜(岷山路店)",
+	// 	picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+	// 	score: 0.0,
+	// 	position: "成都市新都区岷山南路二段100号",
+	// 	phone: "028-2237890",
+	// 	information: "家常菜，人均25元，营业时间9:00-22:00",
+	// 	number: "B03460NX2R",
+	// 	city: "成都",
+	// 	placePictures: null
+	// },
 	{
 		title: "肉食精选",
 		foods: [
@@ -158,6 +181,10 @@ const changeType = (value: string) => {
 	console.log(value);
 	router.push(value);
 };
+
+const routerpush = (value: any) => {
+	router.push({ path: "/proTable/lnl-showmore", query: { id: value } });
+};
 </script>
 
 <style scoped lang="scss">
@@ -224,7 +251,7 @@ const changeType = (value: string) => {
 		padding: 0;
 	}
 	.imgOuter {
-		height: 360px;
+		height: 300px;
 		background-color: pink;
 		.image {
 			display: block;
@@ -240,18 +267,27 @@ const changeType = (value: string) => {
 		padding-top: 30px;
 		background-color: #e3e5ea;
 		border-radius: 20px;
+		.more {
+			position: relative;
+			bottom: 15px;
+			display: flex;
+			justify-content: space-between;
+			padding: 0 100px;
+			font-size: 24px;
+			color: #6d6d6d;
+			.showmore {
+				cursor: pointer;
+			}
+		}
 		.elcolouter {
 			position: relative;
 			top: -30px;
 			display: flex;
 			justify-content: center;
-		}
-		.eltitle {
-			position: relative;
-			bottom: 15px;
-			left: 100px;
-			font-size: 24px;
-			color: #6d6d6d;
+			.item2des {
+				height: 65px;
+				overflow: hidden;
+			}
 		}
 	}
 }

@@ -97,7 +97,39 @@
 						"isFull": false,
 						"isAffix": false,
 						"isKeepAlive": true
-					}
+					},
+					"children": [
+						{
+							"path": "/proTable/lnl-showmore",
+							"name": "lnl-showmore",
+							"component": "/proTable/lnl-showmore/index",
+							"meta": {
+								"icon": "House",
+								"title": "展示更多",
+								"activeMenu": "/proTable/lnl-slpee",
+								"isLink": "",
+								"isHide": true,
+								"isFull": false,
+								"isAffix": false,
+								"isKeepAlive": true
+							}
+						},
+						{
+							"path": "/proTable/lnl-detailshow",
+							"name": "lnl-detailshow",
+							"component": "/proTable/lnl-detailshow/index",
+							"meta": {
+								"icon": "House",
+								"title": "详情页面",
+								"activeMenu": "/proTable/lnl-slpee",
+								"isLink": "",
+								"isHide": true,
+								"isFull": false,
+								"isAffix": false,
+								"isKeepAlive": true
+							}
+						}
+					]
 				}
 			]
 		},
