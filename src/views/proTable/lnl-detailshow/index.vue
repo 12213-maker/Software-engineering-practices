@@ -1,81 +1,129 @@
 <template>
-	<div class="outer">
-		<div class="container">
-			<el-carousel class="carousel">
-				<el-carousel-item class="carouselItem" v-for="city in data" :key="city">
-					<img :src="getIcon(city.url)" alt="" />
-					<h3 class="small justify-center" text="2xl">
-						<div class="titile">{{ city.name }}</div>
-						{{ city.des }}
-					</h3>
-				</el-carousel-item>
-			</el-carousel>
-			<div class="describe">
-				<el-descriptions class="margin-top" title="" :column="1" size="large" border>
-					<template #extra>
-						<div class="title">
-							{{ data2.name }}
-							<el-rate disabled allow-half v-model="data2.score" score-template="{value} points" />
-							<span class="score">{{ data2.score }}</span>
+	<div>
+		<div class="outer">
+			<div class="container">
+				<el-carousel class="carousel">
+					<el-carousel-item class="carouselItem" v-for="city in data" :key="city">
+						<img :src="getIcon(city.url)" alt="" />
+						<h3 class="small justify-center" text="2xl">
+							<div class="titile">{{ city.name }}</div>
+							{{ city.des }}
+						</h3>
+					</el-carousel-item>
+				</el-carousel>
+				<div class="describe">
+					<el-descriptions class="margin-top" title="" :column="1" size="large" border>
+						<template #extra>
+							<div class="title">
+								{{ data2.name }}
+								<el-rate disabled allow-half v-model="data2.score" score-template="{value} points" />
+								<span class="score">{{ data2.score }}</span>
+							</div>
+						</template>
+						<el-descriptions-item>
+							<template #label>
+								<div class="cell-item">
+									<el-icon>
+										<office-building />
+									</el-icon>
+									城市
+								</div>
+							</template>
+							{{ data2.city }}
+						</el-descriptions-item>
+						<el-descriptions-item>
+							<template #label>
+								<div class="cell-item">
+									<el-icon>
+										<iphone />
+									</el-icon>
+									电话
+								</div>
+							</template>
+							{{ data2.phone }}
+						</el-descriptions-item>
+						<el-descriptions-item>
+							<template #label>
+								<div class="cell-item">
+									<el-icon>
+										<location />
+									</el-icon>
+									地址
+								</div>
+							</template>
+							{{ data2.position }}
+						</el-descriptions-item>
+						<el-descriptions-item>
+							<template #label>
+								<div class="cell-item">
+									<el-icon>
+										<office-building />
+									</el-icon>
+									介绍
+								</div>
+							</template>
+							<div class="information">
+								{{ data2.information }}
+							</div>
+						</el-descriptions-item>
+					</el-descriptions>
+				</div>
+			</div>
+			<div class="bottom">
+				<div class="total">
+					<div>
+						<span style="padding-right: 50px">{{ `评论（${comment.length}）` }}</span>
+						<span>最新 | 热评</span>
+					</div>
+					<el-button type="primary" round :icon="ChatLineRound" @click="dialogVisible = true">评论</el-button>
+				</div>
+				<div class="comment" v-for="item in comment" :key="item.id">
+					<div class="avatar">
+						<div class="avatarimage"><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
+						<span class="username">{{ item.username }}</span>
+						<el-rate disabled allow-half v-model="item.score" score-template="{value} points" />
+						<span class="score">{{ item.score }}分</span>
+					</div>
+					<div class="usercomment">
+						{{ item.comment }}
+					</div>
+					<div class="imageOter">
+						<img v-for="picture in item.pictures" class="image" :key="picture" :src="getIcon(picture)" alt="" />
+					</div>
+					<div class="timecontaner">
+						<span>{{ item.time }}</span>
+						<div>
+							<el-button round :icon="Star" @click="changeMyLike(trunTrue, item.id)" v-if="!item.myLike">{{
+								item.likes
+							}}</el-button>
+							<el-button type="warning" round @click="changeMyLike(trunFalse, item.id)" v-else :icon="StarFilled">{{
+								item.likes
+							}}</el-button>
+							<el-button type="danger" round :icon="Warning">举报</el-button>
 						</div>
-					</template>
-					<el-descriptions-item>
-						<template #label>
-							<div class="cell-item">
-								<el-icon>
-									<office-building />
-								</el-icon>
-								城市
-							</div>
-						</template>
-						{{ data2.city }}
-					</el-descriptions-item>
-					<el-descriptions-item>
-						<template #label>
-							<div class="cell-item">
-								<el-icon>
-									<iphone />
-								</el-icon>
-								电话
-							</div>
-						</template>
-						{{ data2.phone }}
-					</el-descriptions-item>
-					<el-descriptions-item>
-						<template #label>
-							<div class="cell-item">
-								<el-icon>
-									<location />
-								</el-icon>
-								地址
-							</div>
-						</template>
-						{{ data2.position }}
-					</el-descriptions-item>
-					<el-descriptions-item :label-class-name="LS" :class-name="rl">
-						<template #label>
-							<div class="cell-item">
-								<el-icon>
-									<office-building />
-								</el-icon>
-								介绍
-							</div>
-						</template>
-						<div class="information">
-							{{ data2.information }}
-						</div>
-					</el-descriptions-item>
-				</el-descriptions>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="bottom">
-			<div class="total">评论（）</div>
-			<div class="comment"></div>
-		</div>
+		<el-dialog align-center draggable v-model="dialogVisible" title="评论" width="30%">
+			<el-input v-model="textarea" :rows="2" type="textarea" placeholder="Please input" />
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="giveAComment(false)">取消</el-button>
+					<el-button type="primary" @click="giveAComment(true)"> 发送 </el-button>
+				</span>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
 <script lang="ts" setup>
+import { Star, StarFilled, Warning, ChatLineRound } from "@element-plus/icons-vue";
+import { reactive, ref } from "vue";
+// import { ElMessageBox } from "element-plus";
+
+const dialogVisible = ref(false);
+const textarea = ref("");
 const data = [
 	{
 		name: "布达拉宫",
@@ -120,9 +168,125 @@ const data2 = {
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;
 };
-const LS = { width: "20px" };
-const rl = {
-	width: "20px"
+const comment = reactive([
+	{
+		id: 2,
+		pid: 1,
+		uid: 2,
+		score: 4,
+		comment:
+			"好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。v",
+		time: "2023-02-04 11:29:26",
+		likes: 225,
+		username: "木子曰李",
+		userImg: "default",
+		pictures: [
+			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
+			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
+			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
+		],
+		myLike: true
+	},
+	{
+		id: 3,
+		pid: 1,
+		uid: 2,
+		score: 4.5,
+		comment: "好吃，家常菜味道好。",
+		time: "2023-02-04 11:29:26",
+		likes: 0,
+		username: "cjw",
+		userImg: "default",
+		pictures: [
+			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
+			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
+			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
+		],
+		myLike: false
+	},
+	{
+		id: 4,
+		pid: 1,
+		uid: 2,
+		score: 4,
+		comment: "好吃，家常菜味道好。",
+		time: "2023-02-04 11:29:26",
+		likes: 0,
+		username: "cjw",
+		userImg: "default",
+		pictures: [
+			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
+			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
+			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
+		],
+		myLike: false
+	},
+	{
+		id: 5,
+		pid: 1,
+		uid: 2,
+		score: 4,
+		comment: "好吃，家常菜味道好。",
+		time: "2023-02-04 11:29:26",
+		likes: 0,
+		username: "cjw",
+		userImg: "default",
+		pictures: [
+			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
+			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
+			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
+		],
+		myLike: false
+	},
+	{
+		id: 6,
+		pid: 1,
+		uid: 2,
+		score: 4,
+		comment: "好吃，家常菜味道好。",
+		time: "2023-02-04 11:29:26",
+		likes: 0,
+		username: "cjw",
+		userImg: "default",
+		pictures: [
+			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
+			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
+			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
+		],
+		myLike: false
+	},
+	{
+		id: 7,
+		pid: 1,
+		uid: 2,
+		score: 4,
+		comment: "好吃，家常菜味道好。",
+		time: "2023-02-04 11:29:26",
+		likes: 0,
+		username: "cjw",
+		userImg: "default",
+		pictures: [
+			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
+			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
+			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
+		],
+		myLike: false
+	}
+]);
+const changeMyLike = (flag: any, ide: any) => {
+	console.log(flag, ide);
+	comment.map(item => {
+		if (item.id === ide) {
+			item.myLike = !item.myLike;
+		}
+	});
+};
+const giveAComment = (flag: any) => {
+	if (flag) {
+		console.log(textarea.value);
+		textarea.value = "";
+	}
+	dialogVisible.value = false;
 };
 </script>
 
@@ -189,21 +353,63 @@ const rl = {
 		}
 	}
 	.bottom {
-		height: 100vh;
 		margin-top: 40px;
 		overflow: hidden;
 		background-color: rgb(245 247 250);
 		border-radius: 10px;
-		box-shadow: 0px 0px 50px 0px rgba(210, 210, 210, 0.5);
+		box-shadow: 0 0 50px 0 #dbdbdb;
 		.total {
-			height: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 0 20px;
+			padding-top: 10px;
 			font-size: 20px;
-			color: #4f4f4f;
 			line-height: 40px;
-			padding-left: 20px;
+			color: #4f4f4f;
 		}
 		.comment {
-			background-color: palegoldenrod;
+			padding: 20px;
+			padding-left: 70px;
+			margin: 10px;
+			color: #4f4f4f;
+			background-color: white;
+			border-radius: 10px;
+			.avatar {
+				position: relative;
+				left: -60px;
+				display: flex;
+				align-items: center;
+				.avatarimage {
+					overflow: hidden;
+				}
+				.username {
+					margin-right: 20px;
+					font-size: 18px;
+				}
+				.score {
+					color: #f56c6c;
+				}
+			}
+			.usercomment {
+				padding-bottom: 10px;
+				font-size: 17px;
+				color: #4f4f4f;
+			}
+			.imageOter {
+				display: flex;
+				width: 100px;
+				height: 100px;
+				.image {
+					width: 100%;
+					margin: 0 3px;
+				}
+			}
+			.timecontaner {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
 		}
 	}
 }
