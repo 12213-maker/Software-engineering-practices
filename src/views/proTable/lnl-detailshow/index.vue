@@ -93,10 +93,10 @@
 					<div class="timecontaner">
 						<span>{{ item.time }}</span>
 						<div>
-							<el-button round :icon="Star" @click="changeMyLike(trunTrue, item.id)" v-if="!item.myLike">{{
+							<el-button round :icon="Star" @click="changeMyLike('trunTrue', item.id)" v-if="!item.myLike">{{
 								item.likes
 							}}</el-button>
-							<el-button type="warning" round @click="changeMyLike(trunFalse, item.id)" v-else :icon="StarFilled">{{
+							<el-button type="warning" round @click="changeMyLike('trunFalse', item.id)" v-else :icon="StarFilled">{{
 								item.likes
 							}}</el-button>
 							<el-button type="danger" round :icon="Warning">举报</el-button>
