@@ -13,7 +13,7 @@
 			</div>
 		</div>
 		<el-row class="elRow" :gutter="20">
-			<el-col class="elCol" :span="6" v-for="item in datatrue.data.records" :key="item">
+			<el-col @click="detailshow()" class="elCol" :span="6" v-for="item in datatrue.data.records" :key="item">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="imgOuter">
 						<img :src="getIcon(item.picture)" class="image" />
@@ -78,12 +78,12 @@
 
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
-// import { useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 const input2 = ref("");
 // const value1 = ref(5);
 const select = ref("1");
-// const router = useRouter();
+const router = useRouter();
 const options = [
 	{
 		value: "1",
@@ -401,14 +401,9 @@ const changeselect = () => {
 	console.log(data);
 };
 
-// const changeType = (value: string) => {
-// 	console.log(value);
-// 	router.push(value);
-// };
-
-// const routerpush = (value: any) => {
-// 	router.push({ path: "/proTable/lnl-showmore", query: { id: value } });
-// };
+const detailshow = () => {
+	router.push({ path: "/proTable/lnl-detailshow", query: { id: 1 } });
+};
 </script>
 
 <style scoped lang="scss">
@@ -454,6 +449,7 @@ const changeselect = () => {
 	padding: 20px 80px;
 	.elCol {
 		margin-bottom: 20px;
+		cursor: pointer;
 		.score {
 			position: relative;
 			top: -4px;
@@ -466,7 +462,6 @@ const changeselect = () => {
 		margin-bottom: 0;
 	}
 	.el-col {
-		cursor: pointer;
 		border-radius: 4px;
 	}
 	.grid-content {
@@ -489,7 +484,7 @@ const changeselect = () => {
 		padding: 0;
 	}
 	.imgOuter {
-		height: 300px;
+		height: 330px;
 		background-color: pink;
 		.image {
 			display: block;
