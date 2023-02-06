@@ -20,7 +20,6 @@
 			</div>
 			<div class="header-button-ri" v-if="toolButton">
 				<el-button :icon="Refresh" circle @click="getTableList"> </el-button>
-				<el-button :icon="Printer" circle v-if="columns.length" @click="handlePrint"> </el-button>
 				<el-button :icon="Operation" circle v-if="columns.length" @click="openColSetting"> </el-button>
 				<el-button :icon="Search" circle v-if="searchColumns.length" @click="isShowSearch = !isShowSearch"> </el-button>
 			</div>
@@ -29,7 +28,7 @@
 		<el-table
 			ref="tableRef"
 			v-bind="$attrs"
-			:data="tableData"
+			:data="records"
 			:border="border"
 			:row-key="getRowKeys"
 			@selection-change="selectionChange"
@@ -86,19 +85,18 @@
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, watch, computed, provide } from "vue";
+import { ref, watch, provide } from "vue";
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { ElTable, TableProps } from "element-plus";
-import { Refresh, Printer, Operation, Search } from "@element-plus/icons-vue";
-import { filterEnum, formatValue, handleProp, handleRowAccordingToProp } from "@/utils/util";
+import { Refresh, Operation, Search } from "@element-plus/icons-vue";
+import { handleProp } from "@/utils/util";
 import SearchForm from "@/components/SearchForm/index.vue";
 import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
-import printJS from "print-js";
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	columns: ColumnProps[]; // 列配置项
@@ -129,6 +127,350 @@ const isShowSearch = ref(true);
 
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>();
+
+const records = [
+	{
+		id: 1,
+		username: "木子曰李",
+		password: 123456,
+		sex: 1,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 2,
+		username: "admin",
+		password: 123456,
+		sex: 2,
+		img: "default",
+		roleId: 2,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 3,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 4,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 5,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 6,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 7,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 8,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 9,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 10,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 11,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 12,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 13,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 14,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 15,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 16,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 17,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 18,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 19,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 20,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 21,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 22,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 23,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 24,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 25,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 26,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 27,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 28,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 29,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 30,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	},
+	{
+		id: 31,
+		username: "admin",
+		password: 123456,
+		sex: 0,
+		img: "default",
+		roleId: 1,
+		phone: 18888888888,
+		birthday: "1999-12-31",
+		description: "惠惠世界第一可爱"
+	}
+];
 
 // 表格多选 Hooks
 const { selectionChange, getRowKeys, selectedList, selectedListIds, isSelected } = useSelection(props.selectId);
@@ -197,46 +539,6 @@ const colSetting = tableColumns.value!.filter(item => {
 	return item.type !== "selection" && item.type !== "index" && item.type !== "expand" && item.prop !== "operation";
 });
 const openColSetting = () => colRef.value.openColSetting();
-
-// 🙅‍♀️ 不需要打印可以把以下方法删除（目前数据处理比较复杂）
-// 处理打印数据（把后台返回的值根据 enum 做转换）
-const printData = computed(() => {
-	let printDataList = JSON.parse(JSON.stringify(selectedList.value.length ? selectedList.value : tableData.value));
-	// 找出需要转换数据的列（有 enum || 多级 prop && 需要根据 enum 格式化）
-	let needTransformCol = flatColumns.value!.filter(
-		item => (item.enum || (item.prop && item.prop.split(".").length > 1)) && item.isFilterEnum
-	);
-	needTransformCol.forEach(colItem => {
-		printDataList.forEach((tableItem: { [key: string]: any }) => {
-			tableItem[handleProp(colItem.prop!)] =
-				colItem.prop!.split(".").length > 1 && !colItem.enum
-					? formatValue(handleRowAccordingToProp(tableItem, colItem.prop!))
-					: filterEnum(handleRowAccordingToProp(tableItem, colItem.prop!), enumMap.value.get(colItem.prop!), colItem.fieldNames);
-			for (const key in tableItem) {
-				if (tableItem[key] === null) tableItem[key] = formatValue(tableItem[key]);
-			}
-		});
-	});
-	return printDataList;
-});
-
-// 打印表格数据（💥 多级表头数据打印时，只能扁平化成一维数组，printJs 不支持多级表头打印）
-const handlePrint = () => {
-	printJS({
-		printable: printData.value,
-		header: props.title && `<div style="display: flex;flex-direction: column;text-align: center"><h2>${props.title}</h2></div>`,
-		properties: flatColumns
-			.value!.filter(
-				item =>
-					item.isShow && item.type !== "selection" && item.type !== "index" && item.type !== "expand" && item.prop !== "operation"
-			)
-			.map((item: ColumnProps) => ({ field: handleProp(item.prop!), displayName: item.label })),
-		type: "json",
-		gridHeaderStyle:
-			"border: 1px solid #ebeef5;height: 45px;font-size: 14px;color: #232425;text-align: center;background-color: #fafafa;",
-		gridStyle: "border: 1px solid #ebeef5;height: 40px;font-size: 14px;color: #494b4e;text-align: center"
-	});
-};
 
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
 defineExpose({

@@ -320,9 +320,9 @@
 			]
 		},
 		{
-			"path": "/dashboard",
+			"path": "/management",
 			"name": "dashboard",
-			"redirect": "/dashboard/dataVisualize",
+			"redirect": "/management/dataVisualize",
 			"meta": {
 				"icon": "Setting",
 				"title": "系统管理",
@@ -334,12 +334,12 @@
 			},
 			"children": [
 				{
-					"path": "/dashboard/dataVisualize",
+					"path": "/management/dataVisualize",
 					"name": "dataVisualize",
-					"component": "/dashboard/dataVisualize/index",
+					"component": "/dashboard/lnl-userManagement/index",
 					"meta": {
-						"icon": "Menu",
-						"title": "数据可视化",
+						"icon": "UserFilled",
+						"title": "用户管理",
 						"isLink": "",
 						"isHide": false,
 						"isFull": false,
@@ -348,7 +348,7 @@
 					}
 				},
 				{
-					"path": "/dashboard/embedded",
+					"path": "/management/embedded",
 					"name": "embedded",
 					"component": "/dashboard/embedded/index",
 					"meta": {
