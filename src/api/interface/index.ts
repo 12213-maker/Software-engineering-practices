@@ -37,10 +37,18 @@ export namespace Login {
 		password: string;
 	}
 	export interface ResLogin {
-		access_token: string;
+		token: string;
 	}
 	export interface ResAuthButtons {
 		[key: string]: string[];
+	}
+	export interface Register {
+		username: string;
+		password: string;
+		sex: number;
+		phone?: string;
+		birthday?: Date;
+		description?: string;
 	}
 }
 
@@ -90,4 +98,10 @@ export namespace User {
 		name: string;
 		children?: ResDepartment[];
 	}
+}
+
+//游玩推荐模块
+export interface placelistvalue {
+	type1: number;
+	city: string;
 }

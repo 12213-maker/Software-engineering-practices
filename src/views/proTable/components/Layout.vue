@@ -23,28 +23,24 @@
 				<el-button type="danger">Danger</el-button>
 			</div>
 		</div>
-		<el-row v-for="(item, index) in data" :key="item" class="elRow" :gutter="20">
+		<el-row v-for="(item, index) in dataValue" :key="item" class="elRow" :gutter="20">
 			<div class="elRowOuter">
 				<div class="more">
-					<span class="eltitle showmore" @click="routerpush(index)">{{ item.title }} </span>
+					<span class="eltitle showmore" @click="routerpush(index)">{{ item.type1Name }} </span>
 					<div class="showmore" @click="routerpush(index)">
 						更多<el-icon><ArrowRight /></el-icon>
 					</div>
 				</div>
 				<div class="elcolouter">
-					<el-col class="elCol" :span="5" v-for="item2 in item.foods" :key="item2">
+					<el-col class="elCol" :span="5" v-for="item2 in item" :key="item2">
 						<div class="grid-content ep-bg-purple" />
 						<el-card :body-style="{ padding: '0px' }">
 							<div class="imgOuter">
-								<img :src="getIcon(item2.url)" class="image" />
+								<img :src="getIcon(item2.picture)" class="image" />
 							</div>
 							<div style="padding: 14px">
-								<div class="item2des">{{ item2.des }}</div>
-								<div class="bottom">
-									<time class="time">{{ item2.origin }}</time>
-									<br />
-									<el-rate disabled v-model="value1" score-template="{value} points" />
-								</div>
+								<div class="item2des">{{ item2.name }}</div>
+								<el-rate disabled v-model="item2.score" score-template="{value} points" />
 							</div> </el-card
 					></el-col>
 				</div>
@@ -54,13 +50,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { placeList } from "@/api/modules/lnl-paly";
+import { placelistvalue } from "@/api/interface/index";
 
 const input2 = ref("");
-const value1 = ref(5);
 const select = ref("1");
 const router = useRouter();
+const props = defineProps<{ type: Array<string>; params: placelistvalue }>();
+
 const options = [
 	{
 		value: "1",
@@ -72,59 +71,83 @@ const options = [
 	}
 ];
 
+interface DataValue {
+	id: number;
+	name: string;
+	score: number;
+	picture: string;
+	type1Name?: string;
+}
+let dataValue = reactive<Array<Array<DataValue>>>([]);
+
 const data = reactive([
 	{
 		title: "西藏",
 		foods: [
 			{
-				url: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				des: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				origin: "1221"
+				title: "西藏",
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "123",
+				score: 4.5
 			},
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	// {
-	// 	id: 1,
-	// 	type1: 1,
-	// 	type2: 1,
-	// 	name: "阳光家常菜(岷山路店)",
-	// 	picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-	// 	score: 0.0,
-	// 	position: "成都市新都区岷山南路二段100号",
-	// 	phone: "028-2237890",
-	// 	information: "家常菜，人均25元，营业时间9:00-22:00",
-	// 	number: "B03460NX2R",
-	// 	city: "成都",
-	// 	placePictures: null
-	// },
-	{
-		title: "肉食精选",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+			{
+				title: "西藏",
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				score: 4.5
+			},
+			{
+				title: "西藏",
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				score: 4.5
+			},
+			{
+				title: "西藏",
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				score: 4.5
+			}
 		]
 	},
 	{
-		title: "健康素食",
+		title: "西藏",
 		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+			{
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				score: 4.5
+			},
+			{
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				score: 4.5
+			},
+			{
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				score: 4.5
+			}
 		]
 	},
 	{
-		title: "烘焙",
+		title: "西藏",
 		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
+			{
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				score: 4.5
+			},
+			{
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				score: 4.5
+			},
+			{
+				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
+				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
+				score: 4.5
+			}
 		]
 	}
 ]);
@@ -174,17 +197,26 @@ const getIcon = (name: string) => {
 
 const changeselect = () => {
 	data.splice(0, data.length, ...data2);
-	console.log(data);
 };
 
 const changeType = (value: string) => {
-	console.log(value);
 	router.push(value);
 };
 
 const routerpush = (value: any) => {
 	router.push({ path: "/proTable/lnl-showmore", query: { id: value } });
 };
+
+onMounted(async () => {
+	const { data } = await placeList(props.params);
+	dataValue.push(...(data as any));
+	dataValue = dataValue.forEach((item, index) => {
+		item.map(item2 => {
+			return { ...item2, type1Name: props.type[index] };
+		});
+	});
+	console.log(dataValue);
+});
 </script>
 
 <style scoped lang="scss">

@@ -22,7 +22,7 @@
 		</el-button>
 	</div>
 
-	<el-dialog destroy-on-close="true" v-model="dialogVisible" title="Register" width="40%">
+	<el-dialog :destroy-on-close="true" v-model="dialogVisible" title="Register" width="40%">
 		<register @change_dialog_visible="changeDialogvisible" />
 	</el-dialog>
 </template>
@@ -41,7 +41,7 @@ import { HOME_URL } from "@/config/config";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { Key, UserFilled } from "@element-plus/icons-vue";
 import type { ElForm } from "element-plus";
-import md5 from "js-md5";
+// import md5 from "js-md5";
 import register from "./register.vue";
 
 const router = useRouter();
@@ -67,24 +67,36 @@ const login = (formEl: FormInstance | undefined) => {
 		loading.value = true;
 		try {
 			// 1.执行登录接口
-			const { data } = await loginApi({ ...loginForm, password: md5(loginForm.password) });
-			globalStore.setToken(data.access_token);
+			const { code, data } = await loginApi({ ...loginForm });
 
-			// 2.添加动态路由
-			await initDynamicRouter();
+			if (Number(code) === 200) {
+				console.log(data, data.token);
+				globalStore.setToken(data.token);
 
-			// 3.清空 tabs、keepAlive 保留的数据
-			tabsStore.closeMultipleTab();
-			keepAlive.setKeepAliveName();
+				// 2.添加动态路由
+				await initDynamicRouter();
 
-			// 4.跳转到首页
-			router.push(HOME_URL);
-			ElNotification({
-				title: getTimeState(),
-				message: "欢迎登录 没课去哪儿",
-				type: "success",
-				duration: 3000
-			});
+				// 3.清空 tabs、keepAlive 保留的数据
+				tabsStore.closeMultipleTab();
+				keepAlive.setKeepAliveName();
+
+				console.log(Number(code));
+				// 4.跳转到首页
+				router.push(HOME_URL);
+				ElNotification({
+					title: getTimeState(),
+					message: "欢迎登录 没课去哪儿",
+					type: "success",
+					duration: 3000
+				});
+			} else {
+				ElNotification({
+					title: getTimeState(),
+					message: `用户名或密码错误`,
+					type: "warning",
+					duration: 1000
+				});
+			}
 		} finally {
 			loading.value = false;
 		}
