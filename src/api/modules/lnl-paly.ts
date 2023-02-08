@@ -1,6 +1,36 @@
 import http from "@/api";
-import { placelistvalue } from "../interface/index";
+import { placelistvalue, PlaceMore } from "../interface/index";
 
 export const placeList = (params: placelistvalue) => {
 	return http.get("/place/list", params, { headers: { noLoading: true } });
+};
+
+////地点更多推荐列表
+export const placeMore = (params: PlaceMore) => {
+	return http.get("/place/more", params, { headers: { noLoading: true } });
+};
+
+//地点详细信息/place/details
+export const placeDetails = (params: any) => {
+	return http.get("/place/details", params, { headers: { noLoading: true } });
+};
+
+//展示评论列表
+export const commentList = (params: any) => {
+	return http.get("/comment/list", params, { headers: { noLoading: true } });
+};
+
+//用户点赞评论
+export const likeAdd = (params: any) => {
+	return http.post("/likes/add", params, { headers: { noLoading: true } });
+};
+
+//用户取消评论点赞 /likes/delete
+export const likesDelete = (params: any) => {
+	return http.delete("/likes/delete", params, { headers: { noLoading: true } });
+};
+
+//用户发表评论 /comment/add
+export const commentAdd = (params: any) => {
+	return http.post("/comment/add", params, { headers: { noLoading: true } });
 };

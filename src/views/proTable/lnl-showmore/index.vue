@@ -13,10 +13,10 @@
 			</div>
 		</div>
 		<el-row class="elRow" :gutter="20">
-			<el-col @click="detailshow()" class="elCol" :span="6" v-for="item in datatrue.data.records" :key="item">
+			<el-col @click="detailshow(item.id)" class="elCol" :span="6" v-for="item in dataValue.data" :key="item">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="imgOuter">
-						<img :src="getIcon(item.picture)" class="image" />
+						<img :src="getIcon(`http://3d254f0e.r5.cpolar.top/img/place/${item.picture}`)" class="image" />
 					</div>
 					<div style="padding: 14px">
 						<el-descriptions class="margin-top" :title="item.name" :column="1" size="small" border>
@@ -77,13 +77,49 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
-import { useRouter } from "vue-router";
+import { ref, reactive, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { placeMore } from "@/api/modules/lnl-paly";
+import { PlaceMore } from "@/api/interface";
 
 const input2 = ref("");
-// const value1 = ref(5);
 const select = ref("1");
 const router = useRouter();
+const route = useRoute();
+const apiParams = reactive<PlaceMore>({
+	type1: 0,
+	type2: 0,
+	order: 1,
+	name: "",
+	city: "成都",
+	page: 1,
+	limit: 16
+});
+interface DataValueInterface {
+	city: string;
+	id: number;
+	information: string;
+	name: string;
+	phone: string;
+	picture: string;
+	placePictures?: any;
+	position: string;
+	score: number;
+}
+let dataValue = reactive<{ data: DataValueInterface }>({
+	data: {
+		city: "",
+		id: 0,
+		information: "",
+		name: "",
+		phone: "",
+		picture: "",
+		placePictures: "",
+		position: "",
+		score: 5
+	}
+});
+
 const options = [
 	{
 		value: "1",
@@ -191,219 +227,29 @@ const data2 = [
 	}
 ];
 
-const datatrue = {
-	code: 200,
-	msg: null,
-	data: {
-		records: [
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg",
-				score: 4.5,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: 18980530856,
-				information: "000000000000000000000000000000000000000000000000000000家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg",
-				score: 4.88,
-				position: " 2222222222222222222222222222222222222成都市新都区岷山南路二段100号",
-				phone: 18980530856,
-				information:
-					"333333333333333333333333333333333333333333333333333333333333333333333333333333家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: 18980530856,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: 18980530856,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: 18980530856,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/infinity-2168510.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: 18980530856,
-				information: "11111111111111111111111111111111111111111111111111常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/Snipaste_2023-01-31_17-16-21.png",
-				score: 3.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: null,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/c8177f3e6709c93d40cebc4a983df8dcd100544a.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: null,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/c8177f3e6709c93d40cebc4a983df8dcd100544a.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: null,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/c8177f3e6709c93d40cebc4a983df8dcd100544a.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: null,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/c8177f3e6709c93d40cebc4a983df8dcd100544a.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: null,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/c8177f3e6709c93d40cebc4a983df8dcd100544a.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: null,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			},
-			{
-				id: 4,
-				type1: 1,
-				type2: 1,
-				name: "阳光家常菜(岷山路店)",
-				picture: "../../../assets/lnl_images/c8177f3e6709c93d40cebc4a983df8dcd100544a.jpg",
-				score: 4.88,
-				position: " 成都市新都区岷山南路二段100号",
-				phone: null,
-				information: "家常菜，人均25元，营业时间9:00-22:00",
-				number: "B03460NX2R",
-				city: "成都",
-				placePictures: null
-			}
-		],
-		total: 5,
-		size: 10,
-		current: 1,
-		orders: [],
-		optimizeCountSql: true,
-		searchCount: true,
-		countId: null,
-		maxLimit: null,
-		pages: 1
-	}
-};
-
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;
 };
 
 const changeselect = () => {
 	data.splice(0, data.length, ...data2);
-	console.log(data);
 };
 
-const detailshow = () => {
-	router.push({ path: "/proTable/lnl-detailshow", query: { id: 1 } });
+const detailshow = (id: any) => {
+	router.push({ path: "/proTable/lnl-detailshow", query: { id, type1: route.query.type1 } });
 };
+
+//申请接口数据
+const apireturndataback = async () => {
+	const params = { ...apiParams, ...route.query };
+	const res = (await placeMore(params)) as any;
+	dataValue.data = res.data.records;
+	console.log(dataValue.data);
+};
+
+onMounted(() => {
+	apireturndataback();
+});
 </script>
 
 <style scoped lang="scss">

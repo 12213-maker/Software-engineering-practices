@@ -105,3 +105,14 @@ export interface placelistvalue {
 	type1: number;
 	city: string;
 }
+
+//地点更多推荐列表
+export interface PlaceMore {
+	type1: number;
+	type2: number;
+	order: number;
+	name?: string;
+	city: string;
+	page: number;
+	limit: number;
+}

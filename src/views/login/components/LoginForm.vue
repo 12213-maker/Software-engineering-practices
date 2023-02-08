@@ -70,13 +70,12 @@ const login = (formEl: FormInstance | undefined) => {
 			const { code, data } = await loginApi({ ...loginForm });
 
 			if (Number(code) === 200) {
-				console.log(data, data.token);
 				globalStore.setToken(data.token);
 
 				// 2.添加动态路由
 				await initDynamicRouter();
 
-				// 3.清空 tabs、keepAlive 保留的数据
+				// // 3.清空 tabs、keepAlive 保留的数据
 				tabsStore.closeMultipleTab();
 				keepAlive.setKeepAliveName();
 

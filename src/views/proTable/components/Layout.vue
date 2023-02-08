@@ -26,8 +26,10 @@
 		<el-row v-for="(item, index) in dataValue" :key="item" class="elRow" :gutter="20">
 			<div class="elRowOuter">
 				<div class="more">
-					<span class="eltitle showmore" @click="routerpush(index)">{{ item.type1Name }} </span>
-					<div class="showmore" @click="routerpush(index)">
+					<span class="eltitle showmore" @click="routerpush(props.params.type1, index)"
+						>{{ item[index].type1Name || "其它" }}
+					</span>
+					<div class="showmore" @click="routerpush(props.params.type1, index)">
 						更多<el-icon><ArrowRight /></el-icon>
 					</div>
 				</div>
@@ -80,142 +82,30 @@ interface DataValue {
 }
 let dataValue = reactive<Array<Array<DataValue>>>([]);
 
-const data = reactive([
-	{
-		title: "西藏",
-		foods: [
-			{
-				title: "西藏",
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "123",
-				score: 4.5
-			},
-			{
-				title: "西藏",
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				score: 4.5
-			},
-			{
-				title: "西藏",
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				score: 4.5
-			},
-			{
-				title: "西藏",
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				score: 4.5
-			}
-		]
-	},
-	{
-		title: "西藏",
-		foods: [
-			{
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				score: 4.5
-			},
-			{
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				score: 4.5
-			},
-			{
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				score: 4.5
-			}
-		]
-	},
-	{
-		title: "西藏",
-		foods: [
-			{
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				score: 4.5
-			},
-			{
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				score: 4.5
-			},
-			{
-				picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				name: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				score: 4.5
-			}
-		]
-	}
-]);
-
-const data2 = [
-	{
-		title: "时令佳肴重庆",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	{
-		title: "肉食精选重庆",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	{
-		title: "健康素食重庆",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	{
-		title: "快乐烘焙重庆",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	}
-];
-
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;
 };
 
 const changeselect = () => {
-	data.splice(0, data.length, ...data2);
+	// data.splice(0, data.length, ...data2);
 };
 
 const changeType = (value: string) => {
 	router.push(value);
 };
 
-const routerpush = (value: any) => {
-	router.push({ path: "/proTable/lnl-showmore", query: { id: value } });
+const routerpush = (type1: number, type2: number) => {
+	router.push({ path: "/proTable/lnl-showmore", query: { type1, type2: type2 + 1 } });
 };
 
 onMounted(async () => {
 	const { data } = await placeList(props.params);
 	dataValue.push(...(data as any));
-	dataValue = dataValue.forEach((item, index) => {
-		item.map(item2 => {
-			return { ...item2, type1Name: props.type[index] };
+	dataValue = dataValue.map((item, index) => {
+		return item.map(item2 => {
+			return { ...item2, type1Name: props.type[index], picture: `http://3d254f0e.r5.cpolar.top/img/place/${item2.picture}` };
 		});
 	});
-	console.log(dataValue);
 });
 </script>
 
@@ -284,7 +174,7 @@ onMounted(async () => {
 	}
 	.imgOuter {
 		height: 300px;
-		background-color: pink;
+		background-color: #e0dbdb;
 		.image {
 			display: block;
 			width: 100%;
