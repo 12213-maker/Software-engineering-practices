@@ -12,8 +12,8 @@
 				<el-button type="primary">距离</el-button>
 			</div>
 		</div>
-		<el-row class="elRow" :gutter="20">
-			<el-col @click="detailshow(item.id)" class="elCol" :span="6" v-for="item in dataValue.data" :key="item">
+		<el-row v-infinite-scroll="load" class="elRow" :gutter="20">
+			<el-col @click="detailshow(item.id)" class="elCol" :span="6" v-for="item in dataValue.data1" :key="item">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="imgOuter">
 						<img :src="getIcon(`http://3d254f0e.r5.cpolar.top/img/place/${item.picture}`)" class="image" />
@@ -72,6 +72,8 @@
 					</div>
 				</el-card>
 			</el-col>
+			<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
+			<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
 		</el-row>
 	</div>
 </template>
@@ -86,15 +88,11 @@ const input2 = ref("");
 const select = ref("1");
 const router = useRouter();
 const route = useRoute();
-const apiParams = reactive<PlaceMore>({
-	type1: 0,
-	type2: 0,
-	order: 1,
-	name: "",
-	city: "成都",
-	page: 1,
-	limit: 16
+const infiniteValue = reactive({
+	current: 0,
+	pages: 1
 });
+
 interface DataValueInterface {
 	city: string;
 	id: number;
@@ -106,7 +104,8 @@ interface DataValueInterface {
 	position: string;
 	score: number;
 }
-let dataValue = reactive<{ data: DataValueInterface }>({
+let dataValue = reactive<{ data1: Array<DataValueInterface>; data: DataValueInterface }>({
+	data1: [],
 	data: {
 		city: "",
 		id: 0,
@@ -131,125 +130,42 @@ const options = [
 	}
 ];
 
-const data = reactive([
-	{
-		title: "西藏",
-		foods: [
-			{
-				url: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-				des: "布达拉宫位于中国西藏自治区首府拉萨市区西北的玛布日山上，是一座宫堡式建筑群，一说为吐蕃王朝赞普松赞干布为迎娶尺尊公主和文成公主而兴建 [17]  [24]  ；另一说为，作为松赞干布迁都拉萨后的王宫而建。 [25]  于17世纪重建后，成为历代达赖喇嘛的冬宫居所，为西藏政教合一的统治中心。1961年，布达拉宫成为了中华人民共和国国务院第一批全国重点文物保护单位之一。1994年，布达拉宫被列为世界文化遗产。布达拉宫的主体建筑为白宫和红宫两部分。",
-				origin: "1221"
-			},
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	{
-		id: 1,
-		type1: 1,
-		type2: 1,
-		name: "阳光家常菜(岷山路店)",
-		picture: "../../../assets/lnl_images/23151340944_3865x2899.jpg",
-		score: 0.0,
-		position: "成都市新都区岷山南路二段100号",
-		phone: "028-2237890",
-		information: "家常菜，人均25元，营业时间9:00-22:00",
-		number: "B03460NX2R",
-		city: "成都",
-		placePictures: null
-	},
-	{
-		title: "肉食精选",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	{
-		title: "健康素食",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	{
-		title: "烘焙",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	}
-]);
-
-const data2 = [
-	{
-		title: "时令佳肴重庆",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	{
-		title: "肉食精选重庆",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	{
-		title: "健康素食重庆",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	},
-	{
-		title: "快乐烘焙重庆",
-		foods: [
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166762750061060.jpg", des: "红烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "白烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "蓝烧肉", origin: "猪肉，蔬菜" },
-			{ url: "https://st-cn.meishij.net/r/24/14/6816024/s6816024_166754799981431.jpg", des: "绿烧肉", origin: "猪肉，蔬菜" }
-		]
-	}
-];
-
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;
 };
 
-const changeselect = () => {
-	data.splice(0, data.length, ...data2);
-};
+const changeselect = () => {};
 
 const detailshow = (id: any) => {
 	router.push({ path: "/proTable/lnl-detailshow", query: { id, type1: route.query.type1 } });
 };
 
 //申请接口数据
-const apireturndataback = async () => {
-	const params = { ...apiParams, ...route.query };
+const apiParams = reactive<PlaceMore>({
+	type1: 0,
+	type2: 0,
+	order: 1,
+	name: "",
+	city: "成都",
+	page: 1,
+	limit: 8
+});
+const apireturndataback = async (params: any) => {
 	const res = (await placeMore(params)) as any;
-	dataValue.data = res.data.records;
-	console.log(dataValue.data);
+	//current当前页数 ， pages一共有多少页数
+	infiniteValue.current = res.data.current;
+	infiniteValue.pages = res.data.pages;
+	dataValue.data1.push(...res.data.records);
+};
+//懒加载
+const load = async () => {
+	if (infiniteValue.current < infiniteValue.pages) {
+		const params = { ...apiParams, ...route.query, page: apiParams.page++ };
+		await apireturndataback(params);
+	} else return;
 };
 
-onMounted(() => {
-	apireturndataback();
-});
+onMounted(() => {});
 </script>
 
 <style scoped lang="scss">

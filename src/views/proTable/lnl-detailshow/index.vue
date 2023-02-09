@@ -73,7 +73,7 @@
 					</div>
 					<el-button type="primary" round :icon="ChatLineRound" @click="dialogVisible = true">评论</el-button>
 				</div>
-				<div class="comment" v-for="item in dataValue.commentData" :key="item.id">
+				<div class="comment" v-infinite-scroll="load" v-for="item in dataValue.commentData" :key="item.id">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
 							<img :src="getIcon('http://3d254f0e.r5.cpolar.top/img/user/' + item.userImg)" alt="" />
@@ -106,10 +106,29 @@
 						</div>
 					</div>
 				</div>
+				<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
+				<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
 			</div>
 		</div>
-		<el-dialog align-center draggable v-model="dialogVisible" title="评论" width="30%">
-			<el-input v-model="textarea" :rows="2" type="textarea" placeholder="Please input" />
+		<el-dialog align-center draggable v-model="dialogVisible" title="评论" width="40%">
+			<el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
+				<el-form-item label="点击评分" prop="pass">
+					<el-rate v-model="ruleForm.score" />
+				</el-form-item>
+				<el-form-item label="发送评论" prop="checkPass">
+					<el-input v-model="ruleForm.inputvalue" :rows="2" type="textarea" placeholder="Please input" />
+				</el-form-item>
+				<el-form-item label="发送图片" prop="age">
+					<el-upload
+						v-model:file-list="ruleForm.fileList"
+						action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
+						list-type="picture-card"
+						:on-remove="handleRemove"
+					>
+						<el-icon><Plus /></el-icon>
+					</el-upload>
+				</el-form-item>
+			</el-form>
 			<template #footer>
 				<span class="dialog-footer">
 					<el-button @click="giveAComment(false)">取消</el-button>
@@ -127,43 +146,35 @@ import { useRoute } from "vue-router";
 import { ElNotification } from "element-plus";
 import { getTimeState } from "@/utils/util";
 import { placeDetails, commentList, likeAdd, likesDelete } from "@/api/modules/lnl-paly";
+import type { UploadProps, UploadUserFile } from "element-plus";
 
 const dialogVisible = ref(false);
-const textarea = ref("");
 const route = useRoute();
 
-const dataValue = reactive({
-	data: {
-		id: 0,
-		name: "",
-		score: 0,
-		position: "",
-		phone: "",
-		information: "",
-		number: "",
-		placePictures: [],
-		city: ""
-	},
-	commentData: [
+const ruleForm = reactive<{
+	score: number;
+	inputvalue: string;
+	fileList: UploadUserFile[];
+}>({
+	score: 0,
+	inputvalue: "",
+	fileList: [
 		{
-			comment: "",
-			id: 0,
-			likes: 0,
-			myLike: false,
-			pictures: [],
-			pid: 0,
-			score: 0,
-			time: "",
-			uid: 1,
-			userImg: "",
-			username: ""
+			name: "food.jpeg",
+			url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
 		}
 	]
 });
 
-const getIcon = (name: string) => {
-	return new URL(name, import.meta.url).href;
+const rules = reactive({
+	score: [{ require: true, trigger: "blur" }],
+	inputvalue: [{ require: true, trigger: "blur" }],
+	age: [{ require: true, trigger: "blur" }]
+});
+const handleRemove: UploadProps["onRemove"] = (uploadFile, uploadFiles) => {
+	console.log(uploadFile, uploadFiles);
 };
+
 const comment = reactive([
 	{
 		id: 2,
@@ -269,27 +280,94 @@ const comment = reactive([
 		myLike: false
 	}
 ]);
+
+//处理图片
+const getIcon = (name: string) => {
+	return new URL(name, import.meta.url).href;
+};
+
+//返回的数据
+const dataValue = reactive<{ data: any; commentData: any }>({
+	data: {
+		id: 0,
+		name: "",
+		score: 0,
+		position: "",
+		phone: "",
+		information: "",
+		number: "",
+		placePictures: [],
+		city: ""
+	},
+	commentData: []
+});
 //申请展示接口数据
 const apireturndata = async () => {
 	const res = await placeDetails({ id: route.query.id });
 	dataValue.data = res.data as any;
 };
-//申请评论数据
-const getCommentValue = async () => {
-	const params = {
-		pid: 1,
-		order: 1,
-		page: 1,
-		limit: 5
-	};
 
-	const res = await commentList(params);
-	dataValue.commentData = (res.data as any).records;
-	console.log(dataValue.commentData);
+const params = {
+	pid: 1,
+	order: 1,
+	page: 1,
+	limit: 3
 };
+//申请评论数据
+const getCommentValue = async (params: any) => {
+	const res = (await commentList(params)) as any;
+	infiniteValue.current = res.data.current;
+	infiniteValue.pages = res.data.pages;
+	dataValue.commentData.push(...(res.data as any).records);
+	// console.log(dataValue.commentData, "加载回来的数据");
+	// console.log(infiniteValue);
+};
+
+const infiniteValue = reactive({
+	current: 0,
+	pages: 1
+});
+//懒加载
+const load = async () => {
+	//做个节流
+
+	setTimeout(async () => {
+		if (infiniteValue.current < infiniteValue.pages) {
+			console.log(infiniteValue, "我是懒加载");
+			const params1 = {
+				...params,
+				page: infiniteValue.pages
+			};
+			await getCommentValue(params1);
+		} else return;
+	}, 1500);
+};
+
+// function throttle(fn: any, delay: any) {
+// 	// 设置一个触发开关
+// 	let canUse = true;
+// 	return function () {
+// 		//如果为true，就触发技能，否则就不能触发
+// 		if (canUse) {
+// 			//触发技能后，关闭开关
+// 			canUse = false;
+// 			//在3秒后打开开关
+// 			setTimeout(() => (canUse = true), delay);
+// 		}
+// 	};
+// }
+
 //用户点赞or取消点赞评论
 const LikeAdd = async (flag: string, commentId: any) => {
 	if (flag === "truntrue") {
+		dataValue.commentData.map(item => {
+			if (item.id === commentId) {
+				item.myLike = true;
+				item.likes++;
+			}
+			return item;
+		});
+
 		await likeAdd({ commentId });
 		ElNotification({
 			title: getTimeState(),
@@ -298,6 +376,13 @@ const LikeAdd = async (flag: string, commentId: any) => {
 			duration: 3000
 		});
 	} else {
+		dataValue.commentData.map(item => {
+			if (item.id === commentId) {
+				item.myLike = false;
+				item.likes--;
+			}
+			return item;
+		});
 		await likesDelete({ commentId });
 		ElNotification({
 			title: getTimeState(),
@@ -311,14 +396,15 @@ const LikeAdd = async (flag: string, commentId: any) => {
 //评论
 const giveAComment = (flag: any) => {
 	if (flag) {
-		console.log(textarea.value);
+		console.log(ruleForm.fileList);
 	}
-	textarea.value = "";
+	ruleForm.inputvalue = "";
+	ruleForm.score = 0;
 	dialogVisible.value = false;
 };
 onMounted(() => {
 	apireturndata();
-	getCommentValue();
+	getCommentValue(params);
 });
 </script>
 

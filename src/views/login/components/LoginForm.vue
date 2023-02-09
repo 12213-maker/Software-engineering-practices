@@ -41,7 +41,6 @@ import { HOME_URL } from "@/config/config";
 import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { Key, UserFilled } from "@element-plus/icons-vue";
 import type { ElForm } from "element-plus";
-// import md5 from "js-md5";
 import register from "./register.vue";
 
 const router = useRouter();
@@ -68,6 +67,7 @@ const login = (formEl: FormInstance | undefined) => {
 		try {
 			// 1.执行登录接口
 			const { code, data } = await loginApi({ ...loginForm });
+			console.log(await loginApi({ ...loginForm }));
 
 			if (Number(code) === 200) {
 				globalStore.setToken(data.token);
@@ -78,8 +78,6 @@ const login = (formEl: FormInstance | undefined) => {
 				// // 3.清空 tabs、keepAlive 保留的数据
 				tabsStore.closeMultipleTab();
 				keepAlive.setKeepAliveName();
-
-				console.log(Number(code));
 				// 4.跳转到首页
 				router.push(HOME_URL);
 				ElNotification({
