@@ -1,7 +1,7 @@
 <template>
 	<el-dropdown trigger="click">
 		<div class="avatar">
-			<img src="@/assets/images/avatar.gif" alt="avatar" />
+			<img :src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + userinfo.img)" alt="avatar" />
 		</div>
 		<template #dropdown>
 			<el-dropdown-menu>
@@ -27,7 +27,7 @@
 import { ref } from "vue";
 import { GlobalStore } from "@/stores";
 import { LOGIN_URL } from "@/config/config";
-// import { logoutApi } from "@/api/modules/login";
+import { logoutApi } from "@/api/modules/lnl-paly";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElMessage } from "element-plus";
 import InfoDialog from "./InfoDialog.vue";
@@ -35,6 +35,12 @@ import PasswordDialog from "./PasswordDialog.vue";
 
 const router = useRouter();
 const globalStore = GlobalStore();
+const userinfo = globalStore.userInformation;
+
+//处理图片
+const getIcon = (name: string) => {
+	return new URL(name, import.meta.url).href;
+};
 
 // 退出登录
 const logout = () => {
@@ -44,7 +50,7 @@ const logout = () => {
 		type: "warning"
 	}).then(async () => {
 		// 1.调用退出登录接口
-		// await logoutApi();
+		await logoutApi({});
 		// 2.清除 Token
 		globalStore.setToken("");
 		// 3.重定向到登陆页

@@ -14,6 +14,7 @@ export const GlobalStore = defineStore({
 		token: "",
 		// userInfo
 		userInfo: "",
+		userInformation: {},
 		// element组件大小
 		assemblySize: "default",
 		// language
@@ -51,6 +52,10 @@ export const GlobalStore = defineStore({
 		// setToken
 		setToken(token: string) {
 			this.token = token;
+		},
+		//setuserinformation
+		setUserInformation(userInfo: any) {
+			this.userInformation = userInfo;
 		},
 		// setUserInfo
 		setUserInfo(userInfo: any) {

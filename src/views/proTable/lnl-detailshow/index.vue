@@ -4,7 +4,7 @@
 			<div class="container">
 				<el-carousel class="carousel">
 					<el-carousel-item class="carouselItem" v-for="picture in dataValue.data.placePictures" :key="picture">
-						<img :src="getIcon('http://3d254f0e.r5.cpolar.top/img/place/' + picture)" alt="" />
+						<img :src="getIcon('https://d1fbc97.r7.cpolar.top/img/place/' + picture)" alt="" />
 					</el-carousel-item>
 				</el-carousel>
 				<div class="describe">
@@ -76,7 +76,7 @@
 				<div class="comment" v-infinite-scroll="load" v-for="item in dataValue.commentData" :key="item.id">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
-							<img :src="getIcon('http://3d254f0e.r5.cpolar.top/img/user/' + item.userImg)" alt="" />
+							<img :src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + item.userImg)" alt="" />
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.username }}</span>
@@ -91,7 +91,7 @@
 							v-for="picture in item.pictures"
 							class="image"
 							:key="picture"
-							:src="getIcon('http://3d254f0e.r5.cpolar.top/img/comment/' + picture)"
+							:src="getIcon('https://d1fbc97.r7.cpolar.top/img/comment/' + picture)"
 							alt=""
 						/>
 					</div>
@@ -329,38 +329,20 @@ const infiniteValue = reactive({
 });
 //懒加载
 const load = async () => {
-	//做个节流
-
-	setTimeout(async () => {
-		if (infiniteValue.current < infiniteValue.pages) {
-			console.log(infiniteValue, "我是懒加载");
-			const params1 = {
-				...params,
-				page: infiniteValue.pages
-			};
-			await getCommentValue(params1);
-		} else return;
-	}, 1500);
+	if (infiniteValue.current < infiniteValue.pages) {
+		console.log(infiniteValue, "我是懒加载");
+		const params1 = {
+			...params,
+			page: infiniteValue.pages
+		};
+		await getCommentValue(params1);
+	} else return;
 };
-
-// function throttle(fn: any, delay: any) {
-// 	// 设置一个触发开关
-// 	let canUse = true;
-// 	return function () {
-// 		//如果为true，就触发技能，否则就不能触发
-// 		if (canUse) {
-// 			//触发技能后，关闭开关
-// 			canUse = false;
-// 			//在3秒后打开开关
-// 			setTimeout(() => (canUse = true), delay);
-// 		}
-// 	};
-// }
 
 //用户点赞or取消点赞评论
 const LikeAdd = async (flag: string, commentId: any) => {
 	if (flag === "truntrue") {
-		dataValue.commentData.map(item => {
+		dataValue.commentData.map((item: any) => {
 			if (item.id === commentId) {
 				item.myLike = true;
 				item.likes++;
@@ -376,7 +358,7 @@ const LikeAdd = async (flag: string, commentId: any) => {
 			duration: 3000
 		});
 	} else {
-		dataValue.commentData.map(item => {
+		dataValue.commentData.map((item: any) => {
 			if (item.id === commentId) {
 				item.myLike = false;
 				item.likes--;
@@ -391,7 +373,7 @@ const LikeAdd = async (flag: string, commentId: any) => {
 			duration: 3000
 		});
 	}
-	getCommentValue();
+	getCommentValue(params);
 };
 //评论
 const giveAComment = (flag: any) => {

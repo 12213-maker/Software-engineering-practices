@@ -67,10 +67,11 @@ const login = (formEl: FormInstance | undefined) => {
 		try {
 			// 1.执行登录接口
 			const { code, data } = await loginApi({ ...loginForm });
-			console.log(await loginApi({ ...loginForm }));
 
 			if (Number(code) === 200) {
 				globalStore.setToken(data.token);
+				//保存用户信息
+				globalStore.setUserInformation(data.user);
 
 				// 2.添加动态路由
 				await initDynamicRouter();

@@ -16,7 +16,7 @@
 			<el-col @click="detailshow(item.id)" class="elCol" :span="6" v-for="item in dataValue.data1" :key="item">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="imgOuter">
-						<img :src="getIcon(`http://3d254f0e.r5.cpolar.top/img/place/${item.picture}`)" class="image" />
+						<img :src="getIcon(`https://d1fbc97.r7.cpolar.top/img/place/${item.picture}`)" class="image" />
 					</div>
 					<div style="padding: 14px">
 						<el-descriptions class="margin-top" :title="item.name" :column="1" size="small" border>

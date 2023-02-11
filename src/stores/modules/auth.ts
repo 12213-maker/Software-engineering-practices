@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { AuthState } from "@/stores/interface";
 import { getFlatArr } from "@/utils/util";
-import { getAuthButtonListApi, getAuthMenuListApi } from "@/api/modules/login";
+import { getAuthMenuListApi } from "@/api/modules/login";
 import { getShowMenuList, getAllBreadcrumbList } from "@/utils/util";
 
 // AuthStore
@@ -30,8 +30,8 @@ export const AuthStore = defineStore({
 	actions: {
 		// getAuthButtonList
 		async getAuthButtonList() {
-			const { data } = await getAuthButtonListApi();
-			this.authButtonList = data;
+			// const { data } = await getAuthButtonListApi();
+			// this.authButtonList = data;
 		},
 		// getAuthMenuList
 		async getAuthMenuList() {

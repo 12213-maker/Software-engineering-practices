@@ -34,3 +34,37 @@ export const likesDelete = (params: any) => {
 export const commentAdd = (params: any) => {
 	return http.post("/comment/add", params, { headers: { noLoading: true } });
 };
+
+//用户退出登录/user/logout
+export const logoutApi = (params: any) => {
+	return http.get("/user/logout", params, { headers: { noLoading: true } });
+};
+
+//用户查询个人信息/user/info
+export const getuserinfo = (params: any) => {
+	return http.get("/user/info", params, { headers: { noLoading: true } });
+};
+
+//用户修改基本信息/user/info
+export const putuserinfo = (params: any) => {
+	return http.put("/user/info", params, { headers: { noLoading: true } });
+};
+
+//修改密码user/password
+export const userPassword = (params: any) => {
+	return http.put("user/password", params, { headers: { noLoading: true } });
+};
+
+//修改头像user/uploadImg
+export const uploadImg = (params: any) => {
+	return http.post("/user/uploadImg", params, { headers: { noLoading: true } });
+};
+//我的举报/report
+export const report = (params: any) => {
+	return http.get("/report", params, { headers: { noLoading: true } });
+};
+
+//我的留言/message
+export const message = (params: any) => {
+	return http.get("/message", params, { headers: { noLoading: true } });
+};

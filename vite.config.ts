@@ -37,33 +37,12 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 			cors: true,
 			proxy: {
 				"^/api2": {
-					target: "http://3d254f0e.r5.cpolar.top",
+					target: "https://d1fbc97.r7.cpolar.top",
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/api2/, "")
 				}
 			}
 		},
-		// server: {
-		// 	// 服务器主机名，如果允许外部访问，可设置为 "0.0.0.0"
-		// 	host: "0.0.0.0",
-		// 	port: viteEnv.VITE_PORT,
-		// 	open: viteEnv.VITE_OPEN,
-		// 	// cors: true,
-		// 	// 跨域代理配置
-		// 	proxy: {
-		// 		// "/api": {
-		// 		// 	target: "https://mock.mengxuegu.com/mock/629d727e6163854a32e8307e", // easymock
-		// 		// 	// target: "https://www.fastmock.site/mock/f81e8333c1a9276214bcdbc170d9e0a0", // fastmock
-		// 		// 	changeOrigin: true,
-		// 		// 	rewrite: path => path.replace(/^\/api/, "")
-		// 		// },
-		// 		"^/api2": {
-		// 			target: "http://3d254f0e.r5.cpolar.top",
-		// 			changeOrigin: true,
-		// 			rewrite: path => path.replace("api2", "")
-		// 		}
-		// 	}
-		// },
 		plugins: [
 			vue(),
 			createHtmlPlugin({
