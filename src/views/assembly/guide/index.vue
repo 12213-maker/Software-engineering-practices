@@ -6,31 +6,7 @@
 					<el-form ref="form" :model="FormValue.userinfo" :rules="rules" label-width="120px">
 						<div class="center">个人中心</div>
 
-						<!-- 个人资料 -->
-						<div class="avatar">
-							<el-upload action="https://d1fbc97.r7.cpolar.top/user/uploadImg" :on-success="changeAvatar" :headers="myHeaders">
-								<el-avatar
-									:size="80"
-									:src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + FormValue.userinfo.img)"
-								></el-avatar>
-							</el-upload>
-						</div>
-						<!-- <div class="avatar">
-							<el-upload
-								action="https://d1fbc97.r7.cpolar.top/user/uploadImg"
-								:show-file-list="false"
-								:on-success="handleUpImage"
-								:before-upload="beforeImageUpload"
-								list-type="picture"
-								accept="image/*"
-								:headers="myHeaders"
-							>
-								<el-avatar
-									:size="80"
-									:src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + FormValue.userinfo.img)"
-								></el-avatar>
-							</el-upload>
-						</div>
+						<!-- 第三个 -->
 						<div class="avatar">
 							<el-upload :on-change="change" :on-success="changeAvatar">
 								<el-avatar
@@ -38,7 +14,8 @@
 									:src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + FormValue.userinfo.img)"
 								></el-avatar>
 							</el-upload>
-						</div> -->
+						</div>
+
 						<el-form-item label="用户名" prop="username">
 							<el-input v-model="FormValue.userinfo.username"></el-input>
 						</el-form-item>
@@ -96,8 +73,8 @@
 								<el-table-column prop="score" label="Name" width="100" />
 								<el-table-column prop="comment" label="Address" /> </el-table
 						></el-tab-pane>
+						<div class="pagination"><el-pagination background layout="prev, pager, next" :total="50" /></div>
 					</el-tabs>
-					<div class="pagination"><el-pagination background layout="prev, pager, next" :total="50" /></div>
 				</el-col>
 			</el-row>
 		</div>
@@ -107,8 +84,8 @@
 <script setup lang="ts" name="userinfo">
 import { GlobalStore } from "@/stores";
 
-// uploadImg
-import { getuserinfo, putuserinfo, userPassword, report, message } from "@/api/modules/lnl-paly";
+// uploadImg,, report, message
+import { getuserinfo, putuserinfo, userPassword, report, message, uploadImg } from "@/api/modules/lnl-paly";
 import type { TabsPaneContext } from "element-plus";
 import { onMounted, reactive, ref } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
@@ -166,9 +143,16 @@ const tableData = [
 		comment: "No. 189, Grove St, Los Angeles"
 	}
 ];
-const myHeaders = {
-	"x-access-token": globalStore.token
-};
+// const fileList = ref<UploadUserFile[]>([
+// 	{
+// 		name: "food.jpeg",
+// 		url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+// 	}
+// ]);
+// const myHeaders = {
+// 	"x-access-token": globalStore.token
+// };
+
 const FormValue = reactive<{ userinfo: any }>({
 	userinfo: {}
 });
@@ -231,15 +215,19 @@ function save() {
 		ElMessage.success("修改成功");
 	});
 }
+
 //修改用户头像
 const changeAvatar = async () => {
 	await getuserInfo();
 	ElMessage.success("修改成功");
 };
-// const change = async (uploadFile: any) => {
-// 	console.log(uploadFile.raw);
-// 	await uploadImg({ file: uploadFile });
-// };
+const change = async (uploadFile: any) => {
+	let formdata = new FormData();
+	formdata.append("file", uploadFile.raw);
+	console.log(formdata, uploadFile);
+
+	await uploadImg(formdata);
+};
 // 重置
 async function reset() {
 	await getuserInfo();
