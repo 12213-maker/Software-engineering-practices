@@ -8,12 +8,22 @@
 
 						<!-- 个人资料 -->
 						<div class="avatar">
+							<el-upload action="https://d1fbc97.r7.cpolar.top/user/uploadImg" :on-success="changeAvatar" :headers="myHeaders">
+								<el-avatar
+									:size="80"
+									:src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + FormValue.userinfo.img)"
+								></el-avatar>
+							</el-upload>
+						</div>
+						<!-- <div class="avatar">
 							<el-upload
-								:limit="1"
-								class="avatar-uploader"
 								action="https://d1fbc97.r7.cpolar.top/user/uploadImg"
 								:show-file-list="false"
-								:on-success="changeAvatar"
+								:on-success="handleUpImage"
+								:before-upload="beforeImageUpload"
+								list-type="picture"
+								accept="image/*"
+								:headers="myHeaders"
 							>
 								<el-avatar
 									:size="80"
@@ -21,6 +31,14 @@
 								></el-avatar>
 							</el-upload>
 						</div>
+						<div class="avatar">
+							<el-upload :on-change="change" :on-success="changeAvatar">
+								<el-avatar
+									:size="80"
+									:src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + FormValue.userinfo.img)"
+								></el-avatar>
+							</el-upload>
+						</div> -->
 						<el-form-item label="用户名" prop="username">
 							<el-input v-model="FormValue.userinfo.username"></el-input>
 						</el-form-item>
@@ -78,8 +96,8 @@
 								<el-table-column prop="score" label="Name" width="100" />
 								<el-table-column prop="comment" label="Address" /> </el-table
 						></el-tab-pane>
-						<div class="pagination"><el-pagination background layout="prev, pager, next" :total="50" /></div>
 					</el-tabs>
+					<div class="pagination"><el-pagination background layout="prev, pager, next" :total="50" /></div>
 				</el-col>
 			</el-row>
 		</div>
@@ -88,12 +106,14 @@
 
 <script setup lang="ts" name="userinfo">
 import { GlobalStore } from "@/stores";
-// uploadImg,, report, message
+
+// uploadImg
 import { getuserinfo, putuserinfo, userPassword, report, message } from "@/api/modules/lnl-paly";
 import type { TabsPaneContext } from "element-plus";
 import { onMounted, reactive, ref } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 
+const globalStore = GlobalStore();
 const tableData = [
 	{
 		time: "2016-05-03",
@@ -146,12 +166,13 @@ const tableData = [
 		comment: "No. 189, Grove St, Los Angeles"
 	}
 ];
-
+const myHeaders = {
+	"x-access-token": globalStore.token
+};
 const FormValue = reactive<{ userinfo: any }>({
 	userinfo: {}
 });
 const activeName = ref("first");
-const globalStore = GlobalStore();
 FormValue.userinfo = globalStore.userInformation;
 const reportValue = reactive({
 	data: []
@@ -188,11 +209,11 @@ const handleClick = async (tab: TabsPaneContext, event: Event) => {
 	if (tab.props.label === "我的举报") {
 		const { data } = await report({});
 		reportValue.data = (data as any).records;
-		console.log(reportValue.data);
+		// console.log(reportValue.data);
 	} else {
 		const { data } = await message({});
 		messageValue.data = (data as any).records;
-		console.log(messageValue.data);
+		// console.log(messageValue.data);
 	}
 	console.log(tab.props.label, event);
 };
@@ -203,7 +224,7 @@ function save() {
 		type: "warning"
 	}).then(async () => {
 		const { username, sex, phone, birthday, description, password } = FormValue.userinfo;
-		console.log({ username, sex, phone, birthday, description });
+		// console.log({ username, sex, phone, birthday, description });
 		await userPassword({ password });
 		await putuserinfo({ username, sex, phone, birthday, description });
 		await getuserInfo();
@@ -215,6 +236,10 @@ const changeAvatar = async () => {
 	await getuserInfo();
 	ElMessage.success("修改成功");
 };
+// const change = async (uploadFile: any) => {
+// 	console.log(uploadFile.raw);
+// 	await uploadImg({ file: uploadFile });
+// };
 // 重置
 async function reset() {
 	await getuserInfo();
