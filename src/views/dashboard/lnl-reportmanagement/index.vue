@@ -15,7 +15,7 @@
 				<el-button type="primary" :icon="Upload" plain @click="batchAdd" v-auth="'batchAdd'">批量添加用户</el-button>
 				<el-button type="primary" :icon="Download" plain @click="downloadFile" v-auth="'export'">导出用户数据</el-button>
 				<el-button type="danger" :icon="Delete" plain @click="batchDelete(scope.selectedListIds)" :disabled="!scope.isSelected">
-					批量删除用户
+					批量删除用户111
 				</el-button>
 			</template>
 			<!-- usernameHeader -->

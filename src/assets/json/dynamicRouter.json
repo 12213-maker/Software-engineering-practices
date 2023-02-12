@@ -220,6 +220,20 @@
 						"isAffix": false,
 						"isKeepAlive": true
 					}
+				},
+				{
+					"path": "/management/reportmanagement",
+					"name": "reportmanagement",
+					"component": "/dashboard/lnl-reportmanagement/index",
+					"meta": {
+						"icon": "UserFilled",
+						"title": "举报管理",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
 				}
 			]
 		}

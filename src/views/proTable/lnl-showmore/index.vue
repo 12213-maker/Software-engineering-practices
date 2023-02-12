@@ -16,7 +16,7 @@
 			<el-col @click="detailshow(item.id)" class="elCol" :span="6" v-for="item in dataValue.data1" :key="item">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="imgOuter">
-						<img :src="getIcon(`https://d1fbc97.r7.cpolar.top/img/place/${item.picture}`)" class="image" />
+						<img :src="getIcon(`https://8c93136.r6.cpolar.top/img/place/${item.picture}`)" class="image" />
 					</div>
 					<div style="padding: 14px">
 						<el-descriptions class="margin-top" :title="item.name" :column="1" size="small" border>
@@ -55,7 +55,9 @@
 										地址
 									</div>
 								</template>
-								{{ item.position }}
+								<el-tooltip popper-class="tool-tip" effect="dark" :content="item.position" placement="top">
+									<div class="posiclass">{{ item.position }}</div>
+								</el-tooltip>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template #label>
@@ -66,7 +68,9 @@
 										介绍
 									</div>
 								</template>
-								{{ item.information }}
+								<el-tooltip popper-class="tool-tip" effect="dark" :content="item.information" placement="top">
+									<div class="infoclass">{{ item.information }}</div>
+								</el-tooltip>
 							</el-descriptions-item>
 						</el-descriptions>
 					</div>
@@ -216,6 +220,14 @@ onMounted(() => {});
 			position: relative;
 			top: -4px;
 		}
+		.posiclass {
+			height: 50px;
+			overflow: hidden;
+		}
+		.infoclass {
+			height: 160px;
+			overflow: hidden;
+		}
 	}
 	.el-row {
 		margin-bottom: 20px;
@@ -285,5 +297,10 @@ onMounted(() => {});
 			}
 		}
 	}
+}
+</style>
+<style>
+.tool-tip {
+	max-width: 350px;
 }
 </style>

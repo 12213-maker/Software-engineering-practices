@@ -1,14 +1,14 @@
 <template>
 	<el-dropdown trigger="click">
 		<div class="avatar">
-			<img :src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + userinfo.img)" alt="avatar" />
+			<img :src="getIcon('https://8c93136.r6.cpolar.top/img/user/' + userinfo.img)" alt="avatar" />
 		</div>
 		<template #dropdown>
 			<el-dropdown-menu>
-				<el-dropdown-item @click="openDialog('infoRef')">
+				<el-dropdown-item @click="changerouter()">
 					<el-icon><User /></el-icon>{{ $t("header.personalData") }}
 				</el-dropdown-item>
-				<el-dropdown-item @click="openDialog('passwordRef')">
+				<el-dropdown-item @click="changerouter()">
 					<el-icon><Edit /></el-icon>{{ $t("header.changePassword") }}
 				</el-dropdown-item>
 				<el-dropdown-item @click="logout" divided>
@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { GlobalStore } from "@/stores";
 import { LOGIN_URL } from "@/config/config";
 import { logoutApi } from "@/api/modules/lnl-paly";
@@ -33,9 +33,9 @@ import { ElMessageBox, ElMessage } from "element-plus";
 import InfoDialog from "./InfoDialog.vue";
 import PasswordDialog from "./PasswordDialog.vue";
 
-const router = useRouter();
 const globalStore = GlobalStore();
 const userinfo = globalStore.userInformation;
+const router = useRouter();
 
 //处理图片
 const getIcon = (name: string) => {
@@ -64,11 +64,22 @@ interface DialogExpose {
 }
 const infoRef = ref<null | DialogExpose>(null);
 const passwordRef = ref<null | DialogExpose>(null);
-// 打开修改密码和个人信息弹窗
-const openDialog = (refName: string) => {
-	if (refName == "infoRef") infoRef.value?.openDialog();
-	else passwordRef.value?.openDialog();
+const changerouter = () => {
+	router.push("/assembly/guide");
 };
+
+const getProjectList = computed(() => {
+	return globalStore.userInformation;
+});
+watch(
+	getProjectList,
+	(newValue: any, oldValue: any) => {
+		// console.log("===================>监听到了", newValue, oldValue);
+
+		return { newValue, oldValue };
+	},
+	{ immediate: true, deep: true }
+);
 </script>
 
 <style scoped lang="scss">

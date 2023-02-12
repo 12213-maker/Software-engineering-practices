@@ -27,7 +27,7 @@ export const likeAdd = (params: any) => {
 
 //用户取消评论点赞 /likes/delete
 export const likesDelete = (params: any) => {
-	return http.delete("/likes/delete", params, { headers: { noLoading: true } });
+	return http.post("/likes/delete", params, { headers: { noLoading: true } });
 };
 
 //用户发表评论 /comment/add
@@ -61,10 +61,15 @@ export const uploadImg = (params: any) => {
 };
 //我的举报/report
 export const report = (params: any) => {
-	return http.get("/report", params, { headers: { noLoading: true } });
+	return http.get("/report/myReports", params, { headers: { noLoading: true } });
 };
 
 //我的留言/message
 export const message = (params: any) => {
-	return http.get("/message", params, { headers: { noLoading: true } });
+	return http.get("/message/myMessages", params, { headers: { noLoading: true } });
+};
+
+//管理员获取table列表/user/userInfo
+export const userUserInfo = (params: any) => {
+	return http.get("/user/userInfo", params, { headers: { noLoading: true } });
 };

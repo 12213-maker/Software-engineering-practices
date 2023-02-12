@@ -28,7 +28,7 @@
 		<el-table
 			ref="tableRef"
 			v-bind="$attrs"
-			:data="records"
+			:data="tabledata.data"
 			:border="border"
 			:row-key="getRowKeys"
 			@selection-change="selectionChange"
@@ -85,7 +85,7 @@
 </template>
 
 <script setup lang="ts" name="ProTable">
-import { ref, watch, provide } from "vue";
+import { ref, watch, provide, onMounted, reactive } from "vue";
 import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
@@ -128,353 +128,356 @@ const isShowSearch = ref(true);
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>();
 
-const records = [
-	{
-		id: 1,
-		username: "木子曰李",
-		password: 123456,
-		sex: 1,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 2,
-		username: "admin",
-		password: 123456,
-		sex: 2,
-		img: "default",
-		roleId: 2,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 3,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 4,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 5,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 6,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 7,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 8,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 9,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 10,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 11,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 12,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 13,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 14,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 15,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 16,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 17,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 18,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 19,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 20,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 21,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 22,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 23,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 24,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 25,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 26,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 27,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 28,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 29,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 30,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	},
-	{
-		id: 31,
-		username: "admin",
-		password: 123456,
-		sex: 0,
-		img: "default",
-		roleId: 1,
-		phone: 18888888888,
-		birthday: "1999-12-31",
-		description: "惠惠世界第一可爱"
-	}
-];
+// const records = [
+// 	{
+// 		id: 1,
+// 		username: "木子曰李",
+// 		password: 123456,
+// 		sex: 1,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 2,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 2,
+// 		img: "default",
+// 		roleId: 2,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 3,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 4,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 5,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 6,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 7,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 8,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 9,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 10,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 11,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 12,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 13,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 14,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 15,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 16,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 17,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 18,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 19,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 20,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 21,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 22,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 23,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 24,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 25,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 26,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 27,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 28,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 29,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 30,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	},
+// 	{
+// 		id: 31,
+// 		username: "admin",
+// 		password: 123456,
+// 		sex: 0,
+// 		img: "default",
+// 		roleId: 1,
+// 		phone: 18888888888,
+// 		birthday: "1999-12-31",
+// 		description: "惠惠世界第一可爱"
+// 	}
+// ];
 
 // 表格多选 Hooks
 const { selectionChange, getRowKeys, selectedList, selectedListIds, isSelected } = useSelection(props.selectId);
 
+const tabledata = reactive<{ data: Array<object> }>({
+	data: []
+});
 // 表格操作 Hooks
 const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
 	useTable(props.requestApi, props.initParam, props.pagination, props.dataCallback);
@@ -553,5 +556,10 @@ defineExpose({
 	isSelected,
 	selectedList,
 	selectedListIds
+});
+
+onMounted(async () => {
+	const { data } = await props.requestApi({});
+	tabledata.data.push(...(data as any).records);
 });
 </script>

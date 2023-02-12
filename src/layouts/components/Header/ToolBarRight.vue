@@ -18,8 +18,21 @@ import Language from "./components/Language.vue";
 // import AssemblySize from "./components/AssemblySize.vue";
 import Avatar from "./components/Avatar.vue";
 import { GlobalStore } from "@/stores";
+import { computed, ref, watch } from "vue";
 const globalStore = GlobalStore();
-const userinfo = globalStore.userInformation;
+const userinfo = ref();
+userinfo.value = globalStore.userInformation;
+
+const getProjectList = computed(() => {
+	return globalStore.userInformation;
+});
+watch(
+	getProjectList,
+	(newValue: any) => {
+		userinfo.value = newValue;
+	},
+	{ immediate: true, deep: true }
+);
 </script>
 
 <style scoped lang="scss">

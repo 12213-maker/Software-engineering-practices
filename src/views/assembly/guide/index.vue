@@ -2,16 +2,16 @@
 	<el-main v-loading="loading">
 		<div class="profile-wrapper" v-loading="loading">
 			<el-row :gutter="40">
-				<el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
+				<el-col :xs="24" :sm="24" :md="14" :lg="12" :xl="14">
 					<el-form ref="form" :model="FormValue.userinfo" :rules="rules" label-width="120px">
-						<div class="center">个人中心</div>
+						<!-- <div class="center">个人中心</div> -->
 
-						<!-- 第三个 -->
+						<!-- 头像 -->
 						<div class="avatar">
-							<el-upload :on-change="change" :on-success="changeAvatar">
+							<el-upload :on-change="change">
 								<el-avatar
 									:size="80"
-									:src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + FormValue.userinfo.img)"
+									:src="getIcon('https://8c93136.r6.cpolar.top/img/user/' + FormValue.userinfo.img)"
 								></el-avatar>
 							</el-upload>
 						</div>
@@ -54,26 +54,38 @@
 						</el-form-item>
 					</el-form>
 				</el-col>
-				<el-col class="hidden-sm-and-down" :md="8" :lg="10" :xl="8">
+				<el-col class="hidden-sm-and-down" :md="8" :lg="12" :xl="8">
 					<el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
 						<el-tab-pane label="我的举报" name="first">
-							<el-table :data="tableData" style="width: 100%">
-								<el-table-column prop="time" label="Date" width="105" />
-								<el-table-column prop="score" label="Score" width="130">
+							<el-table :data="reportValue.data" style="width: 100%" height="484" stripe>
+								<el-table-column prop="time" label="时间" width="165" />
+								<el-table-column prop="reason" label="举报原因" width="95">
 									<template #default="props">
-										<el-rate size="small" v-model="props.row.score" disabled allow-half score-template="{value} points" />
+										<el-tag v-if="props.row.reason === 1">垃圾广告</el-tag>
+										<el-tag v-else-if="props.row.reason === 2" type="success">有害信息</el-tag>
+										<el-tag v-else-if="props.row.reason === 3" type="info">网络暴力</el-tag>
+										<el-tag v-else-if="props.row.reason === 4" type="warning">人生攻击</el-tag>
+										<el-tag v-else-if="props.row.reason === 5" type="danger">不实信息</el-tag>
+										<el-tag v-else-if="props.row.reason === 6" type="info">刷屏</el-tag>
+										<el-tag v-else type="success">其它</el-tag>
 									</template>
 								</el-table-column>
-								<el-table-column prop="comment" label="Description" />
+
+								<el-table-column prop="description" label="详细理由" />
+								<el-table-column prop="status" label="状态" width="90">
+									<template #default="props">
+										<el-tag v-if="props.row.status === 1" type="warning">未处理</el-tag>
+										<el-tag v-else type="success">已处理</el-tag>
+									</template>
+								</el-table-column>
 							</el-table>
 						</el-tab-pane>
 						<el-tab-pane label="我的留言" name="second">
-							<el-table :data="tableData" style="width: 100%">
-								<el-table-column prop="time" label="Date" width="105" />
-								<el-table-column prop="score" label="Name" width="100" />
-								<el-table-column prop="comment" label="Address" /> </el-table
+							<el-table :data="messageValue.data" stripe style="width: 100%" height="484">
+								<el-table-column type="index" width="50" />
+								<el-table-column prop="time" label="时间" width="165" />
+								<el-table-column prop="content" label="留言信息" /> </el-table
 						></el-tab-pane>
-						<div class="pagination"><el-pagination background layout="prev, pager, next" :total="50" /></div>
 					</el-tabs>
 				</el-col>
 			</el-row>
@@ -83,75 +95,12 @@
 
 <script setup lang="ts" name="userinfo">
 import { GlobalStore } from "@/stores";
-
-// uploadImg,, report, message
 import { getuserinfo, putuserinfo, userPassword, report, message, uploadImg } from "@/api/modules/lnl-paly";
 import type { TabsPaneContext } from "element-plus";
 import { onMounted, reactive, ref } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 
 const globalStore = GlobalStore();
-const tableData = [
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	},
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	},
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	},
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	},
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	},
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	},
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	},
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	},
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	},
-	{
-		time: "2016-05-03",
-		score: 2,
-		comment: "No. 189, Grove St, Los Angeles"
-	}
-];
-// const fileList = ref<UploadUserFile[]>([
-// 	{
-// 		name: "food.jpeg",
-// 		url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-// 	}
-// ]);
-// const myHeaders = {
-// 	"x-access-token": globalStore.token
-// };
 
 const FormValue = reactive<{ userinfo: any }>({
 	userinfo: {}
@@ -174,16 +123,19 @@ const form = {
 	role: null,
 	desc: ""
 };
+//表单验证
+let checkPhone = (rule: any, value: any, callback: any) => {
+	let reg = /^1[345789]\d{9}$/;
+	if (!reg.test(value)) {
+		callback(new Error("请输入11位手机号"));
+	} else {
+		callback();
+	}
+};
 const rules = {
-	userName: [
-		{ required: true, message: "请输入用户名", trigger: "blur" },
-		{
-			min: 1,
-			max: 7,
-			message: "长度在 1 到 7 个字符",
-			trigger: "blur"
-		}
-	]
+	username: [{ min: 1, max: 20, message: "请输入1-20位用户名", trigger: "blur" }],
+	password: [{ min: 6, max: 16, message: "请输入6-16位密码", trigger: "blur" }],
+	phone: [{ validator: checkPhone, message: "请输入正确的手机号", trigger: "blur" }]
 };
 //处理图片
 const getIcon = (name: string) => {
@@ -191,12 +143,12 @@ const getIcon = (name: string) => {
 };
 const handleClick = async (tab: TabsPaneContext, event: Event) => {
 	if (tab.props.label === "我的举报") {
-		const { data } = await report({});
-		reportValue.data = (data as any).records;
-		// console.log(reportValue.data);
+		// const { data } = await report({});
+		// reportValue.data = (data as any).records;
+		console.log(reportValue.data);
 	} else {
-		const { data } = await message({});
-		messageValue.data = (data as any).records;
+		// const { data } = await message({});
+		// messageValue.data = (data as any).records;
 		// console.log(messageValue.data);
 	}
 	console.log(tab.props.label, event);
@@ -207,26 +159,28 @@ function save() {
 		cancelButtonText: "取消",
 		type: "warning"
 	}).then(async () => {
+		const { username: usernameorigin } = globalStore.userInformation;
+
 		const { username, sex, phone, birthday, description, password } = FormValue.userinfo;
-		// console.log({ username, sex, phone, birthday, description });
 		await userPassword({ password });
-		await putuserinfo({ username, sex, phone, birthday, description });
-		await getuserInfo();
+		if (username != usernameorigin) {
+			await putuserinfo({ username, sex, phone, birthday, description });
+		} else {
+			await putuserinfo({ sex, phone, birthday, description });
+		}
 		ElMessage.success("修改成功");
+		await getuserInfo();
+		const { data } = await getuserinfo({});
+		globalStore.setUserInformation(data);
 	});
 }
 
-//修改用户头像
-const changeAvatar = async () => {
-	await getuserInfo();
-	ElMessage.success("修改成功");
-};
 const change = async (uploadFile: any) => {
 	let formdata = new FormData();
 	formdata.append("file", uploadFile.raw);
-	console.log(formdata, uploadFile);
-
 	await uploadImg(formdata);
+	await getuserInfo();
+	ElMessage.success("修改成功");
 };
 // 重置
 async function reset() {
@@ -240,12 +194,15 @@ const getuserInfo = async () => {
 };
 onMounted(async () => {
 	getuserInfo();
+	const { data } = await message({});
+	messageValue.data = data as any;
+	const { data: data1 } = await report({});
+	reportValue.data = data1 as any;
 });
 </script>
 
 <style scoped lang="scss">
 .profile-wrapper {
-	padding: 10px 20px;
 	.el-divider--horizontal {
 		margin: 50px 0;
 	}
@@ -273,7 +230,7 @@ onMounted(async () => {
 	}
 }
 .el-main {
-	height: 82vh;
+	height: 84vh;
 	line-height: 0%;
 	color: #333333;
 	background-color: white;

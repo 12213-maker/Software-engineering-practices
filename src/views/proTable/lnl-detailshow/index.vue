@@ -4,7 +4,7 @@
 			<div class="container">
 				<el-carousel class="carousel">
 					<el-carousel-item class="carouselItem" v-for="picture in dataValue.data.placePictures" :key="picture">
-						<img :src="getIcon('https://d1fbc97.r7.cpolar.top/img/place/' + picture)" alt="" />
+						<img :src="getIcon('https://8c93136.r6.cpolar.top/img/place/' + picture)" alt="" />
 					</el-carousel-item>
 				</el-carousel>
 				<div class="describe">
@@ -58,9 +58,11 @@
 									介绍
 								</div>
 							</template>
-							<div class="information">
-								{{ dataValue.data.information }}
-							</div>
+							<el-tooltip popper-class="tool-tip" effect="dark" :content="dataValue.data.information" placement="top">
+								<div class="information">
+									{{ dataValue.data.information }}
+								</div>
+							</el-tooltip>
 						</el-descriptions-item>
 					</el-descriptions>
 				</div>
@@ -76,7 +78,7 @@
 				<div class="comment" v-infinite-scroll="load" v-for="item in dataValue.commentData" :key="item.id">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
-							<img :src="getIcon('https://d1fbc97.r7.cpolar.top/img/user/' + item.userImg)" alt="" />
+							<img :src="getIcon('https://8c93136.r6.cpolar.top/img/user/' + item.userImg)" alt="" />
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.username }}</span>
@@ -91,7 +93,7 @@
 							v-for="picture in item.pictures"
 							class="image"
 							:key="picture"
-							:src="getIcon('https://d1fbc97.r7.cpolar.top/img/comment/' + picture)"
+							:src="getIcon('https://8c93136.r6.cpolar.top/img/comment/' + picture)"
 							alt=""
 						/>
 					</div>
@@ -116,23 +118,18 @@
 					<el-rate v-model="ruleForm.score" />
 				</el-form-item>
 				<el-form-item label="发送评论" prop="checkPass">
-					<el-input v-model="ruleForm.inputvalue" :rows="2" type="textarea" placeholder="Please input" />
+					<el-input v-model="ruleForm.comment" :rows="2" type="textarea" placeholder="Please input" />
 				</el-form-item>
 				<el-form-item label="发送图片" prop="age">
-					<el-upload
-						v-model:file-list="ruleForm.fileList"
-						action="https://run.mocky.io/v3/9d059bf9-4660-45f2-925d-ce80ad6c4d15"
-						list-type="picture-card"
-						:on-remove="handleRemove"
-					>
+					<el-upload :on-change="change">
 						<el-icon><Plus /></el-icon>
 					</el-upload>
 				</el-form-item>
 			</el-form>
 			<template #footer>
 				<span class="dialog-footer">
-					<el-button @click="giveAComment(false)">取消</el-button>
-					<el-button type="primary" @click="giveAComment(true)"> 发送 </el-button>
+					<el-button @click="cancelgiveAComment()">取消</el-button>
+					<el-button type="primary" @click="giveAComment()"> 发送 </el-button>
 				</span>
 			</template>
 		</el-dialog>
@@ -143,21 +140,22 @@
 import { Star, StarFilled, Warning, ChatLineRound } from "@element-plus/icons-vue";
 import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
-import { ElNotification } from "element-plus";
+import { ElNotification, ElMessage } from "element-plus";
 import { getTimeState } from "@/utils/util";
-import { placeDetails, commentList, likeAdd, likesDelete } from "@/api/modules/lnl-paly";
-import type { UploadProps, UploadUserFile } from "element-plus";
+// commentAdd
+import { placeDetails, commentList, likeAdd, likesDelete, commentAdd } from "@/api/modules/lnl-paly";
+import type { UploadUserFile } from "element-plus";
 
 const dialogVisible = ref(false);
 const route = useRoute();
 
 const ruleForm = reactive<{
 	score: number;
-	inputvalue: string;
+	comment: string;
 	fileList: UploadUserFile[];
 }>({
 	score: 0,
-	inputvalue: "",
+	comment: "",
 	fileList: [
 		{
 			name: "food.jpeg",
@@ -165,15 +163,13 @@ const ruleForm = reactive<{
 		}
 	]
 });
+const givecommentFlag = ref(false);
 
 const rules = reactive({
 	score: [{ require: true, trigger: "blur" }],
-	inputvalue: [{ require: true, trigger: "blur" }],
+	comment: [{ require: true, trigger: "blur" }],
 	age: [{ require: true, trigger: "blur" }]
 });
-const handleRemove: UploadProps["onRemove"] = (uploadFile, uploadFiles) => {
-	console.log(uploadFile, uploadFiles);
-};
 
 const comment = reactive([
 	{
@@ -319,8 +315,6 @@ const getCommentValue = async (params: any) => {
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;
 	dataValue.commentData.push(...(res.data as any).records);
-	// console.log(dataValue.commentData, "加载回来的数据");
-	// console.log(infiniteValue);
 };
 
 const infiniteValue = reactive({
@@ -375,14 +369,39 @@ const LikeAdd = async (flag: string, commentId: any) => {
 	}
 	getCommentValue(params);
 };
+const change = async (uploadFile: any) => {
+	let formdata = new FormData();
+	formdata.append("file", uploadFile.raw);
+	const { pid } = params;
+	const { score, comment } = ruleForm;
+	console.log(pid, score, comment, formdata);
+	await commentAdd({ pid, score, comment, formdata });
+	givecommentFlag.value = true;
+};
 //评论
-const giveAComment = (flag: any) => {
-	if (flag) {
-		console.log(ruleForm.fileList);
+const giveAComment = async () => {
+	if (!givecommentFlag.value) {
+		const { pid } = params;
+		const { score, comment } = ruleForm;
+		console.log(pid, score, comment);
+		await commentAdd({ pid, score, comment });
 	}
-	ruleForm.inputvalue = "";
-	ruleForm.score = 0;
 	dialogVisible.value = false;
+	ruleForm.comment = "";
+	ruleForm.score = 0;
+	givecommentFlag.value = false;
+	const res = (await commentList(params)) as any;
+	infiniteValue.current = res.data.current;
+	infiniteValue.pages = res.data.pages;
+	dataValue.commentData = (res.data as any).records;
+	ElMessage.success("发送评论成功");
+};
+//取消评论
+const cancelgiveAComment = () => {
+	dialogVisible.value = false;
+	ruleForm.comment = "";
+	ruleForm.score = 0;
+	givecommentFlag.value = false;
 };
 onMounted(() => {
 	apireturndata();
@@ -523,5 +542,10 @@ onMounted(() => {
 			}
 		}
 	}
+}
+</style>
+<style>
+.tool-tip {
+	max-width: 350px;
 }
 </style>
