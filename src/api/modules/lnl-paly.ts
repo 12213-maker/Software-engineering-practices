@@ -73,3 +73,12 @@ export const message = (params: any) => {
 export const userUserInfo = (params: any) => {
 	return http.get("/user/userInfo", params, { headers: { noLoading: true } });
 };
+
+//管理员新增用户 /user/userInfo
+export const PostuserUserInfo = (params: any) => {
+	return http.post("/user/userInfo", params, { headers: { noLoading: true } });
+};
+//管理员修改用户信息/user/userInfo
+export const PutuserUserInfo = (params: any) => {
+	return http.put("/user/userInfo", params, { headers: { noLoading: true } });
+};
