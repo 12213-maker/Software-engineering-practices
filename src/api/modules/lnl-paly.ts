@@ -82,3 +82,8 @@ export const PostuserUserInfo = (params: any) => {
 export const PutuserUserInfo = (params: any) => {
 	return http.put("/user/userInfo", params, { headers: { noLoading: true } });
 };
+//管理员删除用户/user/delete/{id}
+
+export const DeleteuserUserInfo = (params: any) => {
+	return http.delete("/user/delete", params, { headers: { noLoading: true } });
+};

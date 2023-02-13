@@ -14,11 +14,17 @@
 				<el-date-picker v-model="form.birthday" type="date" placeholder="Pick a date" style="width: 100%" />
 			</el-col>
 		</el-form-item>
-		<el-form-item label="性别">
+		<el-form-item label="性别" prop="sex">
 			<el-radio-group v-model="form.sex">
 				<el-radio label="0">保密</el-radio>
 				<el-radio label="1">男</el-radio>
 				<el-radio label="2">女</el-radio>
+			</el-radio-group>
+		</el-form-item>
+		<el-form-item label="用户角色" prop="roleId">
+			<el-radio-group v-model="form.roleId">
+				<el-radio label="1">管理员</el-radio>
+				<el-radio label="2">普通用户</el-radio>
 			</el-radio-group>
 		</el-form-item>
 		<el-form-item label="个性简介">
@@ -32,7 +38,8 @@
 </template>
 
 <script lang="ts" setup>
-import { register } from "@/api/modules/login";
+// import { register } from "@/api/modules/login";
+import { PostuserUserInfo } from "@/api/modules/lnl-paly";
 import { ElNotification } from "element-plus";
 import { getTimeState } from "@/utils/util";
 import { reactive, ref } from "vue";
@@ -49,7 +56,8 @@ let form = reactive({
 	sex: "",
 	phone: "",
 	birthday: new Date(),
-	description: ""
+	description: "",
+	roleId: ""
 });
 
 //表单验证
@@ -64,14 +72,16 @@ let checkPhone = (rule: any, value: any, callback: any) => {
 const loginRules = reactive({
 	username: [{ required: true, min: 1, max: 20, message: "请输入1-20位用户名", trigger: "blur" }],
 	password: [{ required: true, min: 6, max: 16, message: "请输入6-16位密码", trigger: "blur" }],
-	phone: [{ required: true, validator: checkPhone, message: "请输入正确的手机号", trigger: "blur" }]
+	sex: [{ required: true, message: "请选择", trigger: "blur" }],
+	roleId: [{ required: true, message: "请选择", trigger: "change" }],
+	phone: [{ validator: checkPhone, message: "请输入正确的手机号", trigger: "change" }]
 });
 
 const onSubmit = async () => {
 	const valid = await loginFormRef2.value.validate();
 	if (valid) {
 		try {
-			const { code } = await register({ ...form, sex: Number(form.sex) });
+			const { code } = await PostuserUserInfo({ ...form, sex: Number(form.sex), roleId: Number(form.roleId) });
 			if (Number(code) === 200) {
 				ElNotification({
 					title: getTimeState(),

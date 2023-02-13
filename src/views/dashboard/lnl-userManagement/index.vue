@@ -20,7 +20,7 @@
 				<el-button type="primary" link :icon="Delete" @click="deleteAccount(scope.row)">删除</el-button>
 			</template>
 		</ProTable>
-		<UserDrawer ref="drawerRef" />
+		<UserDrawer ref="drawerRef" @refresh="refresh" />
 		<el-dialog :destroy-on-close="true" v-model="dialogVisible" title="新增用户" width="40%">
 			<Adduser @change_dialog_visible="changeDialogvisible" compname="usermanagement" />
 		</el-dialog>
@@ -29,28 +29,14 @@
 
 <script setup lang="tsx" name="useProTable">
 import { ref, reactive } from "vue";
-// import { ElMessageBox } from "element-plus";
 import { User } from "@/api/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
-// import { useHandleData } from "@/hooks/useHandleData";
-// import { useDownload } from "@/hooks/useDownload";
-// import { useAuthButtons } from "@/hooks/useAuthButtons";
 import ProTable from "@/components/ProTable/index.vue";
 import UserDrawer from "@/views/proTable/components/UserDrawer.vue";
 import { Delete, EditPen, Upload, View, Refresh } from "@element-plus/icons-vue";
-import {
-	// getUserList,
-	// deleteUser,
-	editUser,
-	addUser
-	// changeUserStatus,
-	// resetUserPassWord,
-	// exportUserInfo
-	// BatchAddUser
-	// getUserStatus
-} from "@/api/modules/user";
-import { userUserInfo } from "@/api/modules/lnl-paly";
+import { userUserInfo, PutuserUserInfo, DeleteuserUserInfo } from "@/api/modules/lnl-paly";
 import Adduser from "./components/Adduser.vue";
+import { ElMessage, ElMessageBox } from "element-plus";
 
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const proTable = ref();
@@ -60,8 +46,6 @@ const initParam = reactive({
 	type: 1
 });
 
-// dataCallback 是对于返回的表格数据做处理，如果你后台返回的数据不是 list && total && pageNum && pageSize 这些字段，那么你可以在这里进行处理成这些字段
-// 或者直接去 hooks/useTable.ts 文件中把字段改为你后端对应的就行
 const dataCallback = (data: any) => {
 	return {
 		list: data.list,
@@ -77,30 +61,11 @@ let dialogVisible = ref(false);
 const getTableList = (params: any) => {
 	let newParams = JSON.parse(JSON.stringify(params));
 	newParams.username && (newParams.username = "custom-" + newParams.username);
-	// return getUserList(newParams);
-	// return new Promise(() => 1);
-	return userUserInfo({});
+	return userUserInfo(params);
 };
 const changeDialogvisible = (value: any) => {
 	dialogVisible.value = value;
 };
-
-// 页面按钮权限（按钮权限既可以使用 hooks，也可以直接使用 v-auth 指令，指令适合直接绑定在按钮上，hooks 适合根据按钮权限显示不同的内容）
-// const { BUTTONS } = useAuthButtons();
-
-// 自定义渲染表头（使用tsx语法）columns
-// const headerRender = (row: ColumnProps) => {
-// 	return (
-// 		<el-button
-// 			type="primary"
-// 			onClick={() => {
-// 				ElMessage.success("我是通过 tsx 语法渲染的表头");
-// 			}}
-// 		>
-// 			{row.label}
-// 		</el-button>
-// 	);
-// };
 
 // 表格配置项
 const columns: ColumnProps[] = [
@@ -163,7 +128,6 @@ const columns: ColumnProps[] = [
 	{
 		prop: "birthday",
 		label: "生日",
-		// headerRender,
 		width: 180,
 		search: {
 			el: "date-picker",
@@ -174,65 +138,51 @@ const columns: ColumnProps[] = [
 	},
 	{ prop: "operation", label: "操作", fixed: "right", width: 330 }
 ];
-
-//添加用户
-// const clickAddUser = (scope: any) => {
-// 	console.log(scope);
-// };
+const refresh = () => {
+	proTable.value.getdataback();
+};
 
 // 删除用户信息
 const deleteAccount = async (params: User.ResUserList) => {
+	ElMessageBox.confirm(`是否删除用户${params.username}?`, "温馨提示", {
+		confirmButtonText: "确定",
+		cancelButtonText: "取消",
+		type: "warning",
+		draggable: true
+	}).then(async () => {
+		await DeleteuserUserInfo({ id: params.id });
+		proTable.value.getdataback();
+		ElMessage({
+			type: "success",
+			message: `删除成功!`
+		});
+	});
+
 	console.log(params);
 	// await useHandleData(deleteUser, { id: [params.id] }, `删除【${params.username}】用户`);
-	proTable.value.getTableList();
+	proTable.value.getdataback();
 };
 
 //处理图片
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;
 };
-
-// 批量删除用户信息
-// const batchDelete = async (id: string[]) => {
-// 	console.log(id);
-
-// 	// await useHandleData(deleteUser, { id }, "删除所选用户信息");
-// 	proTable.value.clearSelection();
-// 	proTable.value.getTableList();
-// };
-
 // 重置用户密码
 const resetPass = async (params: User.ResUserList) => {
-	console.log(params);
-
-	// await useHandleData(resetUserPassWord, { id: params.id }, `重置【${params.username}】用户密码`);
-	proTable.value.getTableList();
+	ElMessageBox.confirm(`是否重置用户${params.username}的密码?`, "温馨提示", {
+		confirmButtonText: "确定",
+		cancelButtonText: "取消",
+		type: "warning",
+		draggable: true
+	}).then(async () => {
+		await PutuserUserInfo({ password: 123456, id: params.id });
+		proTable.value.getdataback();
+		ElMessage({
+			type: "success",
+			message: `重置密码成功!`
+		});
+	});
 };
-
-// 切换用户状态
-// const changeStatus = async (row: User.ResUserList) => {
-// 	await useHandleData(changeUserStatus, { id: row.id, status: row.status == 1 ? 0 : 1 }, `切换【${row.username}】用户状态`);
-// 	proTable.value.getTableList();
-// };
-
-// 导出用户列表
-// const downloadFile = async () => {
-// 	ElMessageBox.confirm("确认导出用户数据?", "温馨提示", { type: "warning" }).then(() =>
-// 		useDownload(exportUserInfo, "用户列表", proTable.value.searchParam)
-// 	);
-// };
-
-// 批量添加用户
-// const dialogRef = ref();
-// const batchAdd = () => {
-// 	let params = {
-// 		title: "用户",
-// 		tempApi: exportUserInfo,
-// 		importApi: BatchAddUser,
-// 		getTableList: proTable.value.getTableList
-// 	};
-// 	dialogRef.value.acceptParams(params);
-// };
 
 // 打开 drawer(新增、查看、编辑)
 const drawerRef = ref();
@@ -241,8 +191,10 @@ const openDrawer = (title: string, rowData: Partial<User.ResUserList> = {}) => {
 		title,
 		rowData: { ...rowData },
 		isView: title === "查看",
-		api: title === "新增" ? addUser : title === "编辑" ? editUser : "",
-		getTableList: proTable.value.getTableList
+		//编辑用户
+		api: PutuserUserInfo,
+		getTableList: proTable.value.getTableList,
+		usernameOrigin: rowData.username
 	};
 	drawerRef.value.acceptParams(params);
 };

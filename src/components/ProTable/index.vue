@@ -1,5 +1,3 @@
-<!-- 📚📚📚 Pro-Table 文档: https://juejin.cn/post/7166068828202336263 -->
-
 <template>
 	<!-- 查询表单 card -->
 	<SearchForm
@@ -19,12 +17,13 @@
 				<slot name="tableHeader" :selectedListIds="selectedListIds" :selectedList="selectedList" :isSelected="isSelected"></slot>
 			</div>
 			<div class="header-button-ri" v-if="toolButton">
-				<el-button :icon="Refresh" circle @click="getTableList"> </el-button>
+				<!-- <el-button :icon="Refresh" circle @click="getTableList"> </el-button> -->
 				<el-button :icon="Operation" circle v-if="columns.length" @click="openColSetting"> </el-button>
 				<el-button :icon="Search" circle v-if="searchColumns.length" @click="isShowSearch = !isShowSearch"> </el-button>
 			</div>
 		</div>
 		<!-- 表格主体 -->
+		<!-- tabledata.slice((currentPage-1)*pageSize,currentPage*pageSize) -->
 		<el-table
 			ref="tableRef"
 			v-bind="$attrs"
@@ -72,11 +71,17 @@
 		</el-table>
 		<!-- 分页组件 -->
 		<slot name="pagination">
-			<Pagination
-				v-if="pagination"
-				:pageable="pageable"
-				:handleSizeChange="handleSizeChange"
-				:handleCurrentChange="handleCurrentChange"
+			<el-pagination
+				:current-page="params.pageNum"
+				:page-sizes="[1, 5, 10, 20]"
+				:page-size="params.pageSize"
+				layout="total, sizes, prev, pager, next, jumper"
+				:total="params.total"
+				background
+				@size-change="handleSizeChange2"
+				@current-change="handleCurrentChange2"
+				@prev-click="handlePrevChange2('pre')"
+				@next-click="handlePrevChange2('next')"
 			/>
 		</slot>
 	</div>
@@ -91,10 +96,9 @@ import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { ElTable, TableProps } from "element-plus";
-import { Refresh, Operation, Search } from "@element-plus/icons-vue";
+import { Operation, Search } from "@element-plus/icons-vue";
 import { handleProp } from "@/utils/util";
 import SearchForm from "@/components/SearchForm/index.vue";
-import Pagination from "./components/Pagination.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
 
@@ -122,355 +126,19 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
 
+// let currentPage = ref(1); // 当前页码
+// let pageSize = ref(5); // 每页的数据条数
+let params = reactive({
+	total: 0, //总页数
+	pageSize: 5, // 每页的数据条数
+	pageNum: 1 //当前的页数
+});
+
 // 是否显示搜索模块
 const isShowSearch = ref(true);
 
 // 表格 DOM 元素
 const tableRef = ref<InstanceType<typeof ElTable>>();
-
-// const records = [
-// 	{
-// 		id: 1,
-// 		username: "木子曰李",
-// 		password: 123456,
-// 		sex: 1,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 2,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 2,
-// 		img: "default",
-// 		roleId: 2,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 3,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 4,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 5,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 6,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 7,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 8,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 9,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 10,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 11,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 12,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 13,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 14,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 15,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 16,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 17,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 18,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 19,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 20,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 21,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 22,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 23,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 24,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 25,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 26,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 27,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 28,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 29,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 30,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	},
-// 	{
-// 		id: 31,
-// 		username: "admin",
-// 		password: 123456,
-// 		sex: 0,
-// 		img: "default",
-// 		roleId: 1,
-// 		phone: 18888888888,
-// 		birthday: "1999-12-31",
-// 		description: "惠惠世界第一可爱"
-// 	}
-// ];
 
 // 表格多选 Hooks
 const { selectionChange, getRowKeys, selectedList, selectedListIds, isSelected } = useSelection(props.selectId);
@@ -481,6 +149,7 @@ const tabledata = reactive<{ data: Array<object> }>({
 // 表格操作 Hooks
 const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
 	useTable(props.requestApi, props.initParam, props.pagination, props.dataCallback);
+console.log(handleSizeChange, handleCurrentChange);
 
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection();
@@ -543,6 +212,38 @@ const colSetting = tableColumns.value!.filter(item => {
 });
 const openColSetting = () => colRef.value.openColSetting();
 
+//请求数据
+const getdataback = async () => {
+	const { pageNum, pageSize } = params;
+	const { data } = await props.requestApi({ pageNum, pageSize });
+	tabledata.data = data.records;
+	params.total = data.total;
+	console.log(params);
+};
+
+//每页条数改变时触发 选择一页显示多少行
+const handleSizeChange2 = (val: any) => {
+	params.pageSize = val;
+	getdataback();
+};
+//当前页改变时触发 跳转其他页
+const handleCurrentChange2 = (val: any) => {
+	console.log("showme");
+
+	params.pageNum = val;
+	getdataback();
+};
+const handlePrevChange2 = (flag: string) => {
+	console.log("currentchange", flag);
+	if (flag === "pre") {
+		params.pageNum--;
+		getdataback();
+	} else {
+		params.pageNum++;
+		getdataback();
+	}
+};
+
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
 defineExpose({
 	element: tableRef,
@@ -552,6 +253,7 @@ defineExpose({
 	getTableList,
 	reset,
 	clearSelection,
+	getdataback,
 	enumMap,
 	isSelected,
 	selectedList,
@@ -559,7 +261,6 @@ defineExpose({
 });
 
 onMounted(async () => {
-	const { data } = await props.requestApi({});
-	tabledata.data.push(...(data as any).records);
+	await getdataback();
 });
 </script>

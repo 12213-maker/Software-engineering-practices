@@ -33,6 +33,7 @@ export const useTable = (
 		// 总参数(包含分页和查询参数)
 		totalParam: {}
 	});
+	console.log(initParam, dataCallBack);
 
 	/**
 	 * @description 分页查询参数(只包括分页和表格字段排序,其他排序方式可自行配置)
@@ -61,15 +62,16 @@ export const useTable = (
 	const getTableList = async () => {
 		try {
 			// 先把初始化参数和分页参数放到总参数里面
-			Object.assign(state.totalParam, initParam, isPageable ? pageParam.value : {});
-			let { data } = await api(state.totalParam);
-			dataCallBack && (data = dataCallBack(data));
-			state.tableData = await api({});
+			// Object.assign(state.totalParam, initParam, isPageable ? pageParam.value : {});
+			// let params = {};
+			// Object.assign(params, initParam, isPageable ? pageParam.value : {});
+			// let { data } = await api(state.totalParam);
+			// dataCallBack && (data = dataCallBack(data));
+			// state.tableData = await api(params);
 			// console.log(state.tableData);
-
-			// 解构后台返回的分页数据 (如果有分页更新分页信息)
-			const { pageNum, pageSize, total } = data;
-			isPageable && updatePageable({ pageNum, pageSize, total });
+			// // 解构后台返回的分页数据 (如果有分页更新分页信息)
+			// const { pageNum, pageSize, total } = data;
+			// isPageable && updatePageable({ pageNum, pageSize, total });
 		} catch (error) {
 			console.log(error);
 		}
@@ -98,9 +100,9 @@ export const useTable = (
 	 * @param {Object} resPageable 后台返回的分页数据
 	 * @return void
 	 * */
-	const updatePageable = (resPageable: Table.Pageable) => {
-		Object.assign(state.pageable, resPageable);
-	};
+	// const updatePageable = (resPageable: Table.Pageable) => {
+	// 	Object.assign(state.pageable, resPageable);
+	// };
 
 	/**
 	 * @description 表格数据查询
