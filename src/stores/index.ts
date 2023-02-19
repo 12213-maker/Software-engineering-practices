@@ -14,6 +14,7 @@ export const GlobalStore = defineStore({
 		token: "",
 		// userInfo
 		userInfo: "",
+		image: "",
 		userInformation: {},
 		// element组件大小
 		assemblySize: "default",
@@ -56,6 +57,9 @@ export const GlobalStore = defineStore({
 		//setuserinformation
 		setUserInformation(userInfo: any) {
 			this.userInformation = userInfo;
+		},
+		setImage(image2: any) {
+			this.image = image2;
 		},
 		// setUserInfo
 		setUserInfo(userInfo: any) {

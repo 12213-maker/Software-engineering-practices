@@ -4,7 +4,7 @@
 			<div class="container">
 				<el-carousel class="carousel">
 					<el-carousel-item class="carouselItem" v-for="picture in dataValue.data.placePictures" :key="picture">
-						<img :src="getIcon('https://8c93136.r6.cpolar.top/img/place/' + picture)" alt="" />
+						<img :src="getIcon('https://1573395f.r7.cpolar.top/img/place/' + picture)" alt="" />
 					</el-carousel-item>
 				</el-carousel>
 				<div class="describe">
@@ -70,7 +70,7 @@
 			<div class="bottom">
 				<div class="total">
 					<div>
-						<span style="padding-right: 50px">{{ `评论（${comment.length}）` }}</span>
+						<span style="padding-right: 50px">{{ `评论` }}</span>
 						<span>最新 | 热评</span>
 					</div>
 					<el-button type="primary" round :icon="ChatLineRound" @click="dialogVisible = true">评论</el-button>
@@ -78,7 +78,7 @@
 				<div class="comment" v-infinite-scroll="load" v-for="item in dataValue.commentData" :key="item.id">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
-							<img :src="getIcon('https://8c93136.r6.cpolar.top/img/user/' + item.userImg)" alt="" />
+							<img :src="getIcon('https://1573395f.r7.cpolar.top/img/user/' + item.userImg)" alt="" />
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.username }}</span>
@@ -93,7 +93,7 @@
 							v-for="picture in item.pictures"
 							class="image"
 							:key="picture"
-							:src="getIcon('https://8c93136.r6.cpolar.top/img/comment/' + picture)"
+							:src="getIcon('https://1573395f.r7.cpolar.top/img/comment/' + picture)"
 							alt=""
 						/>
 					</div>
@@ -109,7 +109,7 @@
 					</div>
 				</div>
 				<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
-				<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
+				<!-- <el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider> -->
 			</div>
 		</div>
 		<el-dialog align-center draggable v-model="dialogVisible" title="评论" width="40%">
@@ -121,7 +121,10 @@
 					<el-input v-model="ruleForm.comment" :rows="2" type="textarea" placeholder="Please input" />
 				</el-form-item>
 				<el-form-item label="发送图片" prop="age">
-					<el-upload :on-change="change">
+					<el-upload :before-upload="beforeAvatarUpload" :on-change="change" list-type="picture-card" :auto-upload="false">
+						<template #file="{ file }">
+							<img :src="file.url" />
+						</template>
 						<el-icon><Plus /></el-icon>
 					</el-upload>
 				</el-form-item>
@@ -164,118 +167,11 @@ const ruleForm = reactive<{
 	]
 });
 const givecommentFlag = ref(false);
-
 const rules = reactive({
 	score: [{ require: true, trigger: "blur" }],
 	comment: [{ require: true, trigger: "blur" }],
 	age: [{ require: true, trigger: "blur" }]
 });
-
-const comment = reactive([
-	{
-		id: 2,
-		pid: 1,
-		uid: 2,
-		score: 4,
-		comment:
-			"好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。好吃，家常菜味道好。v",
-		time: "2023-02-04 11:29:26",
-		likes: 225,
-		username: "木子曰李",
-		userImg: "default",
-		pictures: [
-			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
-			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
-			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
-		],
-		myLike: true
-	},
-	{
-		id: 3,
-		pid: 1,
-		uid: 2,
-		score: 4.5,
-		comment: "好吃，家常菜味道好。",
-		time: "2023-02-04 11:29:26",
-		likes: 0,
-		username: "cjw",
-		userImg: "default",
-		pictures: [
-			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
-			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
-			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
-		],
-		myLike: false
-	},
-	{
-		id: 4,
-		pid: 1,
-		uid: 2,
-		score: 4,
-		comment: "好吃，家常菜味道好。",
-		time: "2023-02-04 11:29:26",
-		likes: 0,
-		username: "cjw",
-		userImg: "default",
-		pictures: [
-			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
-			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
-			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
-		],
-		myLike: false
-	},
-	{
-		id: 5,
-		pid: 1,
-		uid: 2,
-		score: 4,
-		comment: "好吃，家常菜味道好。",
-		time: "2023-02-04 11:29:26",
-		likes: 0,
-		username: "cjw",
-		userImg: "default",
-		pictures: [
-			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
-			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
-			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
-		],
-		myLike: false
-	},
-	{
-		id: 6,
-		pid: 1,
-		uid: 2,
-		score: 4,
-		comment: "好吃，家常菜味道好。",
-		time: "2023-02-04 11:29:26",
-		likes: 0,
-		username: "cjw",
-		userImg: "default",
-		pictures: [
-			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
-			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
-			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
-		],
-		myLike: false
-	},
-	{
-		id: 7,
-		pid: 1,
-		uid: 2,
-		score: 4,
-		comment: "好吃，家常菜味道好。",
-		time: "2023-02-04 11:29:26",
-		likes: 0,
-		username: "cjw",
-		userImg: "default",
-		pictures: [
-			"../../../assets/lnl_images/23151340944_3865x2899.jpg",
-			"../../../assets/lnl_images/a044ad345982b2b757b0ee3b37adcbef76099b26.jpg",
-			"../../../assets/lnl_images/bba1cd11728b4710b91288b6ad82d4fdfc039245853f.jpg"
-		],
-		myLike: false
-	}
-]);
 
 //处理图片
 const getIcon = (name: string) => {
@@ -307,7 +203,7 @@ const params = {
 	pid: 1,
 	order: 1,
 	page: 1,
-	limit: 3
+	limit: 6
 };
 //申请评论数据
 const getCommentValue = async (params: any) => {
@@ -323,16 +219,15 @@ const infiniteValue = reactive({
 });
 //懒加载
 const load = async () => {
-	if (infiniteValue.current < infiniteValue.pages) {
-		console.log(infiniteValue, "我是懒加载");
-		const params1 = {
-			...params,
-			page: infiniteValue.pages
-		};
-		await getCommentValue(params1);
-	} else return;
+	// if (infiniteValue.current < infiniteValue.pages) {
+	// 	console.log(infiniteValue, "我是懒加载");
+	// 	const params1 = {
+	// 		...params,
+	// 		page: infiniteValue.pages
+	// 	};
+	// 	await getCommentValue(params1);
+	// } else return;
 };
-
 //用户点赞or取消点赞评论
 const LikeAdd = async (flag: string, commentId: any) => {
 	if (flag === "truntrue") {
@@ -369,33 +264,46 @@ const LikeAdd = async (flag: string, commentId: any) => {
 	}
 	getCommentValue(params);
 };
-const change = async (uploadFile: any) => {
-	let formdata = new FormData();
-	formdata.append("file", uploadFile.raw);
-	const { pid } = params;
-	const { score, comment } = ruleForm;
-	console.log(pid, score, comment, formdata);
-	await commentAdd({ pid, score, comment, formdata });
-	givecommentFlag.value = true;
+
+const imageUrl = reactive<Array<any>>([]);
+const beforeAvatarUpload = (file: any) => {
+	console.log(file);
+	// 使图片显示
+	imageUrl.push(URL.createObjectURL(file));
+	return false;
 };
+const UploadFiles = reactive<Array<any>>([]);
+
+const change = async (uploadFile: any) => {
+	UploadFiles.push(uploadFile.url);
+};
+
 //评论
 const giveAComment = async () => {
-	if (!givecommentFlag.value) {
-		const { pid } = params;
-		const { score, comment } = ruleForm;
-		console.log(pid, score, comment);
-		await commentAdd({ pid, score, comment });
+	let formdata = new FormData();
+	// formdata.append("file", UploadFiles.url);
+	UploadFiles.forEach((item: any) => {
+		formdata.append("file", item);
+	});
+	// console.log(formdata, formdata.getAll("file"));
+
+	const { score, comment } = ruleForm;
+	if (score + "" == "" || comment == "") {
+		return;
 	}
+	const { pid } = params;
+	await commentAdd({ pid, score, comment, files: formdata.getAll("file") });
 	dialogVisible.value = false;
 	ruleForm.comment = "";
 	ruleForm.score = 0;
-	givecommentFlag.value = false;
+
 	const res = (await commentList(params)) as any;
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;
 	dataValue.commentData = (res.data as any).records;
 	ElMessage.success("发送评论成功");
 };
+
 //取消评论
 const cancelgiveAComment = () => {
 	dialogVisible.value = false;

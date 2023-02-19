@@ -83,7 +83,18 @@ export const PutuserUserInfo = (params: any) => {
 	return http.put("/user/userInfo", params, { headers: { noLoading: true } });
 };
 //管理员删除用户/user/delete/{id}
-
 export const DeleteuserUserInfo = (params: any) => {
 	return http.delete("/user/delete", params, { headers: { noLoading: true } });
+};
+//用户查看系统信息
+export const myMessage = (params: any) => {
+	return http.get("/systemMessage/myMessage", params, { headers: { noLoading: true } });
+};
+//用户提交留言/message
+export const giveMyMessage = (params: any) => {
+	return http.post("/message", params, { headers: { noLoading: true } });
+};
+//查看所有动态 //community/all
+export const community = (params: any) => {
+	return http.get("/community/all", params, { headers: { noLoading: true } });
 };

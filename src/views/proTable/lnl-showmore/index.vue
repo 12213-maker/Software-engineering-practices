@@ -16,14 +16,22 @@
 			<el-col @click="detailshow(item.id)" class="elCol" :span="6" v-for="item in dataValue.data1" :key="item">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="imgOuter">
-						<img :src="getIcon(`https://8c93136.r6.cpolar.top/img/place/${item.picture}`)" class="image" />
+						<img :src="getIcon(`https://1573395f.r7.cpolar.top/img/place/${item.picture}`)" class="image" />
 					</div>
 					<div style="padding: 14px">
 						<el-descriptions class="margin-top" :title="item.name" :column="1" size="small" border>
-							<template #extra>
+							<el-descriptions-item>
+								<template #label>
+									<div class="cell-item">
+										<el-icon>
+											<office-building />
+										</el-icon>
+										评分
+									</div>
+								</template>
 								<el-rate disabled allow-half v-model="item.score" score-template="{value} points" />
 								<span class="score">{{ item.score }}</span>
-							</template>
+							</el-descriptions-item>
 							<el-descriptions-item>
 								<template #label>
 									<div class="cell-item">
@@ -33,7 +41,9 @@
 										location
 									</div>
 								</template>
-								{{ item.city }}
+								<el-tooltip popper-class="tool-tip" effect="dark" :content="item.position" placement="top">
+									<div class="posiclass">{{ item.position }}</div>
+								</el-tooltip>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template #label>
@@ -45,19 +55,6 @@
 									</div>
 								</template>
 								{{ item.phone }}
-							</el-descriptions-item>
-							<el-descriptions-item>
-								<template #label>
-									<div class="cell-item">
-										<el-icon>
-											<location />
-										</el-icon>
-										地址
-									</div>
-								</template>
-								<el-tooltip popper-class="tool-tip" effect="dark" :content="item.position" placement="top">
-									<div class="posiclass">{{ item.position }}</div>
-								</el-tooltip>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template #label>
@@ -211,7 +208,6 @@ onMounted(() => {});
 .elRow {
 	position: relative;
 	flex-wrap: wrap;
-	justify-content: center;
 	padding: 20px 80px;
 	.elCol {
 		margin-bottom: 20px;
@@ -259,7 +255,6 @@ onMounted(() => {});
 	}
 	.imgOuter {
 		height: 330px;
-		background-color: pink;
 		.image {
 			display: block;
 			width: 100%;

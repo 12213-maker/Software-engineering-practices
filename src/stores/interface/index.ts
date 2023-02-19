@@ -6,6 +6,7 @@ export interface GlobalState {
 	language: string;
 	themeConfig: ThemeConfigProps;
 	userInformation?: any;
+	image?: any;
 }
 
 /* themeConfigProp */

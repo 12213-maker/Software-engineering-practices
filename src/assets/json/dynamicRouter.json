@@ -139,7 +139,7 @@
 					"component": "/auth/menu/index",
 					"meta": {
 						"icon": "Menu",
-						"title": "菜单权限",
+						"title": "查看所有动态",
 						"isLink": "",
 						"isHide": false,
 						"isFull": false,
@@ -153,7 +153,7 @@
 					"component": "/auth/button/index",
 					"meta": {
 						"icon": "Menu",
-						"title": "按钮权限",
+						"title": "查看个人动态",
 						"isLink": "",
 						"isHide": false,
 						"isFull": false,

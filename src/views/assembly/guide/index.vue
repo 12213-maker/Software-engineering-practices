@@ -4,14 +4,13 @@
 			<el-row :gutter="40">
 				<el-col :xs="24" :sm="24" :md="14" :lg="12" :xl="14">
 					<el-form ref="form" :model="FormValue.userinfo" :rules="rules" label-width="120px">
-						<!-- <div class="center">个人中心</div> -->
-
 						<!-- 头像 -->
 						<div class="avatar">
-							<el-upload :on-change="change">
+							<el-upload :on-change="change" :before-upload="beforeAvatarUpload" :show-file-list="false">
+								<!-- <el-avatar v-if="imageUrl" :size="80" :src="imageUrl"></el-avatar> -->
 								<el-avatar
 									:size="80"
-									:src="getIcon('https://8c93136.r6.cpolar.top/img/user/' + FormValue.userinfo.img)"
+									:src="getIcon('https://1573395f.r7.cpolar.top/img/user/' + FormValue.userinfo.img)"
 								></el-avatar>
 							</el-upload>
 						</div>
@@ -20,7 +19,7 @@
 							<el-input v-model="FormValue.userinfo.username"></el-input>
 						</el-form-item>
 						<el-form-item label="密码" prop="password">
-							<el-input v-model="FormValue.userinfo.password"></el-input>
+							<el-input show-password v-model="FormValue.userinfo.password"></el-input>
 						</el-form-item>
 						<el-form-item label="生日" prop="birthday">
 							<el-date-picker v-model="FormValue.userinfo.birthday" type="date" placeholder="Pick a date" style="width: 100%" />
@@ -84,28 +83,49 @@
 							<el-table :data="messageValue.data" stripe style="width: 100%" height="484">
 								<el-table-column type="index" width="50" />
 								<el-table-column prop="time" label="时间" width="165" />
-								<el-table-column prop="content" label="留言信息" /> </el-table
-						></el-tab-pane>
+								<el-table-column prop="content" label="留言信息" />
+							</el-table>
+							<el-button
+								type="primary"
+								:style="{
+									marginTop: '12px'
+								}"
+								@click="givemessage = true"
+								>提交留言</el-button
+							>
+						</el-tab-pane>
 					</el-tabs>
 				</el-col>
 			</el-row>
+			<el-dialog center width="30%" v-model="givemessage" title="提交留言">
+				<el-input placeholder="请留言" v-model="giveinput"></el-input>
+				<template #footer>
+					<span class="dialog-footer">
+						<el-button @click="givemessage = false">取消</el-button>
+						<el-button type="primary" @click="clickgivemymessage"> 确认 </el-button>
+					</span>
+				</template>
+			</el-dialog>
 		</div>
 	</el-main>
 </template>
 
 <script setup lang="ts" name="userinfo">
 import { GlobalStore } from "@/stores";
-import { getuserinfo, putuserinfo, userPassword, report, message, uploadImg } from "@/api/modules/lnl-paly";
+import { getuserinfo, putuserinfo, userPassword, report, message, uploadImg, giveMyMessage } from "@/api/modules/lnl-paly";
 import type { TabsPaneContext } from "element-plus";
 import { onMounted, reactive, ref } from "vue";
 import { ElMessageBox, ElMessage } from "element-plus";
 
 const globalStore = GlobalStore();
+const imageUrl = ref("");
 
 const FormValue = reactive<{ userinfo: any }>({
 	userinfo: {}
 });
 const activeName = ref("first");
+let givemessage = ref(false);
+let giveinput = ref("");
 FormValue.userinfo = globalStore.userInformation;
 const reportValue = reactive({
 	data: []
@@ -122,6 +142,26 @@ const form = {
 	cityName: "",
 	role: null,
 	desc: ""
+};
+const clickgivemymessage = async () => {
+	let d = new Date();
+	let str =
+		d.getFullYear() +
+		"-" +
+		(d.getMonth() + 1 >= 10 ? +(d.getMonth() + 1) : "0" + (d.getMonth() + 1)) +
+		"-" +
+		(d.getDate() >= 10 ? d.getDate() : "0" + d.getDate()) +
+		" " +
+		(d.getHours() >= 10 ? d.getHours() : "0" + d.getHours()) +
+		":" +
+		(d.getMinutes() >= 10 ? d.getMinutes() : "0" + d.getMinutes()) +
+		":" +
+		(d.getSeconds() >= 10 ? d.getSeconds() : "0" + d.getSeconds());
+	giveMyMessage({ uid: FormValue.userinfo.id, content: giveinput.value, time: str });
+	const { data } = await message({});
+	messageValue.data = data as any;
+	givemessage.value = false;
+	ElMessage.success("留言成功");
 };
 //表单验证
 let checkPhone = (rule: any, value: any, callback: any) => {
@@ -174,13 +214,19 @@ function save() {
 		globalStore.setUserInformation(data);
 	});
 }
-
+//上传头像
 const change = async (uploadFile: any) => {
 	let formdata = new FormData();
 	formdata.append("file", uploadFile.raw);
 	await uploadImg(formdata);
 	await getuserInfo();
-	ElMessage.success("修改成功");
+};
+const beforeAvatarUpload = (file: any) => {
+	console.log(file);
+	// 使图片显示
+	imageUrl.value = URL.createObjectURL(file);
+	globalStore.setImage(imageUrl.value);
+	return false;
 };
 // 重置
 async function reset() {
