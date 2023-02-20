@@ -22,7 +22,7 @@
 			</div>
 			<div class="input littlebox">
 				<div class="inputtitle">搜索：</div>
-				<div class="inputwidth"><el-input v-model="input2" class="w-50 m-2" placeholder="精确搜索" /></div>
+				<div class="inputwidth"><el-input @change="searchtitle" v-model="input2" class="w-50 m-2" placeholder="精确搜索" /></div>
 			</div>
 
 			<div class="littlebox"><el-button type="primary" :icon="Delete" @click="reset">重置</el-button></div>
@@ -90,8 +90,8 @@
 					</div>
 				</el-card>
 			</el-col>
-			<!-- <el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
-			<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider> -->
+			<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
+			<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
 		</el-row>
 	</div>
 </template>
@@ -168,6 +168,12 @@ const optionsType = [
 	}
 ];
 
+const searchtitle = () => {
+	dataValue.data1 = [];
+	apiParams.page = 1;
+	apireturndataback({ ...apiParams, name: input2.value });
+};
+
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;
 };
@@ -191,7 +197,7 @@ const apiParams = reactive<PlaceMore>({
 	name: "",
 	city: "成都",
 	page: 1,
-	limit: 8
+	limit: 4
 });
 const apireturndataback = async (params: any) => {
 	const res = (await placeMore(params)) as any;
@@ -211,6 +217,7 @@ const load = async () => {
 
 const reset = async () => {
 	dataValue.data1 = [];
+	input2.value = "";
 	apiParams.page = 1;
 	apireturndataback(apiParams);
 };
