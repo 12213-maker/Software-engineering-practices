@@ -32,8 +32,17 @@ import pinia from "@/stores/index";
 import "virtual:svg-icons-register";
 // errorHandler
 import errorHandler from "@/utils/errorHandler";
+//懒加载
+import lazyPlugin from "vue3-lazy";
 
 const app = createApp(App);
+// import VueLazyLoad from "vue-lazyload";
+// Vue.use(VueLazyLoad, {
+// 	preLoad: 1,
+// 	error: require("@/assets/images/404.png"),
+// 	loading: require("@/assets/images/403.png"),
+// 	attempt: 2
+// });
 
 app.config.errorHandler = errorHandler;
 
@@ -42,4 +51,14 @@ Object.keys(Icons).forEach(key => {
 	app.component(key, Icons[key as keyof typeof Icons]);
 });
 
-app.use(router).use(I18n).use(pinia).use(directives).use(ElementPlus).mount("#app");
+app
+	.use(router)
+	.use(I18n)
+	.use(pinia)
+	.use(directives)
+	.use(ElementPlus)
+	.use(lazyPlugin, {
+		loading: import("@/assets/images/403.png"), // 图片加载时默认图片
+		error: import("@/assets/images/404.png") // 图片加载失败时默认图片
+	})
+	.mount("#app");

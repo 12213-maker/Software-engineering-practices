@@ -111,7 +111,7 @@ export const useTable = (
 	const search = () => {
 		state.pageable.pageNum = 1;
 		updatedTotalParam();
-		getTableList();
+		console.log(state.totalParam);
 	};
 
 	/**

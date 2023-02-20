@@ -69,7 +69,6 @@ const changeDialogvisible = (value: any) => {
 
 // 表格配置项
 const columns: ColumnProps[] = [
-	// { type: "selection", fixed: "left", width: 80 },
 	{ type: "index", label: "#", width: 80 },
 	{
 		prop: "img",
@@ -99,7 +98,6 @@ const columns: ColumnProps[] = [
 	{
 		prop: "sex",
 		label: "性别",
-		search: { el: "select", props: { filterable: true } },
 		render: scope => {
 			let flag = scope.row.sex;
 			if (flag === 0) {
@@ -111,30 +109,32 @@ const columns: ColumnProps[] = [
 			}
 		}
 	},
-	// 多级 prop
-	{ prop: "phone", label: "电话号码", search: { el: "input" } },
-	{ prop: "password", label: "密码" },
+	{ prop: "phone", label: "电话号码" },
+	{
+		prop: "password",
+		label: "密码",
+		render: scope => {
+			const str = [] as any;
+			scope.row.password.forEach(() => {
+				str.push("*");
+			});
+			return str;
+		}
+	},
 	{ prop: "description", label: "简介", width: 150 },
 	{
 		prop: "roleId",
 		label: "用户权限",
-		enum: undefined,
-		search: { el: "tree-select", props: { filterable: true } },
 		fieldNames: { label: "userLabel", value: "userStatus" },
 		render: scope => {
-			return <el-tag type={scope.row.roleId ? "success" : "danger"}>{scope.row.status ? "普通用户" : "管理员"}</el-tag>;
+			const type = scope.row.roleId ? "success" : "warning";
+			return <el-tag type={type}>{scope.row.roleId === 2 ? "普通用户" : "管理员"}</el-tag>;
 		}
 	},
 	{
 		prop: "birthday",
 		label: "生日",
-		width: 180,
-		search: {
-			el: "date-picker",
-			span: 2,
-			props: { type: "datetimerange", valueFormat: "YYYY-MM-DD HH:mm:ss" },
-			defaultValue: ["2022-11-12 11:35:00", "2022-12-12 11:35:00"]
-		}
+		width: 180
 	},
 	{ prop: "operation", label: "操作", fixed: "right", width: 330 }
 ];

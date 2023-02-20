@@ -39,7 +39,6 @@ interface ProTableProps {
 	search: (params: any) => void; // 搜索方法
 	reset: (params: any) => void; // 重置方法
 }
-
 // 默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
 	columns: () => [],

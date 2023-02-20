@@ -1,13 +1,20 @@
 <template>
-	<!-- 查询表单 card -->
-	<SearchForm
-		:search="search"
-		:reset="reset"
-		:searchParam="searchParam"
-		:columns="searchColumns"
-		:searchCol="searchCol"
-		v-show="isShowSearch"
-	/>
+	<div class="search">
+		<div class="input">
+			<div class="title">用户姓名：</div>
+			<el-input v-model="searchParams.username" />
+		</div>
+		<div class="input">
+			<div class="title">用户角色：</div>
+			<el-select v-model="value" class="m-2" placeholder="Select">
+				<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+			</el-select>
+		</div>
+		<div>
+			<el-button type="primary" :icon="Search" @click="search1">搜索</el-button>
+			<el-button :icon="Delete" @click="reset1">重置</el-button>
+		</div>
+	</div>
 
 	<!-- 表格内容 card -->
 	<div class="card table">
@@ -96,9 +103,9 @@ import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { ElTable, TableProps } from "element-plus";
-import { Operation, Search } from "@element-plus/icons-vue";
+import { Operation, Search, Delete } from "@element-plus/icons-vue";
 import { handleProp } from "@/utils/util";
-import SearchForm from "@/components/SearchForm/index.vue";
+// import SearchForm from "@/components/SearchForm/index.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
 
@@ -125,8 +132,20 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	selectId: "id",
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
+const value = ref("");
 
-// let currentPage = ref(1); // 当前页码
+const searchParams = reactive({ username: "", roleId: 1 });
+const options = [
+	{
+		value: 2,
+		label: "普通用户"
+	},
+	{
+		value: 1,
+		label: "管理员"
+	}
+];
+
 // let pageSize = ref(5); // 每页的数据条数
 let params = reactive({
 	total: 0, //总页数
@@ -149,7 +168,7 @@ const tabledata = reactive<{ data: Array<object> }>({
 // 表格操作 Hooks
 const { tableData, pageable, searchParam, searchInitParam, getTableList, search, reset, handleSizeChange, handleCurrentChange } =
 	useTable(props.requestApi, props.initParam, props.pagination, props.dataCallback);
-console.log(handleSizeChange, handleCurrentChange);
+console.log(handleSizeChange, handleCurrentChange, search);
 
 // 清空选中数据列表
 const clearSelection = () => tableRef.value!.clearSelection();
@@ -243,7 +262,21 @@ const handlePrevChange2 = (flag: string) => {
 		getdataback();
 	}
 };
+//搜索重置
+const search1 = async () => {
+	console.log(searchParams.username, value.value);
+	const { pageNum, pageSize } = params;
+	const { data } = await props.requestApi({ pageNum, pageSize, info: searchParams.username, roleId: value.value });
+	tabledata.data = data.records;
+	params.total = data.total;
+	console.log(params);
+};
 
+const reset1 = async () => {
+	searchParams.username = "";
+	value.value = "";
+	await getdataback();
+};
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
 defineExpose({
 	element: tableRef,
@@ -264,3 +297,30 @@ onMounted(async () => {
 	await getdataback();
 });
 </script>
+<style scoped lang="scss">
+.search {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;
+	width: 100%;
+	height: 70px;
+	margin-bottom: 10px;
+	font-size: 15px;
+	font-weight: 600;
+	background-color: white;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #eeeeee;
+	.input {
+		display: flex;
+		width: 32%;
+		.title {
+			display: flex;
+			align-items: center;
+			width: 90px;
+		}
+
+		/* background-color: pink; */
+	}
+}
+</style>

@@ -17,6 +17,7 @@
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="imgOuter">
 						<img :src="getIcon(`https://1573395f.r7.cpolar.top/img/place/${item.picture}`)" class="image" />
+						<!-- <img v-lazy="getIcon(`https://1573395f.r7.cpolar.top/img/place/${item.picture}`)" /> -->
 					</div>
 					<div style="padding: 14px">
 						<el-descriptions class="margin-top" :title="item.name" :column="1" size="small" border>
@@ -93,6 +94,7 @@ const infiniteValue = reactive({
 	current: 0,
 	pages: 1
 });
+const time = ref(false);
 
 interface DataValueInterface {
 	city: string;
@@ -157,6 +159,9 @@ const apireturndataback = async (params: any) => {
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;
 	dataValue.data1.push(...res.data.records);
+	setTimeout(() => {
+		time.value = true;
+	}, 2);
 };
 //懒加载
 const load = async () => {
