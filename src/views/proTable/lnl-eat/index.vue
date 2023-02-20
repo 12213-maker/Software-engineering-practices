@@ -13,18 +13,19 @@
 					<el-option v-for="item in optionsType" :key="item.value" :label="item.label" :value="item.value" />
 				</el-select>
 			</div>
+			<div class="sort littlebox">
+				排序：<el-button type="primary"
+					><el-icon><Compass /></el-icon>距离</el-button
+				><el-button>
+					<el-icon><Star /></el-icon>评分</el-button
+				>
+			</div>
 			<div class="input littlebox">
 				<div class="inputtitle">搜索：</div>
 				<div class="inputwidth"><el-input v-model="input2" class="w-50 m-2" placeholder="精确搜索" /></div>
 			</div>
-			<div class="sort littlebox">
-				排序：<el-button>
-					<el-icon><Star /></el-icon>评分</el-button
-				>
-				<el-button type="primary"
-					><el-icon><Compass /></el-icon>距离</el-button
-				>
-			</div>
+
+			<div class="littlebox"><el-button type="primary" :icon="Delete" @click="reset">重置</el-button></div>
 		</div>
 
 		<el-row v-infinite-scroll="load" class="elRow" :gutter="20">
@@ -89,8 +90,8 @@
 					</div>
 				</el-card>
 			</el-col>
-			<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
-			<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
+			<!-- <el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
+			<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider> -->
 		</el-row>
 	</div>
 </template>
@@ -100,6 +101,7 @@ import { ref, reactive, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { placeMore } from "@/api/modules/lnl-paly";
 import { PlaceMore } from "@/api/interface";
+import { Delete } from "@element-plus/icons-vue";
 
 const input2 = ref("");
 const select = ref("1");
@@ -172,7 +174,8 @@ const getIcon = (name: string) => {
 
 const changeselect = () => {};
 const changeselectType = () => {
-	console.log(selectType.value);
+	dataValue.data1 = [];
+	apiParams.page = 1;
 	apireturndataback({ ...apiParams, type2: selectType.value });
 };
 
@@ -204,6 +207,12 @@ const load = async () => {
 		const params = { ...apiParams, ...route.query, page: apiParams.page++ };
 		await apireturndataback(params);
 	} else return;
+};
+
+const reset = async () => {
+	dataValue.data1 = [];
+	apiParams.page = 1;
+	apireturndataback(apiParams);
 };
 
 onMounted(() => {});
