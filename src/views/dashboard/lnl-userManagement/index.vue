@@ -113,12 +113,8 @@ const columns: ColumnProps[] = [
 	{
 		prop: "password",
 		label: "密码",
-		render: scope => {
-			const str = [] as any;
-			scope.row.password.forEach(() => {
-				str.push("*");
-			});
-			return str;
+		render: () => {
+			return "******";
 		}
 	},
 	{ prop: "description", label: "简介", width: 150 },

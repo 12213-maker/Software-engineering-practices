@@ -94,7 +94,6 @@ const infiniteValue = reactive({
 	current: 0,
 	pages: 1
 });
-const time = ref(false);
 
 interface DataValueInterface {
 	city: string;
@@ -159,10 +158,8 @@ const apireturndataback = async (params: any) => {
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;
 	dataValue.data1.push(...res.data.records);
-	setTimeout(() => {
-		time.value = true;
-	}, 2);
 };
+
 //懒加载
 const load = async () => {
 	if (infiniteValue.current < infiniteValue.pages) {

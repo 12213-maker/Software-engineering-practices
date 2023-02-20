@@ -19,7 +19,7 @@
 							<el-input v-model="FormValue.userinfo.username"></el-input>
 						</el-form-item>
 						<el-form-item label="密码" prop="password">
-							<el-input show-password v-model="FormValue.userinfo.password"></el-input>
+							<el-input type="password" v-model="FormValue.userinfo.password"></el-input>
 						</el-form-item>
 						<el-form-item label="生日" prop="birthday">
 							<el-date-picker v-model="FormValue.userinfo.birthday" type="date" placeholder="Pick a date" style="width: 100%" />

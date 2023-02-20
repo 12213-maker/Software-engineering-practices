@@ -81,14 +81,24 @@
 import { Edit } from "@element-plus/icons-vue";
 import { community } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 // import { Warning } from "@element-plus/icons-vue";
 
 const globalStore = GlobalStore();
 const params = reactive<{ subject?: number; pageNum: number; pageSize: number }>({
 	pageNum: 1,
-	pageSize: 5
+	pageSize: 3
 });
+//存放数据
+const showData = reactive<{ data: Array<DataValueInterface> }>({ data: [] });
+//获取动态数据
+const getdata = async () => {
+	const res = (await community(params)) as any;
+	infiniteValue.current = res.data.current;
+	infiniteValue.pages = res.data.pages;
+	showData.data.push(...res.data.records);
+	console.log(showData.data);
+};
 
 //懒加载数据
 const infiniteValue = reactive({
@@ -96,13 +106,22 @@ const infiniteValue = reactive({
 	pages: 1
 });
 //懒加载
-const load = async () => {
+const loadmore = async () => {
 	if (infiniteValue.current < infiniteValue.pages) {
-		console.log("继续加载");
-
-		// const params = { ...apiParams, ...route.query, page: apiParams.page++ };
-		// await apireturndataback(params);
+		params.pageNum++;
+		getdata();
 	} else return;
+};
+//防抖
+let timer = ref();
+const load = () => {
+	if (timer.value) {
+		clearTimeout(timer.value);
+	}
+	timer.value = setTimeout(() => {
+		console.log("继续加载");
+		loadmore();
+	}, 1000);
 };
 
 //处理图片
@@ -117,14 +136,7 @@ interface DataValueInterface {
 	userImg: string;
 	username: string;
 }
-//存放数据
-const showData = reactive<{ data: Array<DataValueInterface> }>({ data: [] });
-//获取动态数据
-const getdata = async () => {
-	const res = (await community(params)) as any;
-	showData.data.push(...res.data.records);
-	console.log(showData.data);
-};
+
 onMounted(() => {
 	getdata();
 });

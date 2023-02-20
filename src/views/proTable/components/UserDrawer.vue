@@ -18,7 +18,7 @@
 				<el-input v-model="drawerProps.rowData!.username" placeholder="请填写用户姓名" clearable></el-input>
 			</el-form-item>
 			<el-form-item label="用户密码" prop="password">
-				<el-input v-model="drawerProps.rowData!.password" placeholder="请填写密码" clearable></el-input>
+				<el-input type="password" v-model="drawerProps.rowData!.password" placeholder="请填写密码" clearable></el-input>
 			</el-form-item>
 			<el-form-item label="性别" prop="sex">
 				<el-select v-model="drawerProps.rowData!.sex" placeholder="请选择性别" clearable>

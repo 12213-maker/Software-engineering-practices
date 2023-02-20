@@ -110,7 +110,7 @@ export interface placelistvalue {
 //地点更多推荐列表
 export interface PlaceMore {
 	type1: number;
-	type2: number;
+	type2?: number;
 	order: number;
 	name?: string;
 	city: string;

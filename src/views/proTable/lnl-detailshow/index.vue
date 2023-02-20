@@ -200,7 +200,7 @@ const apireturndata = async () => {
 };
 
 const params = {
-	pid: 1,
+	pid: route.query.id,
 	order: 1,
 	page: 1,
 	limit: 6
@@ -217,6 +217,8 @@ const infiniteValue = reactive({
 	current: 0,
 	pages: 1
 });
+//延迟标志器
+let timer = ref();
 //懒加载
 const load = async () => {
 	// if (infiniteValue.current < infiniteValue.pages) {
@@ -227,6 +229,19 @@ const load = async () => {
 	// 	};
 	// 	await getCommentValue(params1);
 	// } else return;
+	if (timer.value) {
+		clearTimeout(timer.value);
+	}
+	timer.value = setTimeout(() => {
+		loadmore();
+	}, 1000);
+};
+//懒加载
+const loadmore = async () => {
+	if (infiniteValue.current < infiniteValue.pages) {
+		params.page++;
+		await getCommentValue(params);
+	} else return;
 };
 //用户点赞or取消点赞评论
 const LikeAdd = async (flag: string, commentId: any) => {
@@ -267,7 +282,7 @@ const LikeAdd = async (flag: string, commentId: any) => {
 
 const imageUrl = reactive<Array<any>>([]);
 const beforeAvatarUpload = (file: any) => {
-	console.log(file);
+	// console.log(file);
 	// 使图片显示
 	imageUrl.push(URL.createObjectURL(file));
 	return false;
