@@ -32,8 +32,8 @@
 			<el-col @click="detailshow(item.id)" class="elCol" :span="6" v-for="item in dataValue.data1" :key="item">
 				<el-card :body-style="{ padding: '0px' }">
 					<div class="imgOuter">
-						<img :src="getIcon(`https://1573395f.r7.cpolar.top/img/place/${item.picture}`)" class="image" />
-						<!-- <img v-lazy="getIcon(`https://1573395f.r7.cpolar.top/img/place/${item.picture}`)" /> -->
+						<img :src="getIcon(`https://73d529c6.r3.cpolar.top/img/place/${item.picture}`)" class="image" />
+						<!-- <img v-lazy="getIcon(`https://73d529c6.r3.cpolar.top/img/place/${item.picture}`)" /> -->
 					</div>
 					<div style="padding: 14px">
 						<el-descriptions class="margin-top" :title="item.name" :column="1" size="small" border>
@@ -171,7 +171,8 @@ const optionsType = [
 const searchtitle = () => {
 	dataValue.data1 = [];
 	apiParams.page = 1;
-	apireturndataback({ ...apiParams, name: input2.value });
+	apiParams.name = input2.value;
+	apireturndataback({ ...apiParams });
 };
 
 const getIcon = (name: string) => {
@@ -219,6 +220,7 @@ const reset = async () => {
 	dataValue.data1 = [];
 	input2.value = "";
 	apiParams.page = 1;
+	apiParams.name = "";
 	apireturndataback(apiParams);
 };
 

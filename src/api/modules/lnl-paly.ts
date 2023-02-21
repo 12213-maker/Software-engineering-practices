@@ -32,7 +32,7 @@ export const likesDelete = (params: any) => {
 
 //用户发表评论 /comment/add
 export const commentAdd = (params: any) => {
-	return http.post("/comment/add", params, { headers: { noLoading: true } });
+	return http.post("/comment/add", params, { headers: { noLoading: true, "Content-type": "multipart/form-data" } });
 };
 
 //用户退出登录/user/logout
@@ -82,6 +82,10 @@ export const PostuserUserInfo = (params: any) => {
 export const PutuserUserInfo = (params: any) => {
 	return http.put("/user/userInfo", params, { headers: { noLoading: true } });
 };
+//管理员重置用户密码
+export const PutResetPassword = (params: any) => {
+	return http.put("/user/resetPassword", params, { headers: { noLoading: true } });
+};
 //管理员删除用户/user/delete/{id}
 export const DeleteuserUserInfo = (params: any) => {
 	return http.delete("/user/delete", params, { headers: { noLoading: true } });
@@ -97,4 +101,12 @@ export const giveMyMessage = (params: any) => {
 //查看所有动态 //community/all
 export const community = (params: any) => {
 	return http.get("/community/all", params, { headers: { noLoading: true } });
+};
+//查看个人动态
+export const getselfcommunity = (params: any) => {
+	return http.get("/community", params, { headers: { noLoading: true } });
+};
+//删除动态
+export const deletecommunity = (params: any) => {
+	return http.delete("/community", params, { headers: { noLoading: true } });
 };

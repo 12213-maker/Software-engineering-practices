@@ -10,7 +10,7 @@
 								<!-- <el-avatar v-if="imageUrl" :size="80" :src="imageUrl"></el-avatar> -->
 								<el-avatar
 									:size="80"
-									:src="getIcon('https://1573395f.r7.cpolar.top/img/user/' + FormValue.userinfo.img)"
+									:src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + FormValue.userinfo.img)"
 								></el-avatar>
 							</el-upload>
 						</div>
@@ -39,6 +39,11 @@
 								<el-radio :label="1">管理员</el-radio>
 								<el-radio :label="2">普通用户</el-radio>
 							</el-radio-group>
+						</el-form-item>
+						<el-form-item class="position" label="学校" prop="school"
+							><el-select v-model="value" class="m-2">
+								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+							</el-select>
 						</el-form-item>
 
 						<!-- 详细介绍部分  可删 -->
@@ -141,8 +146,20 @@ const form = {
 	cityId: "",
 	cityName: "",
 	role: null,
-	desc: ""
+	desc: "",
+	school: ""
 };
+const value = ref();
+const options = [
+	{
+		value: 1,
+		label: "西南石油大学（成都校区）"
+	},
+	{
+		value: 2,
+		label: "成都理工大学"
+	}
+];
 const clickgivemymessage = async () => {
 	let d = new Date();
 	let str =
@@ -200,13 +217,12 @@ function save() {
 		type: "warning"
 	}).then(async () => {
 		const { username: usernameorigin } = globalStore.userInformation;
-
 		const { username, sex, phone, birthday, description, password } = FormValue.userinfo;
 		await userPassword({ password });
 		if (username != usernameorigin) {
-			await putuserinfo({ username, sex, phone, birthday, description });
+			await putuserinfo({ username, sex, phone, birthday, description, school: value.value });
 		} else {
-			await putuserinfo({ sex, phone, birthday, description });
+			await putuserinfo({ sex, phone, birthday, description, school: value.value });
 		}
 		ElMessage.success("修改成功");
 		await getuserInfo();
@@ -237,6 +253,7 @@ async function reset() {
 const getuserInfo = async () => {
 	const { data } = await getuserinfo({});
 	FormValue.userinfo = data;
+	value.value = FormValue.userinfo.school;
 };
 onMounted(async () => {
 	getuserInfo();
@@ -273,6 +290,11 @@ onMounted(async () => {
 		display: flex;
 		justify-content: center;
 		margin-top: 20px;
+	}
+	.position {
+		position: absolute;
+		top: 340px;
+		left: 300px;
 	}
 }
 .el-main {

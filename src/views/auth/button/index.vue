@@ -1,44 +1,205 @@
 <template>
-	<div class="card content-box">
-		<span class="text"> 按钮权限 🍓🍇🍈🍉</span>
-		<el-alert
-			class="mb20"
-			:title="`当前用户按钮权限：${JSON.stringify(Object.keys(BUTTONS))}`"
-			type="success"
-			:closable="false"
-		/>
-		<el-divider content-position="left">使用 Hooks 方式绑定权限</el-divider>
-		<el-row class="mb20">
-			<el-button type="primary" :icon="CirclePlus" v-if="BUTTONS.add">新增</el-button>
-			<el-button type="warning" :icon="EditPen" v-if="BUTTONS.edit">编辑</el-button>
-			<el-button type="danger" plain :icon="Delete" v-if="BUTTONS.delete">删除</el-button>
-			<el-button type="info" plain :icon="Upload" v-if="BUTTONS.import">导入数据</el-button>
-			<el-button type="info" plain :icon="Download" v-if="BUTTONS.export">导出数据</el-button>
-		</el-row>
-		<el-divider content-position="left">使用 v-auth 指令绑定单个权限</el-divider>
-		<el-row class="mb20">
-			<el-button type="primary" :icon="CirclePlus" v-auth="'add'">新增</el-button>
-			<el-button type="warning" :icon="EditPen" v-auth="'edit'">编辑</el-button>
-			<el-button type="danger" plain :icon="Delete" v-auth="'delete'">删除</el-button>
-			<el-button type="info" plain :icon="Upload" v-auth="'import'">导入数据</el-button>
-			<el-button type="info" plain :icon="Download" v-auth="'export'">导出数据</el-button>
-		</el-row>
-		<el-divider content-position="left">使用 v-auth 指令绑定多个权限</el-divider>
-		<el-row>
-			<el-button type="primary" :icon="CirclePlus" v-auth="['add', 'edit', 'delete', 'import', 'export']">新增</el-button>
-			<el-button type="warning" :icon="EditPen" v-auth="['add', 'edit', 'delete', 'import', 'export']">编辑</el-button>
-			<el-button type="danger" plain :icon="Delete" v-auth="['add', 'edit', 'delete', 'import', 'export']">删除</el-button>
-			<el-button type="info" plain :icon="Upload" v-auth="['add', 'edit', 'delete', 'import', 'export']">导入数据</el-button>
-			<el-button type="info" plain :icon="Download" v-auth="['add', 'edit', 'delete', 'import', 'export']">导出数据</el-button>
-		</el-row>
+	<div class="content-box">
+		<div class="backgroundtrue"></div>
+		<!-- 主体 -->
+		<div class="body">
+			<div class="left">
+				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in showData.data" :key="item.img">
+					<div class="avatar">
+						<div class="avatarimage1" v-if="item.userImg">
+							<img :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + item.userImg)" alt="" />
+						</div>
+						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
+						<span class="username">{{ item.username }}</span>
+						<div class="ipschool">
+							<el-tag size="large" round v-if="item.subject === 1" class="ml-2" type="warning">校内美食推荐</el-tag>
+							<el-tag size="large" round v-else-if="item.subject === 4" class="ml-2" type="danger">周末游线路推荐</el-tag>
+							<el-tag size="large" round v-else-if="item.subject === 2" class="ml-2">校园周边地点推荐</el-tag>
+							<el-tag size="large" round class="ml-2" type="success" v-else>一日游线路推荐</el-tag>
+						</div>
+					</div>
+					<div class="usercomment">
+						{{ item.content }}
+					</div>
+					<div class="imageOter" v-if="item.img">
+						<img
+							class="image"
+							v-if="item.img"
+							:src="getIcon('https://73d529c6.r3.cpolar.top/img/community/' + item.img)"
+							alt=""
+						/>
+					</div>
+					<div class="timecontanerall">
+						<div class="timecontaner">
+							<span class="time">{{ item.time }}</span>
+
+							<div v-if="params.school === 1">
+								<el-icon><School /></el-icon>{{ "西南石油大学（成都校区）" }}
+							</div>
+							<div v-else>
+								<el-icon><School /></el-icon>{{ "成都理工大学" }}
+							</div>
+						</div>
+						<div v-if="id === item.uid">
+							<el-button :icon="Delete" type="danger" @click="deletedongati(item.uid)" size="small">删除</el-button>
+						</div>
+					</div>
+				</div>
+				<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
+				<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
+			</div>
+			<div class="right">
+				<div class="selfinformation">
+					<el-card shadow="always">
+						<div class="avatar">
+							<el-avatar
+								:size="120"
+								:src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + globalStore.userInformation.img)"
+							></el-avatar>
+						</div>
+						<div class="username">{{ globalStore.userInformation.username }}</div>
+						<div class="desx">{{ globalStore.userInformation.description }}</div>
+						<div class="button" @click="changerouter({})"><el-button type="primary" :icon="Edit">发布动态</el-button></div>
+					</el-card>
+				</div>
+				<div class="notice">
+					<el-card shadow="always">
+						<div class="switchschool">
+							<div>
+								<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
+							</div>
+							<el-button :icon="Switch" size="small" @click="changeSchool()">{{
+								`切换${params.school === 1 ? "成都理工大学" : "西南石油大学"}校区`
+							}}</el-button>
+						</div>
+						<div class="noticeinfo">你好啊，欢迎来到西南石油大学（成都校区）动态推荐！</div></el-card
+					>
+				</div>
+				<div class="tag">
+					<el-card shadow="always">
+						<div class="tagtitle">动态主题</div>
+						<div class="tags">
+							<el-tag size="large" class="ml-2" type="danger" @click="changeType(0)">全部</el-tag>
+							<el-tag size="large" class="ml-2" type="warning" @click="changeType(1)">校内美食</el-tag>
+							<el-tag size="large" class="ml-2" @click="changeType(4)">周末游线路</el-tag>
+							<el-tag size="large" class="ml-2" @click="changeType(2)">校园周边地点</el-tag>
+							<el-tag size="large" class="ml-2" type="success" @click="changeType(3)">一日游线路推荐</el-tag>
+						</div>
+					</el-card>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
-<script setup lang="ts" name="authButton">
-import { useAuthButtons } from "@/hooks/useAuthButtons";
-import { CirclePlus, Delete, EditPen, Download, Upload } from "@element-plus/icons-vue";
+<script setup lang="ts" name="authMenu">
+import { Edit, Switch, Delete } from "@element-plus/icons-vue";
+import { deletecommunity, getselfcommunity } from "@/api/modules/lnl-paly";
+import { GlobalStore } from "@/stores";
+import { onMounted, reactive, ref } from "vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { useRouter } from "vue-router";
 
-const { BUTTONS } = useAuthButtons();
+const globalStore = GlobalStore();
+const router = useRouter();
+const id = globalStore.userInformation.id;
+const params = reactive<{ subject?: number; pageNum: number; pageSize: number; school: number }>({
+	pageNum: 1,
+	pageSize: 3,
+	subject: 0,
+	school: 1
+});
+
+//存放数据
+const showData = reactive<{ data: Array<DataValueInterface> }>({ data: [] });
+//获取动态数据
+const getdata = async () => {
+	const res = (await getselfcommunity(params)) as any;
+	infiniteValue.current = res.data.current;
+	infiniteValue.pages = res.data.pages;
+	showData.data.push(...res.data);
+};
+//点击跳转
+const changerouter = (data: any) => {
+	router.push({ name: "/auth/components/Editpage", query: { data } });
+};
+
+//懒加载数据
+const infiniteValue = reactive({
+	current: 0,
+	pages: 1
+});
+//懒加载
+const loadmore = async () => {
+	if (infiniteValue.current < infiniteValue.pages) {
+		params.pageNum++;
+		getdata();
+	} else return;
+};
+//防抖
+let timer = ref();
+const load = () => {
+	if (timer.value) {
+		clearTimeout(timer.value);
+	}
+	timer.value = setTimeout(() => {
+		console.log("继续加载");
+		loadmore();
+	}, 1000);
+};
+console.log(load);
+
+//处理图片
+const getIcon = (name: string) => {
+	return new URL(name, import.meta.url).href;
+};
+interface DataValueInterface {
+	time: string;
+	subject: number;
+	content: string;
+	img: string;
+	userImg: string;
+	username: string;
+	uid: number;
+}
+
+//改变主题
+const changeType = (value: any) => {
+	console.log(value);
+	params.subject = value;
+	params.pageNum = 1;
+	showData.data = [];
+	getdata();
+};
+//改变学校
+const changeSchool = () => {
+	params.school = params.school === 1 ? 2 : 1;
+	params.pageNum = 1;
+	showData.data = [];
+	getdata();
+};
+//删除动态
+const deletedongati = async (value: any) => {
+	ElMessageBox.confirm(`是否删除此条动态?`, "温馨提示", {
+		confirmButtonText: "确定",
+		cancelButtonText: "取消",
+		type: "warning",
+		draggable: true
+	}).then(async () => {
+		await deletecommunity({ id: value });
+		params.pageNum = 1;
+		showData.data = [];
+		getdata();
+		ElMessage({
+			type: "success",
+			message: `删除成功!`
+		});
+	});
+};
+
+onMounted(() => {
+	getdata();
+});
 </script>
 
 <style scoped lang="scss">

@@ -160,6 +160,20 @@
 						"isAffix": false,
 						"isKeepAlive": true
 					}
+				},
+				{
+					"path": "/auth/edit",
+					"name": "edit",
+					"component": "/auth/eidt/index",
+					"meta": {
+						"icon": "Menu",
+						"title": "动态详情",
+						"isLink": "",
+						"isHide": true,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
 				}
 			]
 		},

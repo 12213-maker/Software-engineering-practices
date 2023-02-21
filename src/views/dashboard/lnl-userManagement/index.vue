@@ -34,7 +34,7 @@ import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import UserDrawer from "@/views/proTable/components/UserDrawer.vue";
 import { Delete, EditPen, Upload, View, Refresh } from "@element-plus/icons-vue";
-import { userUserInfo, PutuserUserInfo, DeleteuserUserInfo } from "@/api/modules/lnl-paly";
+import { userUserInfo, PutuserUserInfo, DeleteuserUserInfo, PutResetPassword } from "@/api/modules/lnl-paly";
 import Adduser from "./components/Adduser.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 
@@ -78,7 +78,7 @@ const columns: ColumnProps[] = [
 				<el-avatar
 					size={50}
 					shape={"square"}
-					src={getIcon("https://1573395f.r7.cpolar.top/img/user/" + scope.row.img)}
+					src={getIcon("https://73d529c6.r3.cpolar.top/img/user/" + scope.row.img)}
 				></el-avatar>
 			);
 		}
@@ -171,7 +171,7 @@ const resetPass = async (params: User.ResUserList) => {
 		type: "warning",
 		draggable: true
 	}).then(async () => {
-		await PutuserUserInfo({ password: 123456, id: params.id });
+		await PutResetPassword({ id: params.id });
 		proTable.value.getdataback();
 		ElMessage({
 			type: "success",

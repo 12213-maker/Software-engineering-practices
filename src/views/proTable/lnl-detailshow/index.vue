@@ -4,7 +4,7 @@
 			<div class="container">
 				<el-carousel class="carousel">
 					<el-carousel-item class="carouselItem" v-for="picture in dataValue.data.placePictures" :key="picture">
-						<img :src="getIcon('https://1573395f.r7.cpolar.top/img/place/' + picture)" alt="" />
+						<img :src="getIcon('https://73d529c6.r3.cpolar.top/img/place/' + picture)" alt="" />
 					</el-carousel-item>
 				</el-carousel>
 				<div class="describe">
@@ -78,7 +78,7 @@
 				<div class="comment" v-infinite-scroll="load" v-for="item in dataValue.commentData" :key="item.id">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
-							<img :src="getIcon('https://1573395f.r7.cpolar.top/img/user/' + item.userImg)" alt="" />
+							<el-avatar :size="50" :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + item.userImg)" />
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.username }}</span>
@@ -93,7 +93,7 @@
 							v-for="picture in item.pictures"
 							class="image"
 							:key="picture"
-							:src="getIcon('https://1573395f.r7.cpolar.top/img/comment/' + picture)"
+							:src="getIcon('https://73d529c6.r3.cpolar.top/img/comment/' + picture)"
 							alt=""
 						/>
 					</div>
@@ -121,7 +121,7 @@
 					<el-input v-model="ruleForm.comment" :rows="2" type="textarea" placeholder="Please input" />
 				</el-form-item>
 				<el-form-item label="发送图片" prop="age">
-					<el-upload :before-upload="beforeAvatarUpload" :on-change="change" list-type="picture-card" :auto-upload="false">
+					<el-upload :limit="1" :before-upload="beforeAvatarUpload" :on-change="change" list-type="picture" :auto-upload="false">
 						<template #file="{ file }">
 							<img :src="file.url" />
 						</template>
@@ -203,7 +203,7 @@ const params = {
 	pid: route.query.id,
 	order: 1,
 	page: 1,
-	limit: 6
+	limit: 3
 };
 //申请评论数据
 const getCommentValue = async (params: any) => {
@@ -282,36 +282,27 @@ const LikeAdd = async (flag: string, commentId: any) => {
 
 const imageUrl = reactive<Array<any>>([]);
 const beforeAvatarUpload = (file: any) => {
-	// console.log(file);
 	// 使图片显示
 	imageUrl.push(URL.createObjectURL(file));
+	console.log(imageUrl);
 	return false;
 };
-const UploadFiles = reactive<Array<any>>([]);
 
+let formdata = new FormData();
 const change = async (uploadFile: any) => {
-	UploadFiles.push(uploadFile.url);
+	formdata.append("file", uploadFile.raw);
 };
-
 //评论
 const giveAComment = async () => {
-	let formdata = new FormData();
-	// formdata.append("file", UploadFiles.url);
-	UploadFiles.forEach((item: any) => {
-		formdata.append("file", item);
-	});
-	// console.log(formdata, formdata.getAll("file"));
-
 	const { score, comment } = ruleForm;
 	if (score + "" == "" || comment == "") {
 		return;
 	}
 	const { pid } = params;
-	await commentAdd({ pid, score, comment, files: formdata.getAll("file") });
+	await commentAdd({ pid, score, comment, files: formdata.get("file") });
 	dialogVisible.value = false;
 	ruleForm.comment = "";
 	ruleForm.score = 0;
-
 	const res = (await commentList(params)) as any;
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;

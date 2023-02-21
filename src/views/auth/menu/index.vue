@@ -4,40 +4,49 @@
 		<!-- 主体 -->
 		<div class="body">
 			<div class="left">
-				<div class="comment" v-infinite-scroll="load" v-for="item in showData.data" :key="item.img">
+				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in showData.data" :key="item.img">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
-							<img :src="getIcon('https://1573395f.r7.cpolar.top/img/user/' + item.userImg)" alt="" />
+							<img :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + item.userImg)" alt="" />
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.username }}</span>
+						<div class="ipschool">
+							<el-tag size="large" round v-if="item.subject === 1" class="ml-2" type="warning">校内美食推荐</el-tag>
+							<el-tag size="large" round v-else-if="item.subject === 4" class="ml-2" type="danger">周末游线路推荐</el-tag>
+							<el-tag size="large" round v-else-if="item.subject === 2" class="ml-2">校园周边地点推荐</el-tag>
+							<el-tag size="large" round class="ml-2" type="success" v-else>一日游线路推荐</el-tag>
+						</div>
 					</div>
 					<div class="usercomment">
 						{{ item.content }}
 					</div>
-					<div class="imageOter" v-if="item.img">
-						<!-- <img
-							v-for="picture in item.img"
-							class="image"
-							:key="picture"
-							:src="getIcon('https://1573395f.r7.cpolar.top/img/community/' + picture)"
-							alt=""
-						/> -->
+					<div class="imageOter">
 						<img
 							class="image"
 							v-if="item.img"
-							:src="getIcon('https://1573395f.r7.cpolar.top/img/community/' + item.img)"
+							:src="getIcon('https://73d529c6.r3.cpolar.top/img/community/' + item.img)"
 							alt=""
 						/>
 					</div>
-					<div class="timecontaner">
-						<span>{{ item.time }}</span>
-						<el-tag size="large" round v-if="item.subject === 1" class="ml-2" type="warning">校内美食推荐</el-tag>
-						<el-tag size="large" round v-else-if="item.subject === 2" class="ml-2" type="danger">周末游线路推荐</el-tag>
-						<el-tag size="large" round v-else-if="item.subject === 3" class="ml-2">校园周边地点推荐</el-tag>
-						<el-tag size="large" round class="ml-2" type="success" v-else>一日游线路推荐</el-tag>
+					<div class="timecontanerall">
+						<div class="timecontaner">
+							<span class="time">{{ item.time }}</span>
+
+							<div v-if="params.school === 1">
+								<el-icon><School /></el-icon>{{ "西南石油大学（成都校区）" }}
+							</div>
+							<div v-else>
+								<el-icon><School /></el-icon>{{ "成都理工大学" }}
+							</div>
+						</div>
+						<div v-if="id === item.uid">
+							<el-button :icon="Delete" type="danger" @click="deletedongati(item.id)" size="small">删除</el-button>
+						</div>
 					</div>
 				</div>
+				<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
+				<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
 			</div>
 			<div class="right">
 				<div class="selfinformation">
@@ -45,30 +54,38 @@
 						<div class="avatar">
 							<el-avatar
 								:size="120"
-								:src="getIcon('https://1573395f.r7.cpolar.top/img/user/' + globalStore.userInformation.img)"
+								:src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + globalStore.userInformation.img)"
 							></el-avatar>
 						</div>
 						<div class="username">{{ globalStore.userInformation.username }}</div>
 						<div class="desx">{{ globalStore.userInformation.description }}</div>
-						<div class="button"><el-button type="primary" :icon="Edit">发布动态</el-button></div>
+						<div class="button" @click="changerouter({})"><el-button type="primary" :icon="Edit">发布动态</el-button></div>
 					</el-card>
 				</div>
 				<div class="notice">
 					<el-card shadow="always">
-						<div>
-							<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
+						<div class="switchschool">
+							<div>
+								<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
+							</div>
+							<el-select v-model="value" @change="changeSchool()" class="m-2" placeholder="Select" size="small">
+								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+							</el-select>
 						</div>
-						<div class="noticeinfo">你好啊，欢迎来到没课去哪儿！</div></el-card
+						<div class="noticeinfo">
+							{{ `你好，欢迎来到${value === 1 ? "西南石油大学（成都校区）" : "成都理工大学"}动态推荐！` }}
+						</div></el-card
 					>
 				</div>
 				<div class="tag">
 					<el-card shadow="always">
-						<div class="tagtitle">标签</div>
+						<div class="tagtitle">动态主题</div>
 						<div class="tags">
-							<el-tag size="large" class="ml-2" type="warning">校内美食推荐</el-tag>
-							<el-tag size="large" class="ml-2" type="danger">周末游线路推荐</el-tag>
-							<el-tag size="large" class="ml-2">校园周边地点推荐</el-tag>
-							<el-tag size="large" class="ml-2" type="success">一日游线路推荐</el-tag>
+							<el-tag size="large" class="ml-2" type="danger" @click="changeType(0)">全部</el-tag>
+							<el-tag size="large" class="ml-2" type="warning" @click="changeType(1)">校内美食</el-tag>
+							<el-tag size="large" class="ml-2" @click="changeType(4)">周末游线路</el-tag>
+							<el-tag size="large" class="ml-2" @click="changeType(2)">校园周边地点</el-tag>
+							<el-tag size="large" class="ml-2" type="success" @click="changeType(3)">一日游线路推荐</el-tag>
 						</div>
 					</el-card>
 				</div>
@@ -78,17 +95,41 @@
 </template>
 
 <script setup lang="ts" name="authMenu">
-import { Edit } from "@element-plus/icons-vue";
-import { community } from "@/api/modules/lnl-paly";
+import { Edit, Delete } from "@element-plus/icons-vue";
+import { community, deletecommunity } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
 import { onMounted, reactive, ref } from "vue";
-// import { Warning } from "@element-plus/icons-vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { useRouter } from "vue-router";
 
 const globalStore = GlobalStore();
-const params = reactive<{ subject?: number; pageNum: number; pageSize: number }>({
+const router = useRouter();
+
+//点击跳转
+const changerouter = (data: any) => {
+	router.push("/auth/edit");
+	console.log(data);
+};
+const value = ref(1);
+const options = [
+	{
+		value: 1,
+		label: "西南石油大学（成都校区）"
+	},
+	{
+		value: 2,
+		label: "成都理工大学"
+	}
+];
+
+const id = globalStore.userInformation.id;
+const params = reactive<{ subject?: number; pageNum: number; pageSize: number; school: number }>({
 	pageNum: 1,
-	pageSize: 3
+	pageSize: 3,
+	subject: 0,
+	school: 1
 });
+
 //存放数据
 const showData = reactive<{ data: Array<DataValueInterface> }>({ data: [] });
 //获取动态数据
@@ -97,7 +138,6 @@ const getdata = async () => {
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;
 	showData.data.push(...res.data.records);
-	console.log(showData.data);
 };
 
 //懒加载数据
@@ -123,6 +163,7 @@ const load = () => {
 		loadmore();
 	}, 1000);
 };
+console.log(load);
 
 //处理图片
 const getIcon = (name: string) => {
@@ -135,7 +176,43 @@ interface DataValueInterface {
 	img: string;
 	userImg: string;
 	username: string;
+	id: number;
+	uid: number;
 }
+
+//改变主题
+const changeType = (value: any) => {
+	console.log(value);
+	params.subject = value;
+	params.pageNum = 1;
+	showData.data = [];
+	getdata();
+};
+//改变学校
+const changeSchool = () => {
+	params.school = value.value;
+	params.pageNum = 1;
+	showData.data = [];
+	getdata();
+};
+//删除动态
+const deletedongati = async (value: any) => {
+	ElMessageBox.confirm(`是否删除此条动态?`, "温馨提示", {
+		confirmButtonText: "确定",
+		cancelButtonText: "取消",
+		type: "warning",
+		draggable: true
+	}).then(async () => {
+		await deletecommunity({ id: value });
+		params.pageNum = 1;
+		showData.data = [];
+		await getdata();
+		ElMessage({
+			type: "success",
+			message: `删除成功!`
+		});
+	});
+};
 
 onMounted(() => {
 	getdata();
@@ -143,131 +220,5 @@ onMounted(() => {
 </script>
 
 <style scoped lang="scss">
-.content-box {
-	/* position: relative; */
-	.backgroundtrue {
-		position: absolute;
-		width: 100vw;
-		height: 87.3vh;
-		background-image: url("@/assets/lnl_images/infinity-2168510.jpg");
-		background-size: 100% 100%;
-		transform: translateY(-10px);
-	}
-	.body {
-		position: relative;
-		top: -40px;
-		z-index: 999;
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		width: 100vw;
-		padding: 20px 0;
-		padding-top: 50px;
-		margin: 0;
-		opacity: 0.9;
-		.left {
-			width: 50%;
-			margin-right: 20px;
-			transform: translate(22%);
-			.comment {
-				padding: 20px;
-				padding-left: 120px;
-				margin-bottom: 20px;
-				color: #4f4f4f;
-				background-color: white;
-				border-radius: 10px;
-				.avatar {
-					position: relative;
-					left: -60px;
-					display: flex;
-					align-items: center;
-					.avatarimage1 {
-						width: 50px;
-						height: 50px;
-						margin-right: 10px;
-						overflow: hidden;
-						border-radius: 50%;
-						img {
-							width: 100%;
-						}
-					}
-					.avatarimage {
-						overflow: hidden;
-					}
-					.username {
-						margin-right: 20px;
-						font-size: 18px;
-					}
-					.score {
-						color: #f56c6c;
-					}
-				}
-				.usercomment {
-					padding-bottom: 10px;
-					font-size: 17px;
-					color: #4f4f4f;
-				}
-				.imageOter {
-					display: flex;
-					width: 100px;
-					height: 100px;
-					.image {
-						width: 100%;
-						margin: 0 3px;
-					}
-				}
-				.timecontaner {
-					display: flex;
-					align-items: center;
-					justify-content: space-between;
-				}
-			}
-		}
-		.right {
-			position: fixed;
-			top: 113px;
-			left: 200px;
-			width: 20%;
-			.selfinformation {
-				margin-bottom: 15px;
-				overflow: hidden;
-				border-radius: 15px;
-				.avatar {
-					display: flex;
-					justify-content: center;
-					margin-bottom: 10px;
-				}
-				.username {
-					font-size: 21px;
-					text-align: center;
-				}
-				.desx {
-					height: 50px;
-					text-align: center;
-				}
-				.button {
-					display: flex;
-					justify-content: center;
-				}
-			}
-			.notice {
-				margin-bottom: 15px;
-				overflow: hidden;
-				font-size: 18px;
-				border-radius: 15px;
-				.noticeinfo {
-					padding-top: 10px;
-					font-size: 13px;
-				}
-			}
-			.tag {
-				overflow: hidden;
-				border-radius: 15px;
-				.ml-2 {
-					margin: 7px 4px;
-				}
-			}
-		}
-	}
-}
+@import "./index.scss";
 </style>
