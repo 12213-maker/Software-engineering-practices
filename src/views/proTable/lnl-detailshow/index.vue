@@ -309,6 +309,7 @@ const giveAComment = async () => {
 	dialogVisible.value = false;
 	ruleForm.comment = "";
 	ruleForm.score = 0;
+	params.page = 1;
 	const res = (await commentList(params)) as any;
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;
