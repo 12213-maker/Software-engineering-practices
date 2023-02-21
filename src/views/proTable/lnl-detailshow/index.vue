@@ -121,7 +121,13 @@
 					<el-input v-model="ruleForm.comment" :rows="2" type="textarea" placeholder="Please input" />
 				</el-form-item>
 				<el-form-item label="发送图片" prop="age">
-					<el-upload :limit="1" :before-upload="beforeAvatarUpload" :on-change="change" list-type="picture" :auto-upload="false">
+					<el-upload
+						:limit="1"
+						:before-upload="beforeAvatarUpload"
+						:on-change="change"
+						list-type="picture-card"
+						:auto-upload="false"
+					>
 						<template #file="{ file }">
 							<img :src="file.url" />
 						</template>
