@@ -31,7 +31,7 @@ export const likesDelete = (params: any) => {
 };
 //用户举报评论
 export const jubaoreport = (params: any) => {
-	return http.post(" /report", params, { headers: { noLoading: true } });
+	return http.post("/report", params, { headers: { noLoading: true } });
 };
 //用户发表评论 /comment/add
 export const commentAdd = (params: any) => {

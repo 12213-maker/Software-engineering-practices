@@ -230,6 +230,7 @@ const cancelgiveAComment2 = () => {
 const giveAComment2 = async () => {
 	jubaoparams.uid = globalStore.userInformation.id;
 	await jubaoreport(jubaoparams);
+	ElMessage.success("举报成功");
 	cancelgiveAComment2();
 };
 
