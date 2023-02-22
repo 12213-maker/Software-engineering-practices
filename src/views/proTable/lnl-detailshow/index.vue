@@ -104,7 +104,7 @@
 							<el-button type="warning" round @click="LikeAdd('trunfalse', item.id)" v-else :icon="StarFilled">{{
 								item.likes
 							}}</el-button>
-							<el-button type="danger" round :icon="Warning">举报</el-button>
+							<el-button type="danger" @click="jubao(item.id)" round :icon="Warning">举报</el-button>
 						</div>
 					</div>
 				</div>
@@ -142,6 +142,25 @@
 				</span>
 			</template>
 		</el-dialog>
+
+		<el-dialog align-center draggable v-model="jubaoDialog" title="填写举报信息" width="40%">
+			<el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
+				<el-form-item label="详细描述" prop="checkPass">
+					<el-input v-model="ruleForm.comment" :rows="2" type="textarea" placeholder="Please input" />
+				</el-form-item>
+				<el-form-item label="举报理由" prop="checkPass">
+					<el-select v-model="jubaoparams.reason" class="m-2" placeholder="Select">
+						<el-option v-for="item in jubaooptions" :key="item.value" :label="item.label" :value="item.value" />
+					</el-select>
+				</el-form-item>
+			</el-form>
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="cancelgiveAComment2()">取消</el-button>
+					<el-button type="primary" @click="giveAComment2()"> 发送 </el-button>
+				</span>
+			</template>
+		</el-dialog>
 	</div>
 </template>
 
@@ -151,13 +170,13 @@ import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import { ElNotification, ElMessage } from "element-plus";
 import { getTimeState } from "@/utils/util";
-// commentAdd
-import { placeDetails, commentList, likeAdd, likesDelete, commentAdd } from "@/api/modules/lnl-paly";
+import { placeDetails, commentList, likeAdd, likesDelete, commentAdd, jubaoreport } from "@/api/modules/lnl-paly";
 import type { UploadUserFile } from "element-plus";
+import { GlobalState } from "@/stores/interface";
 
 const dialogVisible = ref(false);
 const route = useRoute();
-
+const globalStore = GlobalState();
 const ruleForm = reactive<{
 	score: number;
 	comment: string;
@@ -178,6 +197,41 @@ const rules = reactive({
 	comment: [{ require: true, trigger: "blur" }],
 	age: [{ require: true, trigger: "blur" }]
 });
+
+const jubaoDialog = ref(false);
+const jubaoparams = reactive({
+	uid: 0,
+	commentId: 0,
+	reason: 1,
+	description: ""
+});
+const jubaooptions = reactive([
+	{ label: "垃圾广告", value: 1 },
+	{ label: "有害信息", value: 2 },
+	{ label: "网络暴力", value: 3 },
+	{ label: "人生攻击", value: 4 },
+	{ label: "不实信息", value: 5 },
+	{ label: "刷屏", value: 6 },
+	{ label: "其它", value: 7 }
+]);
+
+//举报
+const jubao = async (id: any) => {
+	jubaoparams.commentId = id;
+	jubaoDialog.value = true;
+};
+//取消举报
+const cancelgiveAComment2 = () => {
+	jubaoparams.reason = 1;
+	jubaoparams.description = "";
+	jubaoDialog.value = false;
+};
+//确认举报
+const giveAComment2 = async () => {
+	jubaoparams.uid = globalStore.userInformation.id;
+	await jubaoreport(jubaoparams);
+	cancelgiveAComment2();
+};
 
 //处理图片
 const getIcon = (name: string) => {
@@ -227,14 +281,6 @@ const infiniteValue = reactive({
 let timer = ref();
 //懒加载
 const load = async () => {
-	// if (infiniteValue.current < infiniteValue.pages) {
-	// 	console.log(infiniteValue, "我是懒加载");
-	// 	const params1 = {
-	// 		...params,
-	// 		page: infiniteValue.pages
-	// 	};
-	// 	await getCommentValue(params1);
-	// } else return;
 	if (timer.value) {
 		clearTimeout(timer.value);
 	}
@@ -298,6 +344,7 @@ let formdata = new FormData();
 const change = async (uploadFile: any) => {
 	formdata.append("file", uploadFile.raw);
 };
+
 //评论
 const giveAComment = async () => {
 	const { score, comment } = ruleForm;

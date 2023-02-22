@@ -29,7 +29,10 @@ export const likeAdd = (params: any) => {
 export const likesDelete = (params: any) => {
 	return http.post("/likes/delete", params, { headers: { noLoading: true } });
 };
-
+//用户举报评论
+export const jubaoreport = (params: any) => {
+	return http.post(" /report", params, { headers: { noLoading: true } });
+};
 //用户发表评论 /comment/add
 export const commentAdd = (params: any) => {
 	return http.post("/comment/add", params, { headers: { noLoading: true, "Content-type": "multipart/form-data" } });
@@ -94,6 +97,14 @@ export const DeleteuserUserInfo = (params: any) => {
 export const myMessage = (params: any) => {
 	return http.get("/systemMessage/myMessage", params, { headers: { noLoading: true } });
 };
+//用户点击已读按钮
+export const putsystemMessage = (params: any) => {
+	return http.put("/systemMessage/read", params, { headers: { noLoading: true } });
+};
+//用户点击全部已读按钮
+export const putsystemMessagereadAll = (params: any) => {
+	return http.put("/systemMessage/readAll", params, { headers: { noLoading: true } });
+};
 //用户提交留言/message
 export const giveMyMessage = (params: any) => {
 	return http.post("/message", params, { headers: { noLoading: true } });
@@ -109,4 +120,8 @@ export const getselfcommunity = (params: any) => {
 //删除动态
 export const deletecommunity = (params: any) => {
 	return http.delete("/community", params, { headers: { noLoading: true } });
+};
+//发布动态
+export const postcommunity = (params: any) => {
+	return http.post("/community", params, { headers: { noLoading: true, "Content-type": "multipart/form-data" } });
 };

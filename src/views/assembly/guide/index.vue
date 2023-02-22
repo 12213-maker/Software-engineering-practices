@@ -7,8 +7,13 @@
 						<!-- 头像 -->
 						<div class="avatar">
 							<el-upload :on-change="change" :before-upload="beforeAvatarUpload" :show-file-list="false">
-								<!-- <el-avatar v-if="imageUrl" :size="80" :src="imageUrl"></el-avatar> -->
 								<el-avatar
+									v-if="imageUrl"
+									:size="80"
+									:src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + imageUrl)"
+								></el-avatar>
+								<el-avatar
+									v-else
 									:size="80"
 									:src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + FormValue.userinfo.img)"
 								></el-avatar>
@@ -230,6 +235,7 @@ function save() {
 		globalStore.setUserInformation(data);
 	});
 }
+
 //上传头像
 const change = async (uploadFile: any) => {
 	let formdata = new FormData();
@@ -238,9 +244,17 @@ const change = async (uploadFile: any) => {
 	await getuserInfo();
 };
 const beforeAvatarUpload = (file: any) => {
-	console.log(file);
+	if (file.type !== "image/jpeg") {
+		ElMessage.error("上传只能是png,jpg,jpeg格式!");
+		return false;
+	} else if (file.size / 1024 / 1024 > 1) {
+		ElMessage.error("上传图片大小不能超过1M!");
+		return false;
+	}
+
 	// 使图片显示
 	imageUrl.value = URL.createObjectURL(file);
+	sessionStorage.setItem("sessionImg", imageUrl.value);
 	globalStore.setImage(imageUrl.value);
 	return false;
 };
@@ -255,6 +269,7 @@ const getuserInfo = async () => {
 	FormValue.userinfo = data;
 	value.value = FormValue.userinfo.school;
 };
+
 onMounted(async () => {
 	getuserInfo();
 	const { data } = await message({});

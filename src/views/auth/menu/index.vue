@@ -3,11 +3,11 @@
 		<div class="backgroundtrue"></div>
 		<!-- 主体 -->
 		<div class="body">
-			<div class="left">
+			<div v-if="!ischangepage" class="left">
 				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in showData.data" :key="item.img">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
-							<img :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + item.userImg)" alt="" />
+							<el-avatar :size="50" :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + item.userImg)"></el-avatar>
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.username }}</span>
@@ -21,13 +21,8 @@
 					<div class="usercomment">
 						{{ item.content }}
 					</div>
-					<div class="imageOter">
-						<img
-							class="image"
-							v-if="item.img"
-							:src="getIcon('https://73d529c6.r3.cpolar.top/img/community/' + item.img)"
-							alt=""
-						/>
+					<div class="imageOter" v-if="item.img">
+						<img class="image" :src="getIcon('https://73d529c6.r3.cpolar.top/img/community/' + item.img)" alt="" />
 					</div>
 					<div class="timecontanerall">
 						<div class="timecontaner">
@@ -41,13 +36,14 @@
 							</div>
 						</div>
 						<div v-if="id === item.uid">
-							<el-button :icon="Delete" type="danger" @click="deletedongati(item.id)" size="small">删除</el-button>
+							<el-button :icon="Delete" @click.stop="deletedongati(item.id)" size="small">删除</el-button>
 						</div>
 					</div>
 				</div>
 				<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
 				<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
 			</div>
+			<Editpage @returnback="returnback" @refreshpage="refreshpage" :changeParams="changeParams" v-else />
 			<div class="right">
 				<div class="selfinformation">
 					<el-card shadow="always">
@@ -58,11 +54,17 @@
 							></el-avatar>
 						</div>
 						<div class="username">{{ globalStore.userInformation.username }}</div>
-						<div class="desx">{{ globalStore.userInformation.description }}</div>
-						<div class="button" @click="changerouter({})"><el-button type="primary" :icon="Edit">发布动态</el-button></div>
+						<div class="desx">
+							<el-tooltip class="box-item" effect="dark" :content="globalStore.userInformation.description" placement="top">
+								{{ globalStore.userInformation.description }}
+							</el-tooltip>
+						</div>
+						<div class="button" @click="changerouter('userSelf')">
+							<el-button type="primary" :icon="!ischangepage ? Edit : Back">{{ !ischangepage ? "发布动态" : "返回" }}</el-button>
+						</div>
 					</el-card>
 				</div>
-				<div class="notice">
+				<div class="notice" v-if="!ischangepage">
 					<el-card shadow="always">
 						<div class="switchschool">
 							<div>
@@ -77,15 +79,35 @@
 						</div></el-card
 					>
 				</div>
+				<div class="notice" v-else>
+					<el-card shadow="always">
+						<div class="switchschool">
+							<div>
+								<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
+							</div>
+						</div>
+						<div class="noticeinfo">
+							{{ `你好，欢迎来到用户页面，详情见右侧！` }}
+						</div></el-card
+					>
+				</div>
+
 				<div class="tag">
 					<el-card shadow="always">
 						<div class="tagtitle">动态主题</div>
-						<div class="tags">
+						<div class="tags" v-if="!ischangepage">
 							<el-tag size="large" class="ml-2" type="danger" @click="changeType(0)">全部</el-tag>
 							<el-tag size="large" class="ml-2" type="warning" @click="changeType(1)">校内美食</el-tag>
 							<el-tag size="large" class="ml-2" @click="changeType(4)">周末游线路</el-tag>
 							<el-tag size="large" class="ml-2" @click="changeType(2)">校园周边地点</el-tag>
 							<el-tag size="large" class="ml-2" type="success" @click="changeType(3)">一日游线路推荐</el-tag>
+						</div>
+						<div class="tags" v-else>
+							<el-tag size="large" class="ml-2" type="danger">全部</el-tag>
+							<el-tag size="large" class="ml-2" type="warning">校内美食</el-tag>
+							<el-tag size="large" class="ml-2">周末游线路</el-tag>
+							<el-tag size="large" class="ml-2">校园周边地点</el-tag>
+							<el-tag size="large" class="ml-2" type="success">一日游线路推荐</el-tag>
 						</div>
 					</el-card>
 				</div>
@@ -95,21 +117,40 @@
 </template>
 
 <script setup lang="ts" name="authMenu">
-import { Edit, Delete } from "@element-plus/icons-vue";
+import { Edit, Delete, Back } from "@element-plus/icons-vue";
 import { community, deletecommunity } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
 import { onMounted, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { useRouter } from "vue-router";
+import Editpage from "../edit/index.vue";
 
 const globalStore = GlobalStore();
-const router = useRouter();
+const ischangepage = ref(false);
 
+//更新页面数据
+const refreshpage = async () => {
+	params.pageNum = 1;
+	showData.data = [];
+	await getdata();
+};
+
+let changeParams = reactive({});
 //点击跳转
 const changerouter = (data: any) => {
-	router.push("/auth/edit");
-	console.log(data);
+	if (!ischangepage.value) {
+		changeParams = data === "userSelf" ? {} : data;
+		//确认跳转
+		ischangepage.value = true;
+	} else {
+		ischangepage.value = false;
+	}
 };
+//点击返回
+const returnback = () => {
+	ischangepage.value = false;
+	refreshpage();
+};
+
 const value = ref(1);
 const options = [
 	{
