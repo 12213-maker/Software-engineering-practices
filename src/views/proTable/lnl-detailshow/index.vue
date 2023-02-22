@@ -146,7 +146,7 @@
 		<el-dialog align-center draggable v-model="jubaoDialog" title="填写举报信息" width="40%">
 			<el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
 				<el-form-item label="详细描述" prop="checkPass">
-					<el-input v-model="ruleForm.comment" :rows="2" type="textarea" placeholder="Please input" />
+					<el-input v-model="jubaoparams.description" :rows="2" type="textarea" placeholder="Please input" />
 				</el-form-item>
 				<el-form-item label="举报理由" prop="checkPass">
 					<el-select v-model="jubaoparams.reason" class="m-2" placeholder="Select">
@@ -172,11 +172,11 @@ import { ElNotification, ElMessage } from "element-plus";
 import { getTimeState } from "@/utils/util";
 import { placeDetails, commentList, likeAdd, likesDelete, commentAdd, jubaoreport } from "@/api/modules/lnl-paly";
 import type { UploadUserFile } from "element-plus";
-import { GlobalState } from "@/stores/interface";
+import { GlobalStore } from "@/stores";
 
 const dialogVisible = ref(false);
 const route = useRoute();
-const globalStore = GlobalState();
+const globalStore = GlobalStore();
 const ruleForm = reactive<{
 	score: number;
 	comment: string;
