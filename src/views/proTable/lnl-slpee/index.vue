@@ -50,7 +50,7 @@
 									</div>
 								</template>
 								<el-rate disabled allow-half v-model="item.score" score-template="{value} points" />
-								<span class="score">{{ item.score }}</span>
+								<span class="score">{{ (item.score + "").slice(0, 3) }}</span>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template #label>
@@ -199,7 +199,7 @@ const sortbyposition = (flag: any) => {
 	dataValue.data1 = [];
 	apiParams.page = 1;
 	if (flag === 2) {
-		apiParams.currentLocation = "104.184071, 30.826166";
+		apiParams.currentLocation = "104.184071,30.826166";
 		apiParams.order = 2;
 	} else {
 		apiParams.currentLocation = undefined;

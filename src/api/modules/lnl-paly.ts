@@ -93,6 +93,20 @@ export const PutResetPassword = (params: any) => {
 export const DeleteuserUserInfo = (params: any) => {
 	return http.delete("/user/delete", params, { headers: { noLoading: true } });
 };
+//管理员分页查看地点/place/listAll
+export const placelistAll = (params: any) => {
+	return http.get("/place/listAll", params, { headers: { noLoading: true } });
+};
+//管理员删除店铺/place/deletePlace
+export const placedeletePlace = (params: any) => {
+	return http.delete("/place/deletePlace", params, { headers: { noLoading: true } });
+};
+//管理员新增地点/place/addPlace
+export const postPlaceAddPlace = (params: any) => {
+	return http.post("/place/addPlace", params, {
+		headers: { noLoading: true, "Content-type": "multipart/form-data" }
+	});
+};
 //用户查看系统信息
 export const myMessage = (params: any) => {
 	return http.get("/systemMessage/myMessage", params, { headers: { noLoading: true } });

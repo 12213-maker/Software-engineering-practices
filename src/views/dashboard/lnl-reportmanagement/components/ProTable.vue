@@ -1,15 +1,37 @@
 <template>
 	<div class="search">
 		<div class="input">
-			<div class="title">用户姓名：</div>
-			<el-input v-model="searchParams.username" />
+			<div class="title">地点:</div>
+			<div class="input_elinput"><el-input v-model="selectParams.name" /></div>
 		</div>
 		<div class="input">
-			<div class="title">用户角色：</div>
-			<el-select v-model="value" class="m-2" placeholder="Select">
-				<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+			<div class="title">城市:</div>
+			<div class="input_elinput"><el-input v-model="selectParams.city" /></div>
+		</div>
+		<div class="input">
+			<div class="title titlespacial">游玩方式:</div>
+			<el-select v-model="selectParams.type1" class="m-2" placeholder="Select">
+				<el-option v-for="item in selectChoices.type1" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
 		</div>
+		<div class="input">
+			<div class="title">种类:</div>
+			<el-select v-model="selectParams.type2" class="m-2" placeholder="Select">
+				<el-option
+					v-for="item in selectChoices.type2[selectParams.type1 - 1]"
+					:key="item.value"
+					:label="item.label"
+					:value="item.value"
+				/>
+			</el-select>
+		</div>
+		<div class="input order">
+			<div class="title">排序:</div>
+			<el-select v-model="selectParams.order" class="m-2" placeholder="Select">
+				<el-option v-for="item in selectChoices.order" :key="item.value" :label="item.label" :value="item.value" />
+			</el-select>
+		</div>
+
 		<div>
 			<el-button type="primary" :icon="Search" @click="search1">搜索</el-button>
 			<el-button :icon="Delete" @click="reset1">重置</el-button>
@@ -103,9 +125,8 @@ import { ColumnProps } from "@/components/ProTable/interface";
 import { ElTable, TableProps } from "element-plus";
 import { Operation, Search, Delete } from "@element-plus/icons-vue";
 import { handleProp } from "@/utils/util";
-// import SearchForm from "@/components/SearchForm/index.vue";
-import ColSetting from "./components/ColSetting.vue";
-import TableColumn from "./components/TableColumn.vue";
+import TableColumn from "@/components/ProTable/components/TableColumn.vue";
+import ColSetting from "@/components/ProTable/components/ColSetting.vue";
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	columns: ColumnProps[]; // 列配置项
@@ -133,21 +154,21 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 const value = ref("");
 
 const searchParams = reactive({ username: "", roleId: 1 });
-const options = [
-	{
-		value: 2,
-		label: "普通用户"
-	},
-	{
-		value: 1,
-		label: "管理员"
-	}
-];
 
 let params = reactive({
 	total: 0, //总页数
 	pageSize: 5, // 每页的数据条数
 	pageNum: 1 //当前的页数
+});
+//地点params
+const positionParams = reactive({
+	type1: 1,
+	type2: 0,
+	order: 1,
+	name: undefined,
+	city: "成都",
+	page: 1,
+	limit: 10
 });
 
 // 是否显示搜索模块
@@ -231,26 +252,24 @@ const openColSetting = () => colRef.value.openColSetting();
 //请求数据
 const getdataback = async () => {
 	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({ pageNum, pageSize });
+	const { data } = await props.requestApi({ ...positionParams, page: pageNum, limit: pageSize });
 	tabledata.data = data.records;
 	params.total = data.total;
-	console.log(params);
 };
 
 //每页条数改变时触发 选择一页显示多少行
 const handleSizeChange2 = (val: any) => {
+	//每次改变页面数量都要重置pageNum
+	params.pageNum = 1;
 	params.pageSize = val;
 	getdataback();
 };
 //当前页改变时触发 跳转其他页
 const handleCurrentChange2 = (val: any) => {
-	console.log("showme");
-
 	params.pageNum = val;
 	getdataback();
 };
 const handlePrevChange2 = (flag: string) => {
-	console.log("currentchange", flag);
 	if (flag === "pre") {
 		params.pageNum--;
 		getdataback();
@@ -259,11 +278,129 @@ const handlePrevChange2 = (flag: string) => {
 		getdataback();
 	}
 };
+
+const selectChoices = {
+	type1: [
+		{
+			label: "美食",
+			value: 1
+		},
+		{
+			label: "娱乐",
+			value: 2
+		},
+		{
+			label: "景点",
+			value: 3
+		},
+		{
+			label: "住宿",
+			value: 4
+		}
+	],
+	type2: [
+		[
+			{
+				value: "0",
+				label: "全部"
+			},
+			{
+				value: "1",
+				label: "中餐"
+			},
+			{
+				value: "2",
+				label: "火锅"
+			},
+			{
+				value: "3",
+				label: "小吃"
+			},
+			{
+				value: "4",
+				label: "其它"
+			}
+		],
+		[
+			{
+				value: "0",
+				label: "全部"
+			},
+			{
+				value: "1",
+				label: "游乐园"
+			},
+			{
+				value: "2",
+				label: "公园"
+			},
+			{
+				value: "3",
+				label: "商场"
+			},
+			{
+				value: "4",
+				label: "其它"
+			}
+		],
+		[
+			{
+				value: "0",
+				label: "全部"
+			},
+			{
+				value: "1",
+				label: "自然风景"
+			},
+			{
+				value: "2",
+				label: "博物馆"
+			},
+			{
+				value: "3",
+				label: "纪念地"
+			},
+			{
+				value: "4",
+				label: "其它"
+			}
+		],
+		[
+			{
+				value: "0",
+				label: "全部"
+			},
+			{
+				value: "1",
+				label: "酒店"
+			},
+			{
+				value: "2",
+				label: "名宿"
+			}
+		]
+	],
+	order: [
+		{ label: "评分降序", value: 1 },
+		{ label: "评分升序", value: 2 }
+	]
+};
+const selectParams = reactive({
+	type1: 1,
+	type2: 0,
+	order: 1,
+	name: "",
+	city: "成都"
+});
 //搜索重置
 const search1 = async () => {
 	console.log(searchParams.username, value.value);
 	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({ pageNum, pageSize, info: searchParams.username, roleId: value.value });
+	const { data } = await props.requestApi({
+		page: pageNum,
+		limit: pageSize,
+		...selectParams
+	});
 	tabledata.data = data.records;
 	params.total = data.total;
 	console.log(params);
@@ -272,6 +409,11 @@ const search1 = async () => {
 const reset1 = async () => {
 	searchParams.username = "";
 	value.value = "";
+	selectParams.city = "成都";
+	selectParams.name = "";
+	selectParams.order = 1;
+	selectParams.type1 = 1;
+	selectParams.type2 = 0;
 	await getdataback();
 };
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
@@ -310,14 +452,24 @@ onMounted(async () => {
 	box-shadow: 0 0 5px #eeeeee;
 	.input {
 		display: flex;
-		width: 32%;
+		width: 250px;
 		.title {
 			display: flex;
 			align-items: center;
+			width: 50px;
+		}
+		.titlespacial {
 			width: 90px;
 		}
-
-		/* background-color: pink; */
+		.input_elinput {
+			width: 250px;
+		}
+	}
+	.order {
+		width: 270px;
+		.title {
+			width: 50px;
+		}
 	}
 }
 </style>

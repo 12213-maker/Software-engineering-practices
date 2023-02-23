@@ -31,7 +31,7 @@
 									</div>
 								</template>
 								<el-rate disabled allow-half v-model="item.score" score-template="{value} points" />
-								<span class="score">{{ item.score }}</span>
+								<span class="score"> {{ (item.score + "").slice(0, 3) }} </span>
 							</el-descriptions-item>
 							<el-descriptions-item>
 								<template #label>
