@@ -111,9 +111,10 @@ export interface placelistvalue {
 export interface PlaceMore {
 	type1: number;
 	type2?: number;
-	order: number;
+	order?: number;
 	name?: string;
 	city: string;
 	page: number;
 	limit: number;
+	currentLocation?: string;
 }

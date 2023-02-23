@@ -10,12 +10,12 @@
 								<el-avatar
 									v-if="imageUrl"
 									:size="80"
-									:src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + imageUrl)"
+									:src="getIcon('https://48fb906.r5.cpolar.top/img/user/' + imageUrl)"
 								></el-avatar>
 								<el-avatar
 									v-else
 									:size="80"
-									:src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + FormValue.userinfo.img)"
+									:src="getIcon('https://48fb906.r5.cpolar.top/img/user/' + FormValue.userinfo.img)"
 								></el-avatar>
 							</el-upload>
 						</div>

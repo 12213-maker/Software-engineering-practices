@@ -7,7 +7,7 @@
 				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in showData.data" :key="item.img">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
-							<el-avatar :size="50" :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + item.userImg)"></el-avatar>
+							<el-avatar :size="50" :src="getIcon('https://48fb906.r5.cpolar.top/img/user/' + item.userImg)"></el-avatar>
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.username }}</span>
@@ -22,7 +22,7 @@
 						{{ item.content }}
 					</div>
 					<div class="imageOter" v-if="item.img">
-						<img class="image" :src="getIcon('https://73d529c6.r3.cpolar.top/img/getselfcommunity/' + item.img)" alt="" />
+						<img class="image" :src="getIcon('https://48fb906.r5.cpolar.top/img/getselfcommunity/' + item.img)" alt="" />
 					</div>
 					<div class="timecontanerall">
 						<div class="timecontaner">
@@ -50,7 +50,7 @@
 						<div class="avatar">
 							<el-avatar
 								:size="120"
-								:src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + globalStore.userInformation.img)"
+								:src="getIcon('https://48fb906.r5.cpolar.top/img/user/' + globalStore.userInformation.img)"
 							></el-avatar>
 						</div>
 						<div class="username">{{ globalStore.userInformation.username }}</div>

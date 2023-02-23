@@ -1,12 +1,12 @@
 <template>
 	<el-dropdown trigger="click">
 		<!-- <div class="avatar">
-			<img v-if="image" :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + image)" alt="avatar" />
-			<img v-else :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + userinfo.img)" alt="avatar" />
+			<img v-if="image" :src="getIcon('https://48fb906.r5.cpolar.top/img/user/' + image)" alt="avatar" />
+			<img v-else :src="getIcon('https://48fb906.r5.cpolar.top/img/user/' + userinfo.img)" alt="avatar" />
 
 			</div> -->
-		<el-avatar v-if="image" :size="40" :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + image)"></el-avatar>
-		<el-avatar v-else :size="40" :src="getIcon('https://73d529c6.r3.cpolar.top/img/user/' + userinfo.img)"></el-avatar>
+		<el-avatar v-if="image" :size="40" :src="getIcon('https://48fb906.r5.cpolar.top/img/user/' + image)"></el-avatar>
+		<el-avatar v-else :size="40" :src="getIcon('https://48fb906.r5.cpolar.top/img/user/' + userinfo.img)"></el-avatar>
 		<template #dropdown>
 			<el-dropdown-menu>
 				<el-dropdown-item @click="changerouter()">
