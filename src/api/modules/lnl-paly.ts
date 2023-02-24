@@ -71,6 +71,10 @@ export const report = (params: any) => {
 export const message = (params: any) => {
 	return http.get("/message/myMessages", params, { headers: { noLoading: true } });
 };
+//系统消息提示 /systemMessage/unread
+export const systemMessageunread = (params: any) => {
+	return http.get("/systemMessage/unread", params, { headers: { noLoading: true } });
+};
 
 //管理员获取table列表/user/userInfo
 export const userUserInfo = (params: any) => {

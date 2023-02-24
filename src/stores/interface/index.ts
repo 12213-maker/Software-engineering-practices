@@ -7,6 +7,7 @@ export interface GlobalState {
 	themeConfig: ThemeConfigProps;
 	userInformation?: any;
 	image?: any;
+	systemMessageLength?: any;
 }
 
 /* themeConfigProp */

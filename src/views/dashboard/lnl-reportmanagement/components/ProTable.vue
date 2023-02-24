@@ -52,6 +52,7 @@
 		</div>
 		<!-- 表格主体 -->
 		<el-table
+			v-loading="loading"
 			ref="tableRef"
 			v-bind="$attrs"
 			:data="tabledata.data"
@@ -138,6 +139,8 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	selectId?: string; // 当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
 }
+
+const loading = ref(true);
 
 // 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
@@ -249,9 +252,11 @@ const openColSetting = () => colRef.value.openColSetting();
 
 //请求数据
 const getdataback = async () => {
+	loading.value = true;
 	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({ ...positionParams, page: pageNum, limit: pageSize });
+	const { data } = await props.requestApi({ ...positionParams, page: pageNum, limit: pageSize, ...selectParams });
 	tabledata.data = data.records;
+	loading.value = false;
 	params.total = data.total;
 };
 
@@ -290,81 +295,81 @@ const selectChoices = {
 	type2: [
 		[
 			{
-				value: "0",
+				value: 0,
 				label: "全部"
 			},
 			{
-				value: "1",
+				value: 1,
 				label: "中餐"
 			},
 			{
-				value: "2",
+				value: 2,
 				label: "火锅"
 			},
 			{
-				value: "3",
+				value: 3,
 				label: "小吃"
 			},
 			{
-				value: "4",
+				value: 4,
 				label: "其它"
 			}
 		],
 		[
 			{
-				value: "0",
+				value: 0,
 				label: "全部"
 			},
 			{
-				value: "1",
+				value: 1,
 				label: "游乐园"
 			},
 			{
-				value: "2",
+				value: 2,
 				label: "公园"
 			},
 			{
-				value: "3",
+				value: 3,
 				label: "商场"
 			},
 			{
-				value: "4",
+				value: 4,
 				label: "其它"
 			}
 		],
 		[
 			{
-				value: "0",
+				value: 0,
 				label: "全部"
 			},
 			{
-				value: "1",
+				value: 1,
 				label: "自然风景"
 			},
 			{
-				value: "2",
+				value: 2,
 				label: "博物馆"
 			},
 			{
-				value: "3",
+				value: 3,
 				label: "纪念地"
 			},
 			{
-				value: "4",
+				value: 4,
 				label: "其它"
 			}
 		],
 		[
 			{
-				value: "0",
+				value: 0,
 				label: "全部"
 			},
 			{
-				value: "1",
+				value: 1,
 				label: "酒店"
 			},
 			{
-				value: "2",
+				value: 2,
 				label: "名宿"
 			}
 		]
@@ -383,7 +388,8 @@ const selectParams = reactive({
 });
 //搜索重置
 const search1 = async () => {
-	console.log(searchParams.username, value.value);
+	loading.value = true;
+	params.pageNum = 1;
 	const { pageNum, pageSize } = params;
 	const { data } = await props.requestApi({
 		page: pageNum,
@@ -391,6 +397,7 @@ const search1 = async () => {
 		...selectParams
 	});
 	tabledata.data = data.records;
+	loading.value = false;
 	params.total = data.total;
 	console.log(params);
 };

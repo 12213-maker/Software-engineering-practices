@@ -5,8 +5,11 @@
 			<img v-else :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + userinfo.img)" alt="avatar" />
 
 			</div> -->
-		<el-avatar v-if="image" :size="40" :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + image)"></el-avatar>
-		<el-avatar v-else :size="40" :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + userinfo.img)"></el-avatar>
+		<el-badge :is-dot="unreadmessage ? true : false" class="item">
+			<el-avatar v-if="image" :size="40" :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + image)"></el-avatar>
+			<el-avatar v-else :size="40" :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + userinfo.img)"></el-avatar>
+		</el-badge>
+
 		<template #dropdown>
 			<el-dropdown-menu>
 				<el-dropdown-item @click="changerouter()">
@@ -16,7 +19,9 @@
 					<el-icon><Edit /></el-icon>{{ $t("header.changePassword") }}
 				</el-dropdown-item>
 				<el-dropdown-item @click="showMymessage">
-					<el-icon><Bell /></el-icon>{{ "查看系统信息" }}
+					<el-badge :hidden="unreadmessage ? false : true" :value="unreadmessage" class="item">
+						<el-icon><Bell /></el-icon>{{ "查看系统信息" }}
+					</el-badge>
 				</el-dropdown-item>
 				<el-dropdown-item @click="logout" divided>
 					<el-icon><SwitchButton /></el-icon>{{ $t("header.logout") }}
@@ -41,7 +46,14 @@
 			<el-table-column property="content" label="消息内容" />
 			<el-table-column property="status" label="消息状态" width="100">
 				<template #default="scope2">
-					<div @change="changestatusresolve(scope2.row)">{{ scope2.row.status ? "已读" : "未读" }}</div>
+					<el-checkbox
+						@change="changestatusresolve(scope2.row)"
+						:checked="scope2.row.status === 1 ? true : false"
+						:disabled="scope2.row.status === 1 ? true : false"
+						:label="scope2.row.status === 1 ? '已读' : '未读'"
+						size="large"
+					/>
+					{{ scope2.row.status }}
 				</template>
 			</el-table-column>
 		</el-table>
@@ -53,7 +65,7 @@
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { GlobalStore } from "@/stores";
 import { LOGIN_URL } from "@/config/config";
-import { logoutApi, myMessage, putsystemMessage, putsystemMessagereadAll } from "@/api/modules/lnl-paly";
+import { logoutApi, myMessage, putsystemMessage, putsystemMessagereadAll, systemMessageunread } from "@/api/modules/lnl-paly";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElMessage } from "element-plus";
 import InfoDialog from "./InfoDialog.vue";
@@ -63,7 +75,6 @@ const globalStore = GlobalStore();
 const userinfo = globalStore.userInformation || sessionStorage.getItem("sessionImg");
 const router = useRouter();
 let dialogTableVisible = ref(false);
-
 //处理图片
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;
@@ -91,9 +102,15 @@ const systeminfo = reactive<{ data: any }>({ data: {} });
 const showMymessage = async () => {
 	dialogTableVisible.value = true;
 	const { data } = (await myMessage({})) as any;
+	refreshmessage();
 	systeminfo.data = data;
 };
 
+//更新未读条数
+const refreshmessage = async () => {
+	const res = await systemMessageunread({});
+	unreadmessage.value = res.data;
+};
 interface DialogExpose {
 	openDialog: () => void;
 }
@@ -107,14 +124,17 @@ const imageUrl = computed(() => {
 	return globalStore.image;
 });
 //点击已读
-const changestatusresolve = (row: any) => {
+const changestatusresolve = async (row: any) => {
 	console.log(row);
-	putsystemMessage({ systemMessageId: row.id });
+	await putsystemMessage({ systemMessageId: row.id });
+	showMymessage();
+	refreshmessage();
 };
 //点击全读
 const readAllnews = async () => {
 	await putsystemMessagereadAll({});
 	ElMessage.success("全部已读！");
+	refreshmessage();
 	dialogTableVisible.value = false;
 };
 watch(
@@ -124,6 +144,15 @@ watch(
 	},
 	{ immediate: true, deep: true }
 );
+const unreadmessage = ref();
+unreadmessage.value = globalStore.systemMessageLength;
+const mesage = computed(() => {
+	return globalStore.systemMessageLength;
+});
+watch(mesage, newvalue => {
+	unreadmessage.value = newvalue;
+});
+
 onMounted(() => {});
 </script>
 

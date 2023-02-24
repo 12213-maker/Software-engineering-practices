@@ -34,6 +34,7 @@ export const errorRouter = [
 		path: "/403",
 		name: "403",
 		component: () => import("@/components/ErrorMessage/403.vue"),
+
 		meta: {
 			title: "403页面"
 		}
@@ -42,6 +43,7 @@ export const errorRouter = [
 		path: "/404",
 		name: "404",
 		component: () => import("@/components/ErrorMessage/404.vue"),
+
 		meta: {
 			title: "404页面"
 		}

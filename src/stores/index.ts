@@ -13,6 +13,7 @@ export const GlobalStore = defineStore({
 		// token
 		token: "",
 		// userInfo
+		systemMessageLength: "",
 		userInfo: "",
 		image: "",
 		userInformation: {},
@@ -76,6 +77,9 @@ export const GlobalStore = defineStore({
 		// setThemeConfig
 		setThemeConfig(themeConfig: ThemeConfigProps) {
 			this.themeConfig = themeConfig;
+		},
+		setSystemMessageLength(total: any) {
+			this.systemMessageLength = total;
 		}
 	},
 	persist: piniaPersistConfig("GlobalState")

@@ -67,7 +67,7 @@
 					</el-descriptions>
 				</div>
 			</div>
-			<div class="bottom">
+			<div class="bottom" v-if="dataValue.commentData.length !== 0">
 				<div class="total">
 					<div>
 						<span style="padding-right: 50px">{{ `评论` }}</span>
@@ -88,7 +88,7 @@
 					<div class="usercomment">
 						{{ item.comment }}
 					</div>
-					<div class="imageOter">
+					<div class="imageOter" v-if="item.pictures.length !== 0">
 						<img
 							v-for="picture in item.pictures"
 							class="image"
@@ -104,29 +104,30 @@
 							<el-button type="warning" round @click="LikeAdd('trunfalse', item.id)" v-else :icon="StarFilled">{{
 								item.likes
 							}}</el-button>
-							<el-button type="danger" @click="jubao(item.id)" round :icon="Warning">举报</el-button>
+							<el-button type="danger" @click="jubao(item.id, item.uid)" round :icon="Warning">举报</el-button>
 						</div>
 					</div>
 				</div>
 				<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
 				<!-- <el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider> -->
 			</div>
+			<div v-else>暂无评论</div>
 		</div>
 		<el-dialog align-center draggable v-model="dialogVisible" title="评论" width="40%">
-			<el-form ref="ruleFormRef" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
-				<el-form-item label="点击评分" prop="pass">
+			<el-form ref="ruleFormRefsjpw" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
+				<el-form-item label="点击评分" prop="score">
 					<el-rate v-model="ruleForm.score" />
 				</el-form-item>
-				<el-form-item label="发送评论" prop="checkPass">
+				<el-form-item label="发送评论" prop="comment">
 					<el-input v-model="ruleForm.comment" :rows="2" type="textarea" placeholder="Please input" />
 				</el-form-item>
-				<el-form-item label="发送图片" prop="age">
+				<el-form-item label="发送图片" prop="fileList">
 					<el-upload
+						:auto-upload="false"
 						:limit="1"
 						:before-upload="beforeAvatarUpload"
 						:on-change="change"
 						list-type="picture-card"
-						:auto-upload="false"
 					>
 						<template #file="{ file }">
 							<img :src="file.url" />
@@ -173,7 +174,6 @@ import { getTimeState } from "@/utils/util";
 import { placeDetails, commentList, likeAdd, likesDelete, commentAdd, jubaoreport } from "@/api/modules/lnl-paly";
 import type { UploadUserFile } from "element-plus";
 import { GlobalStore } from "@/stores";
-
 const dialogVisible = ref(false);
 const route = useRoute();
 const globalStore = GlobalStore();
@@ -184,13 +184,9 @@ const ruleForm = reactive<{
 }>({
 	score: 0,
 	comment: "",
-	fileList: [
-		{
-			name: "food.jpeg",
-			url: "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
-		}
-	]
+	fileList: []
 });
+const ruleFormRefsjpw = ref();
 const givecommentFlag = ref(false);
 const rules = reactive({
 	score: [{ require: true, trigger: "blur" }],
@@ -216,7 +212,11 @@ const jubaooptions = reactive([
 ]);
 
 //举报
-const jubao = async (id: any) => {
+const jubao = async (id: any, uid: any) => {
+	if (uid === globalStore.userInformation.id) {
+		ElMessage.warning("不可以自我举报！");
+		return;
+	}
 	jubaoparams.commentId = id;
 	jubaoDialog.value = true;
 };
@@ -348,21 +348,25 @@ const change = async (uploadFile: any) => {
 
 //评论
 const giveAComment = async () => {
-	const { score, comment } = ruleForm;
-	if (score + "" == "" || comment == "") {
-		return;
+	const valid = await ruleFormRefsjpw.value.validate();
+	if (valid) {
+		const { score, comment } = ruleForm;
+		if (score + "" == "" || comment == "") {
+			return;
+		}
+		const { pid } = params;
+		await commentAdd({ pid, score, comment, files: formdata.get("file") });
+		dialogVisible.value = false;
+		ruleForm.comment = "";
+		ruleForm.score = 0;
+		params.page = 1;
+		const res = (await commentList(params)) as any;
+		infiniteValue.current = res.data.current;
+		infiniteValue.pages = res.data.pages;
+		dataValue.commentData = (res.data as any).records;
+		ElMessage.success("发送评论成功");
 	}
-	const { pid } = params;
-	await commentAdd({ pid, score, comment, files: formdata.get("file") });
-	dialogVisible.value = false;
-	ruleForm.comment = "";
-	ruleForm.score = 0;
-	params.page = 1;
-	const res = (await commentList(params)) as any;
-	infiniteValue.current = res.data.current;
-	infiniteValue.pages = res.data.pages;
-	dataValue.commentData = (res.data as any).records;
-	ElMessage.success("发送评论成功");
+	return;
 };
 
 //取消评论

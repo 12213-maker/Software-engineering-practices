@@ -113,7 +113,7 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
 }
 
-const selectStatus = ref();
+const selectStatus = ref<any>(undefined);
 const selectStatusoption = [
 	{ label: "未处理", value: 0 },
 	{ label: "已处理", value: 1 }
@@ -146,7 +146,7 @@ const searchinfo = async () => {
 };
 const restinfo = () => {
 	positionParams.info = undefined;
-	selectStatus.value = "";
+	selectStatus.value = undefined;
 	getdataback();
 };
 
@@ -231,7 +231,7 @@ const openColSetting = () => colRef.value.openColSetting();
 //请求数据
 const getdataback = async () => {
 	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({ ...positionParams, pageNum, pageSize });
+	const { data } = await props.requestApi({ ...positionParams, pageNum, pageSize, info: selectStatus.value });
 	tabledata.data = data.records;
 	params.total = data.total;
 };

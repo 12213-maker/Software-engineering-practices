@@ -2,11 +2,11 @@
 	<div class="search">
 		<div class="input">
 			<div class="title">用户姓名：</div>
-			<el-input v-model="searchParams.username" />
+			<el-input v-model="paramsTrue.info" />
 		</div>
 		<div class="input">
 			<div class="title">用户角色：</div>
-			<el-select v-model="value" class="m-2" placeholder="Select">
+			<el-select v-model="paramsTrue.roleId" class="m-2" placeholder="Select">
 				<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
 		</div>
@@ -30,6 +30,7 @@
 		</div>
 		<!-- 表格主体 -->
 		<el-table
+			v-loading="loading"
 			ref="tableRef"
 			v-bind="$attrs"
 			:data="tabledata.data"
@@ -77,9 +78,9 @@
 		<!-- 分页组件 -->
 		<slot name="pagination">
 			<el-pagination
-				:current-page="params.pageNum"
+				:current-page="paramsTrue.pageNum"
 				:page-sizes="[1, 5, 10, 20]"
-				:page-size="params.pageSize"
+				:page-size="paramsTrue.pageSize"
 				layout="total, sizes, prev, pager, next, jumper"
 				:total="params.total"
 				background
@@ -118,6 +119,8 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
 }
 
+const loading = ref(true);
+
 // 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
 	columns: () => [],
@@ -128,9 +131,6 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	selectId: "id",
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
-const value = ref("");
-
-const searchParams = reactive({ username: "", roleId: 1 });
 const options = [
 	{
 		value: 2,
@@ -143,9 +143,19 @@ const options = [
 ];
 
 let params = reactive({
-	total: 0, //总页数
+	total: 0
+});
+
+const paramsTrue = reactive<{
+	pageSize: number;
+	pageNum: number;
+	info: undefined | string;
+	roleId: undefined | number;
+}>({
 	pageSize: 5, // 每页的数据条数
-	pageNum: 1 //当前的页数
+	pageNum: 1, //当前的页数
+	info: undefined,
+	roleId: undefined
 });
 
 // 是否显示搜索模块
@@ -228,38 +238,33 @@ const openColSetting = () => colRef.value.openColSetting();
 
 //请求数据
 const getdataback = async () => {
-	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({ pageNum, pageSize });
+	loading.value = true;
+	const { data } = await props.requestApi(paramsTrue);
 	tabledata.data = data.records;
 	params.total = data.total;
-	console.log(params);
+	loading.value = false;
 };
 
 //每页条数改变时触发 选择一页显示多少行
 const handleSizeChange2 = (val: any) => {
-	params.pageSize = val;
+	paramsTrue.pageSize = val;
 	getdataback();
 };
 //当前页改变时触发 跳转其他页
 const handleCurrentChange2 = (val: any) => {
-	console.log("showme");
-
-	params.pageNum = val;
+	paramsTrue.pageNum = val;
 	getdataback();
 };
 //搜索重置
 const search1 = async () => {
-	console.log(searchParams.username, value.value);
-	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({ pageNum, pageSize, info: searchParams.username, roleId: value.value });
-	tabledata.data = data.records;
-	params.total = data.total;
-	console.log(params);
+	paramsTrue.pageNum = 1;
+	getdataback();
 };
 
 const reset1 = async () => {
-	searchParams.username = "";
-	value.value = "";
+	paramsTrue.info = undefined;
+	paramsTrue.roleId = undefined;
+	paramsTrue.pageNum = 1;
 	await getdataback();
 };
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)

@@ -54,8 +54,6 @@ const getTableList = (params: any) => {
 	return placelistAll(params);
 };
 const getTableList2 = () => {
-	console.log("我被触发了");
-
 	const positionParams = reactive({
 		type1: 1,
 		type2: 0,
@@ -117,14 +115,13 @@ const deleteAccount = async (params: any) => {
 		type: "warning",
 		draggable: true
 	}).then(async () => {
-		await placedeletePlace({ id: params.id });
-		proTable.value.getdataback();
 		ElMessage({
 			type: "success",
 			message: `删除成功!`
 		});
+		await placedeletePlace({ id: params.id });
+		proTable.value.getdataback();
 	});
-	proTable.value.getdataback();
 };
 //处理图片
 const getIcon = (name: string) => {

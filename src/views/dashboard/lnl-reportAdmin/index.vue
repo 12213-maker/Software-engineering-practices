@@ -9,17 +9,24 @@
 			:dataCallback="dataCallback"
 		>
 			<!-- 表格 header 按钮 -->
-			<template #tableHeader>
-				<!-- <el-button type="primary" :icon="Upload" plain @click="dialogVisible = true"> 新增地点 </el-button> -->
-			</template>
+			<template #tableHeader> </template>
 			<!-- 表格操作 -->
 			<template #operation="scope">
-				<el-button type="primary" link @click="deleteAccount(scope.row)">处理</el-button>
+				<!-- <el-button type="primary" link @click="deleteAccount(scope.row)">处理</el-button> -->
+				<el-button type="primary" link @click="handelclickchuli(scope.row)">处理</el-button>
 			</template>
 		</ProTable>
 		<UserDrawer ref="drawerRef" @refresh="refresh" />
-		<el-dialog :destroy-on-close="true" v-model="dialogVisible" title="新增地点" width="40%">
-			<Adduser @change_dialog_visible="changeDialogvisible" compname="usermanagement" />
+		<el-dialog :destroy-on-close="true" v-model="dialogVisible" title="处理评论" width="40%">
+			<div>举报评论：{{ dialogInfo.comment.comment }}</div>
+			<div>举报原因：{{ dialogInfo.description }}</div>
+
+			<template #footer>
+				<span class="dialog-footer">
+					<el-button @click="handelclickchuli2(0)">改为已处理</el-button>
+					<el-button type="primary" @click="handelclickchuli2(1)"> 删除该举报信息 </el-button>
+				</span>
+			</template>
 		</el-dialog>
 	</div>
 </template>
@@ -29,10 +36,8 @@ import { ref, reactive } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "./components/ProTable.vue";
 import UserDrawer from "@/views/proTable/components/UserDrawer.vue";
-// , reportadminhandle
 import { reportadminget, reportadminhandle } from "@/api/modules/lnl-paly";
-import Adduser from "./components/Adduser.vue";
-import { ElMessage, ElMessageBox } from "element-plus";
+import { ElMessage } from "element-plus";
 
 const proTable = ref();
 const initParam = reactive({
@@ -51,9 +56,6 @@ const getTableList = (params: any) => {
 	let newParams = JSON.parse(JSON.stringify(params));
 	newParams.username && (newParams.username = "custom-" + newParams.username);
 	return reportadminget(params);
-};
-const changeDialogvisible = (value: any) => {
-	dialogVisible.value = value;
 };
 // 表格配置项
 const columns: ColumnProps[] = [
@@ -112,36 +114,38 @@ const handleReason = (scope: any) => {
 	}
 	return "暂未选择";
 };
-// 删除用户信息
-const deleteAccount = async (params: any) => {
-	ElMessageBox.confirm(
-		`举报评论：${params.comment.comment}
-		举报原因：${params.description}
-	`,
-		"温馨提示",
-		{
-			confirmButtonText: "删除该举报信息",
-			cancelButtonText: "改为已处理",
+const dialogInfo = ref();
+const handelclickchuli = (value: any) => {
+	if (value.status === 1) {
+		ElMessage({
 			type: "warning",
-			draggable: true
-		}
-	)
-		.then(async () => {
-			await reportadminhandle({ id: params.id, status: 1 });
-			proTable.value.getdataback();
-			ElMessage({
-				type: "success",
-				message: `删除成功!`
-			});
-		})
-		.catch(async () => {
-			await reportadminhandle({ id: params.id, status: 2 });
-			proTable.value.getdataback();
-			ElMessage({
-				type: "success",
-				message: `已处理!`
-			});
+			message: `已处理!`
 		});
+		return;
+	}
+	dialogVisible.value = true;
+	dialogInfo.value = value;
+};
+const handelclickchuli2 = async (value: any) => {
+	//点击删除
+	if (value) {
+		await reportadminhandle({ id: dialogInfo.value.id, status: 1 });
+		proTable.value.getdataback();
+		ElMessage({
+			type: "success",
+			message: `删除成功!`
+		});
+	}
+	//点击已处理
+	else {
+		await reportadminhandle({ id: dialogInfo.value.id, status: 2 });
+		proTable.value.getdataback();
+		ElMessage({
+			type: "success",
+			message: `已处理!`
+		});
+	}
+	dialogVisible.value = false;
 };
 const drawerRef = ref();
 </script>

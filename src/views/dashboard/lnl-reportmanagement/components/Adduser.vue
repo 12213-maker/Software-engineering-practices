@@ -34,13 +34,18 @@
 			<el-input v-model="positionForm.number" />
 		</el-form-item>
 		<el-form-item prop="city" label="城市名">
-			<!-- <el-input v-model="positionForm.city" /> -->
 			<el-select v-model="positionForm.city" class="m-2" placeholder="Select">
 				<el-option v-for="item in selectCity" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
 		</el-form-item>
 		<el-form-item prop="files" label="图片">
-			<el-upload :on-change="onImgChange" :before-upload="beforeAvatarUpload" list-type="picture-card" :auto-upload="false">
+			<el-upload
+				:on-remove="handleRemove"
+				:on-change="onImgChange"
+				:before-upload="beforeAvatarUpload"
+				list-type="picture-card"
+				:auto-upload="false"
+			>
 				<el-icon><Plus /></el-icon>
 				<template #file="{ file }">
 					<div>
@@ -50,8 +55,8 @@
 			</el-upload>
 		</el-form-item>
 		<el-form-item>
-			<el-button @click="chanagevisible">Cancel</el-button>
-			<el-button type="primary" @click="onSubmit">Create</el-button>
+			<el-button @click="chanagevisible">取消</el-button>
+			<el-button type="primary" @click="onSubmit">新增</el-button>
 		</el-form-item>
 	</el-form>
 </template>
@@ -220,6 +225,12 @@ const beforeAvatarUpload = (file: any) => {
 	console.log(imageUrl);
 	return false;
 };
+
+//删除图片
+const handleRemove = (uploadFile: any, uploadFiles: any) => {
+	console.log(uploadFile, uploadFiles);
+};
+
 let formdata = new FormData();
 //处理图片
 const onImgChange = (uploadFile: any) => {

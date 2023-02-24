@@ -65,11 +65,14 @@
 <script setup lang="ts" name="dataVisualize">
 import { ref, onMounted } from "vue";
 import Curve from "./components/curve.vue";
+import { systemMessageunread } from "@/api/modules/lnl-paly";
+import { GlobalStore } from "@/stores";
 
 const tabActive = ref(1);
 const tabActive2 = ref(1);
 const curveRef = ref();
 const value1 = ref(5);
+const globalStore = GlobalStore();
 
 onMounted(() => {});
 
@@ -220,6 +223,10 @@ const curveData = [
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;
 };
+onMounted(async () => {
+	const res = await systemMessageunread({});
+	globalStore.setSystemMessageLength(res.data);
+});
 </script>
 
 <style scoped lang="scss">
