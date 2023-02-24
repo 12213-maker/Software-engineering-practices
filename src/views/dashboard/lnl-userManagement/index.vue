@@ -69,7 +69,6 @@ const changeDialogvisible = (value: any) => {
 
 // 表格配置项
 const columns: ColumnProps[] = [
-	{ type: "index", label: "#", width: 80 },
 	{
 		prop: "img",
 		label: "用户图片",
@@ -78,7 +77,7 @@ const columns: ColumnProps[] = [
 				<el-avatar
 					size={50}
 					shape={"square"}
-					src={getIcon("https://48fb906.r5.cpolar.top/img/user/" + scope.row.img)}
+					src={getIcon("https://6a3225e5.r5.cpolar.top/img/user/" + scope.row.img)}
 				></el-avatar>
 			);
 		}

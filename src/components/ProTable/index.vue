@@ -85,8 +85,6 @@
 				background
 				@size-change="handleSizeChange2"
 				@current-change="handleCurrentChange2"
-				@prev-click="handlePrevChange2('pre')"
-				@next-click="handlePrevChange2('next')"
 			/>
 		</slot>
 	</div>
@@ -248,16 +246,6 @@ const handleCurrentChange2 = (val: any) => {
 
 	params.pageNum = val;
 	getdataback();
-};
-const handlePrevChange2 = (flag: string) => {
-	console.log("currentchange", flag);
-	if (flag === "pre") {
-		params.pageNum--;
-		getdataback();
-	} else {
-		params.pageNum++;
-		getdataback();
-	}
 };
 //搜索重置
 const search1 = async () => {

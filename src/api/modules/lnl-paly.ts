@@ -107,6 +107,26 @@ export const postPlaceAddPlace = (params: any) => {
 		headers: { noLoading: true, "Content-type": "multipart/form-data" }
 	});
 };
+//管理员分页查看举报信息/report/admin/get
+export const reportadminget = (params: any) => {
+	return http.get("/report/admin/get", params, { headers: { noLoading: true } });
+};
+//管理员处理举报信息/report/admin/handle
+export const reportadminhandle = (params: any) => {
+	return http.put("/report/admin/handle", params, { headers: { noLoading: true } });
+};
+//管理员处理/message/admin/get
+export const messageadminget = (params: any) => {
+	return http.get("/message/admin/get", params, { headers: { noLoading: true } });
+};
+//管理员删除留言 /message/admin
+export const messageadmin = (params: any) => {
+	return http.delete("/message/admin", params, { headers: { noLoading: true } });
+};
+//管理员处理留言状态/message/admin
+export const putmessageadmin = (params: any) => {
+	return http.put("/message/admin", params, { headers: { noLoading: true } });
+};
 //用户查看系统信息
 export const myMessage = (params: any) => {
 	return http.get("/systemMessage/myMessage", params, { headers: { noLoading: true } });

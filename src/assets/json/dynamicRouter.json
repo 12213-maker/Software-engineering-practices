@@ -234,6 +234,34 @@
 						"isAffix": false,
 						"isKeepAlive": true
 					}
+				},
+				{
+					"path": "/management/reportAdmin",
+					"name": "reportAdmin",
+					"component": "/dashboard/lnl-reportAdmin/index",
+					"meta": {
+						"icon": "UserFilled",
+						"title": "举报管理",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
+				},
+				{
+					"path": "/management/message",
+					"name": "message",
+					"component": "/dashboard/lnl-message/index",
+					"meta": {
+						"icon": "UserFilled",
+						"title": "留言管理",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
 				}
 			]
 		}

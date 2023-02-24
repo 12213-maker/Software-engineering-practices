@@ -69,7 +69,6 @@ const proTable = ref();
 
 // 表格配置项
 const columns: ColumnProps[] = [
-	{ type: "index", label: "#", width: 80 },
 	{ prop: "username", label: "用户姓名", width: 120 },
 	{ prop: "gender", label: "性别", width: 120, sortable: true, enum: genderType },
 	{ prop: "idCard", label: "身份证号" },

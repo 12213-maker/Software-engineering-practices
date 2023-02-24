@@ -1,43 +1,17 @@
 <template>
 	<div class="search">
 		<div class="input">
-			<div class="title">地点:</div>
-			<div class="input_elinput"><el-input v-model="selectParams.name" /></div>
-		</div>
-		<div class="input">
-			<div class="title">城市:</div>
-			<div class="input_elinput"><el-input v-model="selectParams.city" /></div>
-		</div>
-		<div class="input">
-			<div class="title titlespacial">游玩方式:</div>
-			<el-select v-model="selectParams.type1" class="m-2" placeholder="Select">
-				<el-option v-for="item in selectChoices.type1" :key="item.value" :label="item.label" :value="item.value" />
-			</el-select>
-		</div>
-		<div class="input">
-			<div class="title">种类:</div>
-			<el-select v-model="selectParams.type2" class="m-2" placeholder="Select">
-				<el-option
-					v-for="item in selectChoices.type2[selectParams.type1 - 1]"
-					:key="item.value"
-					:label="item.label"
-					:value="item.value"
-				/>
-			</el-select>
-		</div>
-		<div class="input order">
-			<div class="title">排序:</div>
-			<el-select v-model="selectParams.order" class="m-2" placeholder="Select">
-				<el-option v-for="item in selectChoices.order" :key="item.value" :label="item.label" :value="item.value" />
+			<div class="title">状态:</div>
+			<el-select v-model="selectStatus" class="m-2" placeholder="Select">
+				<el-option v-for="item in selectStatusoption" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
 		</div>
 
 		<div>
-			<el-button type="primary" :icon="Search" @click="search1">搜索</el-button>
-			<el-button :icon="Delete" @click="reset1">重置</el-button>
+			<el-button type="primary" :icon="Search" @click="searchinfo">搜索</el-button>
+			<el-button @click="restinfo">重置</el-button>
 		</div>
 	</div>
-
 	<!-- 表格内容 card -->
 	<div class="card table">
 		<!-- 表格头部 操作按钮 -->
@@ -121,7 +95,7 @@ import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { ElTable, TableProps } from "element-plus";
-import { Operation, Search, Delete } from "@element-plus/icons-vue";
+import { Operation, Search } from "@element-plus/icons-vue";
 import { handleProp } from "@/utils/util";
 import TableColumn from "@/components/ProTable/components/TableColumn.vue";
 import ColSetting from "@/components/ProTable/components/ColSetting.vue";
@@ -138,6 +112,12 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	selectId?: string; // 当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
 }
+const selectStatus = ref();
+const selectStatusoption = [
+	{ label: "未读", value: 1 },
+	{ label: "处理中", value: 2 },
+	{ label: "已完成", value: 3 }
+];
 
 // 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
@@ -149,24 +129,15 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	selectId: "id",
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
-const value = ref("");
-
-const searchParams = reactive({ username: "", roleId: 1 });
 
 let params = reactive({
 	total: 0, //总页数
-	pageSize: 5, // 每页的数据条数
+	pageSize: 10, // 每页的数据条数
 	pageNum: 1 //当前的页数
 });
 //地点params
 const positionParams = reactive({
-	type1: 1,
-	type2: 0,
-	order: 1,
-	name: undefined,
-	city: "成都",
-	page: 1,
-	limit: 10
+	info: ""
 });
 
 // 是否显示搜索模块
@@ -204,6 +175,17 @@ const setEnumMap = async (col: ColumnProps) => {
 	if (typeof col.enum !== "function") return enumMap.value.set(col.prop!, col.enum!);
 	const { data } = await col.enum();
 	enumMap.value.set(col.prop!, data);
+};
+const searchinfo = async () => {
+	const { pageNum, pageSize } = params;
+	const { data } = await props.requestApi({ ...positionParams, pageNum, pageSize, info: selectStatus.value });
+	tabledata.data = data.records;
+	params.total = data.total;
+};
+const restinfo = () => {
+	positionParams.info = "";
+	selectStatus.value = "";
+	getdataback();
 };
 
 // 扁平化 columns
@@ -250,7 +232,7 @@ const openColSetting = () => colRef.value.openColSetting();
 //请求数据
 const getdataback = async () => {
 	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({ ...positionParams, page: pageNum, limit: pageSize });
+	const { data } = await props.requestApi({ ...positionParams, pageNum, pageSize });
 	tabledata.data = data.records;
 	params.total = data.total;
 };
@@ -268,143 +250,6 @@ const handleCurrentChange2 = (val: any) => {
 	getdataback();
 };
 
-const selectChoices = {
-	type1: [
-		{
-			label: "美食",
-			value: 1
-		},
-		{
-			label: "娱乐",
-			value: 2
-		},
-		{
-			label: "景点",
-			value: 3
-		},
-		{
-			label: "住宿",
-			value: 4
-		}
-	],
-	type2: [
-		[
-			{
-				value: "0",
-				label: "全部"
-			},
-			{
-				value: "1",
-				label: "中餐"
-			},
-			{
-				value: "2",
-				label: "火锅"
-			},
-			{
-				value: "3",
-				label: "小吃"
-			},
-			{
-				value: "4",
-				label: "其它"
-			}
-		],
-		[
-			{
-				value: "0",
-				label: "全部"
-			},
-			{
-				value: "1",
-				label: "游乐园"
-			},
-			{
-				value: "2",
-				label: "公园"
-			},
-			{
-				value: "3",
-				label: "商场"
-			},
-			{
-				value: "4",
-				label: "其它"
-			}
-		],
-		[
-			{
-				value: "0",
-				label: "全部"
-			},
-			{
-				value: "1",
-				label: "自然风景"
-			},
-			{
-				value: "2",
-				label: "博物馆"
-			},
-			{
-				value: "3",
-				label: "纪念地"
-			},
-			{
-				value: "4",
-				label: "其它"
-			}
-		],
-		[
-			{
-				value: "0",
-				label: "全部"
-			},
-			{
-				value: "1",
-				label: "酒店"
-			},
-			{
-				value: "2",
-				label: "名宿"
-			}
-		]
-	],
-	order: [
-		{ label: "评分降序", value: 1 },
-		{ label: "评分升序", value: 2 }
-	]
-};
-const selectParams = reactive({
-	type1: 1,
-	type2: 0,
-	order: 1,
-	name: "",
-	city: "成都"
-});
-//搜索重置
-const search1 = async () => {
-	console.log(searchParams.username, value.value);
-	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({
-		page: pageNum,
-		limit: pageSize,
-		...selectParams
-	});
-	tabledata.data = data.records;
-	params.total = data.total;
-	console.log(params);
-};
-
-const reset1 = async () => {
-	searchParams.username = "";
-	value.value = "";
-	selectParams.city = "成都";
-	selectParams.name = "";
-	selectParams.order = 1;
-	selectParams.type1 = 1;
-	selectParams.type2 = 0;
-	await getdataback();
-};
 // 暴露给父组件的参数和方法(外部需要什么，都可以从这里暴露出去)
 defineExpose({
 	element: tableRef,
@@ -430,7 +275,7 @@ onMounted(async () => {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	justify-content: space-around;
+	justify-content: center;
 	width: 100%;
 	height: 70px;
 	margin-bottom: 10px;
@@ -441,11 +286,11 @@ onMounted(async () => {
 	box-shadow: 0 0 5px #eeeeee;
 	.input {
 		display: flex;
-		width: 250px;
+		padding: 0 50px;
 		.title {
 			display: flex;
 			align-items: center;
-			width: 50px;
+			padding-right: 20px;
 		}
 		.titlespacial {
 			width: 90px;
