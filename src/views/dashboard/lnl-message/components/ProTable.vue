@@ -136,8 +136,8 @@ let params = reactive({
 	pageNum: 1 //当前的页数
 });
 //地点params
-const positionParams = reactive({
-	info: ""
+const positionParams = reactive<{ info: undefined | string }>({
+	info: undefined
 });
 
 // 是否显示搜索模块
@@ -183,7 +183,7 @@ const searchinfo = async () => {
 	params.total = data.total;
 };
 const restinfo = () => {
-	positionParams.info = "";
+	positionParams.info = undefined;
 	selectStatus.value = "";
 	getdataback();
 };

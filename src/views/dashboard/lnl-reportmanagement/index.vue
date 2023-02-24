@@ -19,7 +19,7 @@
 		</ProTable>
 		<UserDrawer ref="drawerRef" @refresh="refresh" />
 		<el-dialog :destroy-on-close="true" v-model="dialogVisible" title="新增地点" width="40%">
-			<Adduser @change_dialog_visible="changeDialogvisible" compname="usermanagement" />
+			<Adduser @change_dialog_visible="changeDialogvisible" @refreshdata="getTableList2" compname="usermanagement" />
 		</el-dialog>
 	</div>
 </template>
@@ -52,6 +52,20 @@ const getTableList = (params: any) => {
 	let newParams = JSON.parse(JSON.stringify(params));
 	newParams.username && (newParams.username = "custom-" + newParams.username);
 	return placelistAll(params);
+};
+const getTableList2 = () => {
+	console.log("我被触发了");
+
+	const positionParams = reactive({
+		type1: 1,
+		type2: 0,
+		order: 1,
+		name: undefined,
+		city: "成都",
+		page: 1,
+		limit: 10
+	});
+	getTableList(positionParams);
 };
 const changeDialogvisible = (value: any) => {
 	dialogVisible.value = value;
@@ -118,16 +132,4 @@ const getIcon = (name: string) => {
 };
 // 打开 drawer(新增、查看、编辑)
 const drawerRef = ref();
-// const openDrawer = (title: string, rowData: Partial<User.ResUserList> = {}) => {
-// 	let params = {
-// 		title,
-// 		rowData: { ...rowData },
-// 		isView: title === "查看",
-// 		//编辑用户
-// 		api: PutuserUserInfo,
-// 		getTableList: proTable.value.getTableList,
-// 		usernameOrigin: rowData.username
-// 	};
-// 	drawerRef.value.acceptParams(params);
-// };
 </script>

@@ -34,7 +34,10 @@
 			<el-input v-model="positionForm.number" />
 		</el-form-item>
 		<el-form-item prop="city" label="城市名">
-			<el-input v-model="positionForm.city" />
+			<!-- <el-input v-model="positionForm.city" /> -->
+			<el-select v-model="positionForm.city" class="m-2" placeholder="Select">
+				<el-option v-for="item in selectCity" :key="item.value" :label="item.label" :value="item.value" />
+			</el-select>
 		</el-form-item>
 		<el-form-item prop="files" label="图片">
 			<el-upload :on-change="onImgChange" :before-upload="beforeAvatarUpload" list-type="picture-card" :auto-upload="false">
@@ -58,7 +61,7 @@ import { postPlaceAddPlace } from "@/api/modules/lnl-paly";
 import { ElNotification } from "element-plus";
 import { getTimeState } from "@/utils/util";
 import { reactive, ref } from "vue";
-const emits = defineEmits(["change_dialog_visible"]);
+const emits = defineEmits(["change_dialog_visible", "refreshdata"]);
 const props = defineProps<{
 	compname?: string;
 }>();
@@ -89,6 +92,16 @@ let positionForm = reactive<positionType>({
 	city: "",
 	files: []
 });
+const selectCity = [
+	{
+		label: "成都",
+		value: "成都"
+	},
+	{
+		label: "重庆",
+		value: "重庆"
+	}
+];
 const selectChoices = {
 	type1: [
 		{
@@ -111,10 +124,6 @@ const selectChoices = {
 	type2: [
 		[
 			{
-				value: "0",
-				label: "全部"
-			},
-			{
 				value: "1",
 				label: "中餐"
 			},
@@ -132,10 +141,6 @@ const selectChoices = {
 			}
 		],
 		[
-			{
-				value: "0",
-				label: "全部"
-			},
 			{
 				value: "1",
 				label: "游乐园"
@@ -155,10 +160,6 @@ const selectChoices = {
 		],
 		[
 			{
-				value: "0",
-				label: "全部"
-			},
-			{
 				value: "1",
 				label: "自然风景"
 			},
@@ -176,10 +177,6 @@ const selectChoices = {
 			}
 		],
 		[
-			{
-				value: "0",
-				label: "全部"
-			},
 			{
 				value: "1",
 				label: "酒店"
@@ -210,11 +207,11 @@ const loginRules = reactive({
 	type2: [{ required: true, message: "请选择", trigger: "blur" }],
 	name: [{ required: true, message: "请输入", trigger: "blur" }],
 	score: [{ required: true, message: "请选择", trigger: "blur" }],
-	position: [{ required: true, message: "请选择", trigger: "change" }],
-	phone: [{ validator: checkPhone, message: "请输入正确的手机号", trigger: "change" }],
-	information: [{ required: true, message: "请输入", trigger: "change" }],
-	number: [{ required: true, message: "请输入", trigger: "change" }],
-	city: [{ required: true, message: "请输入", trigger: "change" }]
+	position: [{ required: true, message: "请选择", trigger: "blur" }],
+	phone: [{ validator: checkPhone, message: "请输入正确的手机号", trigger: "blur" }],
+	information: [{ required: true, message: "请输入", trigger: "blur" }],
+	number: [{ required: true, message: "长度为10", min: 10, max: 10, trigger: "blur" }],
+	city: [{ required: true, message: "请输入", trigger: "blur" }]
 });
 const imageUrl = reactive<Array<any>>([]);
 const beforeAvatarUpload = (file: any) => {
@@ -226,7 +223,7 @@ const beforeAvatarUpload = (file: any) => {
 let formdata = new FormData();
 //处理图片
 const onImgChange = (uploadFile: any) => {
-	formdata.append("file[]", uploadFile.raw);
+	formdata.append("file", uploadFile.raw);
 };
 
 const onSubmit = async () => {
@@ -236,9 +233,10 @@ const onSubmit = async () => {
 		try {
 			const { code } = await postPlaceAddPlace({
 				...positionForm,
-				files: formdata,
-				location: JSON.stringify([104.184071, 30.826166])
+				files: formdata.getAll("file"),
+				location: "104.184071,30.826166"
 			});
+			emits("refreshdata");
 			if (Number(code) === 200) {
 				ElNotification({
 					title: getTimeState(),

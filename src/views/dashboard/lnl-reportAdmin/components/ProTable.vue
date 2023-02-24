@@ -115,8 +115,8 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 
 const selectStatus = ref();
 const selectStatusoption = [
-	{ label: "未处理", value: 1 },
-	{ label: "已处理", value: 2 }
+	{ label: "未处理", value: 0 },
+	{ label: "已处理", value: 1 }
 ];
 // 接受父组件参数，配置默认值
 const props = withDefaults(defineProps<ProTableProps>(), {
@@ -135,8 +135,8 @@ let params = reactive({
 	pageNum: 1 //当前的页数
 });
 //地点params
-const positionParams = reactive({
-	info: ""
+const positionParams = reactive<{ info: undefined | string }>({
+	info: undefined
 });
 const searchinfo = async () => {
 	const { pageNum, pageSize } = params;
@@ -145,7 +145,7 @@ const searchinfo = async () => {
 	params.total = data.total;
 };
 const restinfo = () => {
-	positionParams.info = "";
+	positionParams.info = undefined;
 	selectStatus.value = "";
 	getdataback();
 };

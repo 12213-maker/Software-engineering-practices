@@ -63,8 +63,8 @@ const columns: ColumnProps[] = [
 		width: 100,
 		search: { el: "input" },
 		render: scope => {
-			const type = scope.row.status === 2 ? "success" : "warning";
-			return <el-tag type={type}>{scope.row.status === 1 ? "未处理" : "已处理"}</el-tag>;
+			const type = scope.row.status === 1 ? "success" : "warning";
+			return <el-tag type={type}>{scope.row.status === 0 ? "未处理" : "已处理"}</el-tag>;
 		}
 	},
 	{
@@ -121,18 +121,27 @@ const deleteAccount = async (params: any) => {
 		"温馨提示",
 		{
 			confirmButtonText: "删除该举报信息",
-			cancelButtonText: "不处理",
+			cancelButtonText: "改为已处理",
 			type: "warning",
 			draggable: true
 		}
-	).then(async () => {
-		await reportadminhandle({ id: params.id });
-		proTable.value.getdataback();
-		ElMessage({
-			type: "success",
-			message: `删除成功!`
+	)
+		.then(async () => {
+			await reportadminhandle({ id: params.id, status: 1 });
+			proTable.value.getdataback();
+			ElMessage({
+				type: "success",
+				message: `删除成功!`
+			});
+		})
+		.catch(async () => {
+			await reportadminhandle({ id: params.id, status: 2 });
+			proTable.value.getdataback();
+			ElMessage({
+				type: "success",
+				message: `已处理!`
+			});
 		});
-	});
 };
 const drawerRef = ref();
 </script>
