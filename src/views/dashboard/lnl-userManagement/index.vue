@@ -73,13 +73,7 @@ const columns: ColumnProps[] = [
 		prop: "img",
 		label: "用户图片",
 		render: scope => {
-			return (
-				<el-avatar
-					size={50}
-					shape={"square"}
-					src={getIcon(" https://737a8db5.r1.cpolar.top/img/user/" + scope.row.img)}
-				></el-avatar>
-			);
+			return <el-avatar size={50} shape={"square"} src={getIcon(" http://127.0.0.1:8080/img/user/" + scope.row.img)}></el-avatar>;
 		}
 	},
 	{

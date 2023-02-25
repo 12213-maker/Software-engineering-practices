@@ -11,10 +11,7 @@
 		>
 			<el-form-item label="" prop="avatar">
 				<div class="avatarimg">
-					<el-avatar
-						:size="120"
-						:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' +drawerProps.rowData!.img)"
-					></el-avatar>
+					<el-avatar :size="120" :src="getIcon(' http://127.0.0.1:8080/img/user/' +drawerProps.rowData!.img)"></el-avatar>
 				</div>
 			</el-form-item>
 			<el-form-item label="用户姓名" prop="username">

@@ -103,7 +103,7 @@ onMounted(async () => {
 	dataValue.push(...(data as any));
 	dataValue = dataValue.map((item, index) => {
 		return item.map(item2 => {
-			return { ...item2, type1Name: props.type[index], picture: ` https://737a8db5.r1.cpolar.top/img/place/${item2.picture}` };
+			return { ...item2, type1Name: props.type[index], picture: ` http://127.0.0.1:8080/img/place/${item2.picture}` };
 		});
 	});
 });

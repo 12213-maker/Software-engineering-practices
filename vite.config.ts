@@ -37,7 +37,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 			cors: true,
 			proxy: {
 				"^/api2": {
-					target: " https://737a8db5.r1.cpolar.top",
+					target: " http://127.0.0.1:8080",
 					changeOrigin: true,
 					rewrite: path => path.replace(/^\/api2/, "")
 				}
