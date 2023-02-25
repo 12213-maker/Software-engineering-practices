@@ -73,8 +73,8 @@ const loginRules = reactive({
 	username: [{ required: true, min: 1, max: 20, message: "请输入1-20位用户名", trigger: "blur" }],
 	password: [{ required: true, min: 6, max: 16, message: "请输入6-16位密码", trigger: "blur" }],
 	sex: [{ required: true, message: "请选择", trigger: "blur" }],
-	roleId: [{ required: true, message: "请选择", trigger: "change" }],
-	phone: [{ validator: checkPhone, message: "请输入正确的手机号", trigger: "change" }]
+	roleId: [{ required: true, message: "请选择", trigger: "blur" }],
+	phone: [{ validator: checkPhone, message: "请输入正确的手机号", trigger: "blur" }]
 });
 
 const onSubmit = async () => {

@@ -6,7 +6,7 @@
 					<div class="avatarimage1" v-if="item.data.userImg || item.data.img">
 						<el-avatar
 							:size="50"
-							:src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + `${isSelfPage ? item.data.userImg : item.data.img}`)"
+							:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + `${isSelfPage ? item.data.userImg : item.data.img}`)"
 						></el-avatar>
 					</div>
 					<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
@@ -64,7 +64,7 @@
 					<img
 						class="image"
 						v-if="item.data.img"
-						:src="getIcon('https://6a3225e5.r5.cpolar.top/img/community/' + item.data.img)"
+						:src="getIcon(' https://737a8db5.r1.cpolar.top/img/community/' + item.data.img)"
 						alt=""
 					/>
 				</div>

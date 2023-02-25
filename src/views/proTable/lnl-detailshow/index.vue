@@ -4,7 +4,7 @@
 			<div class="container">
 				<el-carousel class="carousel">
 					<el-carousel-item class="carouselItem" v-for="picture in dataValue.data.placePictures" :key="picture">
-						<img :src="getIcon('https://6a3225e5.r5.cpolar.top/img/place/' + picture)" alt="" />
+						<img :src="getIcon(' https://737a8db5.r1.cpolar.top/img/place/' + picture)" alt="" />
 					</el-carousel-item>
 				</el-carousel>
 				<div class="describe">
@@ -78,7 +78,7 @@
 				<div class="comment" v-infinite-scroll="load" v-for="item in dataValue.commentData" :key="item.id">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
-							<el-avatar :size="50" :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + item.userImg)" />
+							<el-avatar :size="50" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + item.userImg)" />
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.username }}</span>
@@ -93,7 +93,7 @@
 							v-for="picture in item.pictures"
 							class="image"
 							:key="picture"
-							:src="getIcon('https://6a3225e5.r5.cpolar.top/img/comment/' + picture)"
+							:src="getIcon(' https://737a8db5.r1.cpolar.top/img/comment/' + picture)"
 							alt=""
 						/>
 					</div>
@@ -111,7 +111,16 @@
 				<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
 				<!-- <el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider> -->
 			</div>
-			<div v-else>暂无评论</div>
+			<div v-else class="bottom">
+				<div class="total">
+					<div>
+						<span style="padding-right: 50px">{{ `评论` }}</span>
+						<span>最新 | 热评</span>
+					</div>
+					<el-button type="primary" round :icon="ChatLineRound" @click="dialogVisible = true">评论</el-button>
+				</div>
+				<div class="comment shownothin">暂无评论</div>
+			</div>
 		</div>
 		<el-dialog align-center draggable v-model="dialogVisible" title="评论" width="40%">
 			<el-form ref="ruleFormRefsjpw" :model="ruleForm" status-icon :rules="rules" label-width="120px" class="demo-ruleForm">
@@ -348,25 +357,23 @@ const change = async (uploadFile: any) => {
 
 //评论
 const giveAComment = async () => {
-	const valid = await ruleFormRefsjpw.value.validate();
-	if (valid) {
-		const { score, comment } = ruleForm;
-		if (score + "" == "" || comment == "") {
-			return;
-		}
-		const { pid } = params;
-		await commentAdd({ pid, score, comment, files: formdata.get("file") });
-		dialogVisible.value = false;
-		ruleForm.comment = "";
-		ruleForm.score = 0;
-		params.page = 1;
-		const res = (await commentList(params)) as any;
-		infiniteValue.current = res.data.current;
-		infiniteValue.pages = res.data.pages;
-		dataValue.commentData = (res.data as any).records;
-		ElMessage.success("发送评论成功");
+	// const valid = await ruleFormRefsjpw.value.validate();
+
+	const { score, comment } = ruleForm;
+	if (score + "" == "" || comment == "") {
+		return;
 	}
-	return;
+	const { pid } = params;
+	await commentAdd({ pid, score, comment, files: formdata.get("file") });
+	dialogVisible.value = false;
+	ruleForm.comment = "";
+	ruleForm.score = 0;
+	params.page = 1;
+	const res = (await commentList(params)) as any;
+	infiniteValue.current = res.data.current;
+	infiniteValue.pages = res.data.pages;
+	dataValue.commentData = (res.data as any).records;
+	ElMessage.success("发送评论成功");
 };
 
 //取消评论
@@ -460,6 +467,13 @@ onMounted(() => {
 			font-size: 20px;
 			line-height: 40px;
 			color: #4f4f4f;
+		}
+		.shownothin {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			height: 150px;
+			font-size: 20px;
 		}
 		.comment {
 			padding: 20px;

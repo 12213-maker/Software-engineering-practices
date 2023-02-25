@@ -1,13 +1,13 @@
 <template>
 	<el-dropdown trigger="click">
 		<!-- <div class="avatar">
-			<img v-if="image" :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + image)" alt="avatar" />
-			<img v-else :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + userinfo.img)" alt="avatar" />
+			<img v-if="image" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + image)" alt="avatar" />
+			<img v-else :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + userinfo.img)" alt="avatar" />
 
 			</div> -->
 		<el-badge :is-dot="unreadmessage ? true : false" class="item">
-			<el-avatar v-if="image" :size="40" :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + image)"></el-avatar>
-			<el-avatar v-else :size="40" :src="getIcon('https://6a3225e5.r5.cpolar.top/img/user/' + userinfo.img)"></el-avatar>
+			<el-avatar v-if="image" :size="40" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + image)"></el-avatar>
+			<el-avatar v-else :size="40" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + userinfo.img)"></el-avatar>
 		</el-badge>
 
 		<template #dropdown>
@@ -53,7 +53,6 @@
 						:label="scope2.row.status === 1 ? '已读' : '未读'"
 						size="large"
 					/>
-					{{ scope2.row.status }}
 				</template>
 			</el-table-column>
 		</el-table>

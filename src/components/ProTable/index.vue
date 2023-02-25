@@ -99,12 +99,13 @@ import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
-import { ElTable, TableProps } from "element-plus";
+import { ElMessageBox, ElTable, TableProps } from "element-plus";
 import { Operation, Search, Delete } from "@element-plus/icons-vue";
 import { handleProp } from "@/utils/util";
 // import SearchForm from "@/components/SearchForm/index.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
+import router from "@/routers";
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	columns: ColumnProps[]; // 列配置项
@@ -239,7 +240,18 @@ const openColSetting = () => colRef.value.openColSetting();
 //请求数据
 const getdataback = async () => {
 	loading.value = true;
-	const { data } = await props.requestApi(paramsTrue);
+	const { data, code } = await props.requestApi(paramsTrue);
+	if (code === 0) {
+		ElMessageBox.confirm(`暂无权限，请联系管理员`, "温馨提示", {
+			confirmButtonText: "确定",
+			cancelButtonText: "取消",
+			type: "warning",
+			draggable: true
+		}).finally(async () => {
+			router.push("/home/index");
+		});
+		return;
+	}
 	tabledata.data = data.records;
 	params.total = data.total;
 	loading.value = false;

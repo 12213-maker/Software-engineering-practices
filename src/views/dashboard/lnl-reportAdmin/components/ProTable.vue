@@ -26,6 +26,7 @@
 		</div>
 		<!-- 表格主体 -->
 		<el-table
+			v-loading="loading"
 			ref="tableRef"
 			v-bind="$attrs"
 			:data="tabledata.data"
@@ -94,11 +95,12 @@ import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
-import { ElTable, TableProps } from "element-plus";
+import { ElMessageBox, ElTable, TableProps } from "element-plus";
 import { Operation, Search } from "@element-plus/icons-vue";
 import { handleProp } from "@/utils/util";
 import TableColumn from "@/components/ProTable/components/TableColumn.vue";
 import ColSetting from "@/components/ProTable/components/ColSetting.vue";
+import router from "@/routers";
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	columns: ColumnProps[]; // 列配置项
@@ -139,14 +141,18 @@ const positionParams = reactive<{ info: undefined | string }>({
 	info: undefined
 });
 const searchinfo = async () => {
+	loading.value = true;
+	params.pageNum = 1;
 	const { pageNum, pageSize } = params;
 	const { data } = await props.requestApi({ ...positionParams, pageNum, pageSize, info: selectStatus.value });
 	tabledata.data = data.records;
+	loading.value = false;
 	params.total = data.total;
 };
 const restinfo = () => {
 	positionParams.info = undefined;
 	selectStatus.value = undefined;
+	params.pageNum = 1;
 	getdataback();
 };
 
@@ -227,12 +233,25 @@ const colSetting = tableColumns.value!.filter(item => {
 	return item.type !== "selection" && item.type !== "index" && item.type !== "expand" && item.prop !== "operation";
 });
 const openColSetting = () => colRef.value.openColSetting();
-
+const loading = ref(true);
 //请求数据
 const getdataback = async () => {
+	loading.value = true;
 	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({ ...positionParams, pageNum, pageSize, info: selectStatus.value });
+	const { data, code } = await props.requestApi({ ...positionParams, pageNum, pageSize, info: selectStatus.value });
+	if (code === 0) {
+		ElMessageBox.confirm(`暂无权限，请联系管理员`, "温馨提示", {
+			confirmButtonText: "确定",
+			cancelButtonText: "取消",
+			type: "warning",
+			draggable: true
+		}).finally(async () => {
+			router.push("/home/index");
+		});
+		return;
+	}
 	tabledata.data = data.records;
+	loading.value = false;
 	params.total = data.total;
 };
 

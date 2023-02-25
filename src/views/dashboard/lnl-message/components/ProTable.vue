@@ -26,6 +26,7 @@
 		</div>
 		<!-- 表格主体 -->
 		<el-table
+			v-loading="loading"
 			ref="tableRef"
 			v-bind="$attrs"
 			:data="tabledata.data"
@@ -94,11 +95,12 @@ import { useTable } from "@/hooks/useTable";
 import { useSelection } from "@/hooks/useSelection";
 import { BreakPoint } from "@/components/Grid/interface";
 import { ColumnProps } from "@/components/ProTable/interface";
-import { ElTable, TableProps } from "element-plus";
+import { ElMessageBox, ElTable, TableProps } from "element-plus";
 import { Operation, Search } from "@element-plus/icons-vue";
 import { handleProp } from "@/utils/util";
 import TableColumn from "@/components/ProTable/components/TableColumn.vue";
 import ColSetting from "@/components/ProTable/components/ColSetting.vue";
+import router from "@/routers";
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	columns: ColumnProps[]; // 列配置项
@@ -112,7 +114,7 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	selectId?: string; // 当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
 }
-const selectStatus = ref();
+const selectStatus = ref<undefined | string>(undefined);
 const selectStatusoption = [
 	{ label: "未读", value: 1 },
 	{ label: "处理中", value: 2 },
@@ -177,14 +179,18 @@ const setEnumMap = async (col: ColumnProps) => {
 	enumMap.value.set(col.prop!, data);
 };
 const searchinfo = async () => {
+	loading.value = true;
+	params.pageNum = 1;
 	const { pageNum, pageSize } = params;
 	const { data } = await props.requestApi({ ...positionParams, pageNum, pageSize, info: selectStatus.value });
 	tabledata.data = data.records;
+	loading.value = false;
 	params.total = data.total;
 };
 const restinfo = () => {
 	positionParams.info = undefined;
-	selectStatus.value = "";
+	selectStatus.value = undefined;
+	params.pageNum = 1;
 	getdataback();
 };
 
@@ -228,12 +234,25 @@ const colSetting = tableColumns.value!.filter(item => {
 	return item.type !== "selection" && item.type !== "index" && item.type !== "expand" && item.prop !== "operation";
 });
 const openColSetting = () => colRef.value.openColSetting();
-
+const loading = ref(true);
 //请求数据
 const getdataback = async () => {
+	loading.value = true;
 	const { pageNum, pageSize } = params;
-	const { data } = await props.requestApi({ ...positionParams, pageNum, pageSize });
+	const { data, code } = await props.requestApi({ ...positionParams, pageNum, pageSize, info: selectStatus.value });
+	if (code === 0) {
+		ElMessageBox.confirm(`暂无权限，请联系管理员`, "温馨提示", {
+			confirmButtonText: "确定",
+			cancelButtonText: "取消",
+			type: "warning",
+			draggable: true
+		}).finally(async () => {
+			router.push("/home/index");
+		});
+		return;
+	}
 	tabledata.data = data.records;
+	loading.value = false;
 	params.total = data.total;
 };
 

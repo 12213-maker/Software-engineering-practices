@@ -79,7 +79,7 @@ const columns: ColumnProps[] = [
 				<el-avatar
 					size={50}
 					shape={"square"}
-					src={getIcon("https://6a3225e5.r5.cpolar.top/img/place/" + scope.row.picture)}
+					src={getIcon(" https://737a8db5.r1.cpolar.top/img/place/" + scope.row.picture)}
 				></el-avatar>
 			);
 		}

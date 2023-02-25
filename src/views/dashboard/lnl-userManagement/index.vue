@@ -77,7 +77,7 @@ const columns: ColumnProps[] = [
 				<el-avatar
 					size={50}
 					shape={"square"}
-					src={getIcon("https://6a3225e5.r5.cpolar.top/img/user/" + scope.row.img)}
+					src={getIcon(" https://737a8db5.r1.cpolar.top/img/user/" + scope.row.img)}
 				></el-avatar>
 			);
 		}
@@ -122,8 +122,9 @@ const columns: ColumnProps[] = [
 		label: "用户权限",
 		fieldNames: { label: "userLabel", value: "userStatus" },
 		render: scope => {
-			const type = scope.row.roleId ? "success" : "warning";
-			return <el-tag type={type}>{scope.row.roleId === 2 ? "普通用户" : "管理员"}</el-tag>;
+			// const type = scope.row.roleId ? "success" : "warning";
+			// return <el-tag type={type}>{scope.row.roleId === 2 ? "普通用户" : "管理员"}</el-tag>;
+			return returntag(scope.row.roleId);
 		}
 	},
 	{
@@ -156,6 +157,13 @@ const deleteAccount = async (params: User.ResUserList) => {
 	console.log(params);
 	// await useHandleData(deleteUser, { id: [params.id] }, `删除【${params.username}】用户`);
 	proTable.value.getdataback();
+};
+const returntag = (id: any) => {
+	if (id == 2) {
+		return <el-tag type="warnig">普通用户</el-tag>;
+	} else {
+		return <el-tag type="success">管理员</el-tag>;
+	}
 };
 
 //处理图片
