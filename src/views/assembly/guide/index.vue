@@ -7,11 +7,15 @@
 						<!-- 头像 -->
 						<div class="avatar">
 							<el-upload :on-change="change" :before-upload="beforeAvatarUpload" :show-file-list="false">
-								<el-avatar v-if="imageUrl" :size="80" :src="getIcon(' http://127.0.0.1:8080/img/user/' + imageUrl)"></el-avatar>
+								<el-avatar
+									v-if="imageUrl"
+									:size="80"
+									:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + imageUrl)"
+								></el-avatar>
 								<el-avatar
 									v-else
 									:size="80"
-									:src="getIcon(' http://127.0.0.1:8080/img/user/' + FormValue.userinfo.img)"
+									:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + FormValue.userinfo.img)"
 								></el-avatar>
 							</el-upload>
 						</div>

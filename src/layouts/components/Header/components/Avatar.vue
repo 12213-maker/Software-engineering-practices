@@ -1,8 +1,8 @@
 <template>
 	<el-dropdown trigger="click">
 		<el-badge :is-dot="unreadmessage ? true : false" class="item">
-			<el-avatar v-if="image" :size="40" :src="getIcon(' http://127.0.0.1:8080/img/user/' + image)"></el-avatar>
-			<el-avatar v-else :size="40" :src="getIcon(' http://127.0.0.1:8080/img/user/' + userinfo.img)"></el-avatar>
+			<el-avatar v-if="image" :size="40" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + image)"></el-avatar>
+			<el-avatar v-else :size="40" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + userinfo.img)"></el-avatar>
 		</el-badge>
 
 		<template #dropdown>

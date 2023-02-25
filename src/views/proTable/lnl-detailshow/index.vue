@@ -4,7 +4,7 @@
 			<div class="container">
 				<el-carousel class="carousel">
 					<el-carousel-item class="carouselItem" v-for="picture in dataValue.data.placePictures" :key="picture">
-						<img :src="getIcon(' http://127.0.0.1:8080/img/place/' + picture)" alt="" />
+						<img :src="getIcon(' https://737a8db5.r1.cpolar.top/img/place/' + picture)" alt="" />
 					</el-carousel-item>
 				</el-carousel>
 				<div class="describe">
@@ -83,7 +83,7 @@
 				<div class="comment" v-infinite-scroll="load" v-for="item in dataValue.commentData" :key="item.id">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
-							<el-avatar :size="50" :src="getIcon(' http://127.0.0.1:8080/img/user/' + item.userImg)" />
+							<el-avatar :size="50" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + item.userImg)" />
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.username }}</span>
@@ -98,7 +98,7 @@
 							v-for="picture in item.pictures"
 							class="image"
 							:key="picture"
-							:src="getIcon(' http://127.0.0.1:8080/img/comment/' + picture)"
+							:src="getIcon(' https://737a8db5.r1.cpolar.top/img/comment/' + picture)"
 							alt=""
 						/>
 					</div>

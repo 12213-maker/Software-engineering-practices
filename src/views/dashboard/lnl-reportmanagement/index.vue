@@ -76,7 +76,11 @@ const columns: ColumnProps[] = [
 		width: 100,
 		render: scope => {
 			return (
-				<el-avatar size={50} shape={"square"} src={getIcon(" http://127.0.0.1:8080/img/place/" + scope.row.picture)}></el-avatar>
+				<el-avatar
+					size={50}
+					shape={"square"}
+					src={getIcon(" https://737a8db5.r1.cpolar.top/img/place/" + scope.row.picture)}
+				></el-avatar>
 			);
 		}
 	},
