@@ -69,7 +69,7 @@
 					</el-descriptions>
 				</div>
 			</div>
-			<div class="bottom" v-if="dataValue.commentData.length !== 0">
+			<div v-loading="loading" class="bottom" v-if="dataValue.commentData.length !== 0">
 				<div class="total">
 					<div>
 						<span style="padding-right: 20px">{{ `评论` }}</span>
@@ -380,11 +380,9 @@ let formdata = new FormData();
 const change = async (uploadFile: any) => {
 	formdata.append("file", uploadFile.raw);
 };
-
+const loading = ref(false);
 //评论
 const giveAComment = async () => {
-	// const valid = await ruleFormRefsjpw.value.validate();
-
 	const { score, comment } = ruleForm;
 	if (score + "" == "" || comment == "") {
 		return;
@@ -392,6 +390,7 @@ const giveAComment = async () => {
 	const { pid } = params;
 	await commentAdd({ pid, score, comment, files: formdata.get("file") });
 	dialogVisible.value = false;
+	loading.value = true;
 	ruleForm.comment = "";
 	ruleForm.score = 0;
 	params.page = 1;
@@ -399,6 +398,7 @@ const giveAComment = async () => {
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;
 	dataValue.commentData = (res.data as any).records;
+	loading.value = false;
 	ElMessage.success("发送评论成功");
 };
 

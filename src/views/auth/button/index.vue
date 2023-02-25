@@ -61,18 +61,18 @@
 					</el-card>
 				</div>
 				<div class="notice" v-if="!ischangepage">
-					<el-card shadow="always">
+					<el-cardischangepage发布 shadow="always">
 						<div class="switchschool">
 							<div>
 								<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
 							</div>
-							<el-select v-model="value" @change="changeSchool()" class="m-2" placeholder="Select" size="small">
+							<el-select v-model="params.school" @change="changeSchool()" class="m-2" placeholder="Select" size="small">
 								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
 							</el-select>
 						</div>
 						<div class="noticeinfo">
 							{{ `你好，欢迎来到${value === 1 ? "西南石油大学（成都校区）" : "成都理工大学"}动态推荐！` }}
-						</div></el-card
+						</div></el-cardischangepage发布
 					>
 				</div>
 				<div class="notice" v-else>
@@ -171,8 +171,8 @@ const params = reactive<{ subject?: number; pageNum: number; pageSize: number; s
 const showData = reactive<{ data: Array<DataValueInterface> }>({ data: [] });
 //获取动态数据
 const getdata = async () => {
-	const { pageNum, pageSize } = params;
-	const res = (await getselfcommunity({ pageNum, pageSize })) as any;
+	// const { pageNum, pageSize } = params;
+	const res = (await getselfcommunity(params)) as any;
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;
 	showData.data.push(...res.data.records);
