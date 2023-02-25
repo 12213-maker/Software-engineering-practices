@@ -40,14 +40,16 @@
 						</el-descriptions-item>
 						<el-descriptions-item>
 							<template #label>
-								<div class="cell-item">
+								<div class="cell-item positionreouter">
 									<el-icon>
 										<location />
 									</el-icon>
 									地址
 								</div>
 							</template>
-							{{ dataValue.data.position }}
+							<el-tooltip popper-class="tool-tip" effect="dark" content="点击查看详细地址" placement="top-start">
+								<div class="positionreouter" @click="routerchangepage(dataValue.data.number)">{{ dataValue.data.position }}</div>
+							</el-tooltip>
 						</el-descriptions-item>
 						<el-descriptions-item>
 							<template #label>
@@ -58,7 +60,7 @@
 									介绍
 								</div>
 							</template>
-							<el-tooltip popper-class="tool-tip" effect="dark" :content="dataValue.data.information" placement="top">
+							<el-tooltip popper-class="tool-tip" effect="dark" :content="dataValue.data.information" placement="bottom">
 								<div class="information">
 									{{ dataValue.data.information }}
 								</div>
@@ -70,8 +72,11 @@
 			<div class="bottom" v-if="dataValue.commentData.length !== 0">
 				<div class="total">
 					<div>
-						<span style="padding-right: 50px">{{ `评论` }}</span>
-						<span>最新 | 热评</span>
+						<span style="padding-right: 20px">{{ `评论` }}</span>
+						<!-- <span>最新 | 热评</span> -->
+						<el-select @change="getCommentValue2" v-model="params.order" class="m-2" placeholder="Select">
+							<el-option v-for="item in selctort" :key="item.value" :label="item.label" :value="item.value" />
+						</el-select>
 					</div>
 					<el-button type="primary" round :icon="ChatLineRound" @click="dialogVisible = true">评论</el-button>
 				</div>
@@ -115,7 +120,7 @@
 				<div class="total">
 					<div>
 						<span style="padding-right: 50px">{{ `评论` }}</span>
-						<span>最新 | 热评</span>
+						<!-- <span>最新 | 热评</span> -->
 					</div>
 					<el-button type="primary" round :icon="ChatLineRound" @click="dialogVisible = true">评论</el-button>
 				</div>
@@ -171,12 +176,15 @@
 				</span>
 			</template>
 		</el-dialog>
+		<el-dialog :fullscreen="true" align-center draggable v-model="positioninfo" title="详细地址信息" width="40%">
+			<iframe :src="positonnumber" frameborder="0" width="100%" height="630px"></iframe>
+		</el-dialog>
 	</div>
 </template>
 
 <script lang="ts" setup>
 import { Star, StarFilled, Warning, ChatLineRound } from "@element-plus/icons-vue";
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import { ElNotification, ElMessage } from "element-plus";
 import { getTimeState } from "@/utils/util";
@@ -195,6 +203,10 @@ const ruleForm = reactive<{
 	comment: "",
 	fileList: []
 });
+const positonnumber = computed(() => {
+	return "https://www.amap.com/place/" + dataValue.data.number;
+});
+const positioninfo = ref(false);
 const ruleFormRefsjpw = ref();
 const givecommentFlag = ref(false);
 const rules = reactive({
@@ -219,6 +231,11 @@ const jubaooptions = reactive([
 	{ label: "刷屏", value: 6 },
 	{ label: "其它", value: 7 }
 ]);
+const selctort = [
+	{ label: "最新", value: 1 },
+	{ label: "点赞", value: 2 },
+	{ label: "评分", value: 3 }
+];
 
 //举报
 const jubao = async (id: any, uid: any) => {
@@ -269,11 +286,17 @@ const apireturndata = async () => {
 	dataValue.data = res.data as any;
 };
 
-const params = {
+const params = reactive({
 	pid: route.query.id,
 	order: 1,
 	page: 1,
 	limit: 3
+});
+const getCommentValue2 = (val: any) => {
+	params.order = val;
+	dataValue.commentData = [];
+	params.page = 1;
+	getCommentValue(params);
 };
 //申请评论数据
 const getCommentValue = async (params: any) => {
@@ -297,6 +320,10 @@ const load = async () => {
 	timer.value = setTimeout(() => {
 		loadmore();
 	}, 1000);
+};
+const routerchangepage = (number: any) => {
+	positioninfo.value = true;
+	console.log(number);
 };
 //懒加载
 const loadmore = async () => {
@@ -349,7 +376,6 @@ const beforeAvatarUpload = (file: any) => {
 	console.log(imageUrl);
 	return false;
 };
-
 let formdata = new FormData();
 const change = async (uploadFile: any) => {
 	formdata.append("file", uploadFile.raw);
@@ -440,6 +466,9 @@ onMounted(() => {
 					left: -29%;
 					font-size: 22px;
 					font-weight: 700;
+				}
+				.positionreouter {
+					cursor: pointer;
 				}
 				.cell-item {
 					width: 60px;

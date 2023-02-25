@@ -10,7 +10,7 @@
 
 			<div class="login-form">
 				<div class="login-logo">
-					<img class="login-icon" src="@/assets/images/avatar.gif" alt="" />
+					<img class="login-icon" src="@/assets/lnl_images/Snipaste_2023-01-31_17-16-21.png" alt="" />
 					<h2 class="logo-text">login</h2>
 				</div>
 				<LoginForm />
