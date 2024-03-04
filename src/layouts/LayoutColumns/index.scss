@@ -7,7 +7,7 @@
 		flex-shrink: 0;
 		width: 70px;
 		height: 100%;
-		background-color: #191a20;
+		background-color: white;
 		border-right: 1px solid #ffffff;
 		.logo {
 			box-sizing: border-box;
@@ -31,7 +31,7 @@
 					cursor: pointer;
 					transition: all 0.3s ease;
 					&:hover {
-						background-color: #292b35;
+						background-color: #f0f2f4;
 					}
 					.el-icon {
 						font-size: 21px;
@@ -43,7 +43,7 @@
 					}
 					.el-icon,
 					.title {
-						color: #e5eaf3;
+						color: #606266;
 					}
 				}
 				.split-active {

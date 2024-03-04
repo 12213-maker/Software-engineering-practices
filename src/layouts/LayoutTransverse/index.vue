@@ -4,7 +4,7 @@
 		<el-header>
 			<div class="logo flx-center">
 				<img src="@/assets/lnl_images/Snipaste_2023-01-31_17-16-21.png" alt="logo" />
-				<span>没课去哪儿</span>
+				<span>智慧校园</span>
 			</div>
 			<el-menu
 				mode="horizontal"

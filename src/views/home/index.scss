@@ -1,7 +1,79 @@
 .dataVisualize-box {
+	.homeContainer {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+
+		// height: 800px;
+		.left {
+			width: 25%;
+			background-color: red;
+			border: 1px solid #d8dee4;
+		}
+		.center {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			width: 50%;
+			background-color: white;
+
+			// border: 1px solid #d8dee4;
+		}
+		.right {
+			width: 25%;
+			background-color: blue;
+			border: 1px solid #d8dee4;
+		}
+	}
+	.eat {
+		.container {
+			display: flex;
+			width: 90vw;
+		}
+		.panel {
+			position: relative;
+			flex: 0.5;
+			height: 80vh;
+			margin: 10px;
+			color: #ffffff;
+			cursor: pointer;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			border-radius: 50px;
+			transition: all 700ms ease-in;
+		}
+		.panel h3 {
+			position: absolute;
+			bottom: 20px;
+			left: 20px;
+			margin: 0;
+			font-size: 24px;
+			opacity: 0;
+		}
+		.panel.active {
+			flex: 5;
+		}
+		.panel.active h3 {
+			opacity: 1;
+			transition: opacity 0.3s ease-in 0.4s;
+		}
+
+		@media (max-width: 480px) {
+			.container {
+				width: 100vw;
+			}
+			.panel:nth-of-type(4),
+			.panel:nth-of-type(5) {
+				display: none;
+			}
+		}
+	}
 	.top-box {
 		box-sizing: border-box;
 		padding: 25px 40px 0;
+		margin-top: 10px;
 		margin-bottom: 10px;
 		.top-title {
 			margin-bottom: 10px;
@@ -144,11 +216,11 @@
 								padding: 0 15px;
 								padding-top: 25px;
 								font-size: 17px;
-								color: rgb(71, 71, 71);
+								color: rgb(71 71 71);
 								.titile {
 									padding-bottom: 20px;
 									font-size: 22px;
-									color: rgb(48, 47, 47);
+									color: rgb(48 47 47);
 								}
 							}
 						}

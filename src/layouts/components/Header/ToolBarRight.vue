@@ -2,6 +2,7 @@
 	<div class="tool-bar-ri">
 		<div class="header-icon">
 			<Fullscreen id="fullscreen" />
+			<Message id="message" />
 		</div>
 		<span class="username">{{ userinfo.username }}</span>
 		<Avatar />
@@ -12,6 +13,7 @@
 import Fullscreen from "./components/Fullscreen.vue";
 import Avatar from "./components/Avatar.vue";
 import { GlobalStore } from "@/stores";
+import Message from "./components/Message.vue";
 import { computed, ref, watch } from "vue";
 const globalStore = GlobalStore();
 const userinfo = ref();

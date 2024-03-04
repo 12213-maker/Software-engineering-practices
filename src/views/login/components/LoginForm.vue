@@ -83,7 +83,7 @@ const login = (formEl: FormInstance | undefined) => {
 				router.push(HOME_URL);
 				ElNotification({
 					title: getTimeState(),
-					message: `欢迎${data.user.roleId === 1 ? "管理员" : "用户"}：${data.user.username} 登录没课去哪儿`,
+					message: `欢迎${data.user.roleId === 1 ? "管理员" : "用户"}：${data.user.username} 登录智慧校园`,
 					type: "success",
 					duration: 3000
 				});

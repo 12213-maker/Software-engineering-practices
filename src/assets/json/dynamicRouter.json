@@ -4,7 +4,7 @@
 		{
 			"path": "/home/index",
 			"name": "home",
-			"component": "/home/index",
+			"component": "/home/index2024",
 			"meta": {
 				"icon": "HomeFilled",
 				"title": "首页",

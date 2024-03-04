@@ -5,7 +5,7 @@
 			<div class="menu" :style="{ width: isCollapse ? '65px' : '210px' }">
 				<div class="logo flx-center">
 					<img src="@/assets/lnl_images/Snipaste_2023-01-31_17-16-21.png" alt="logo" />
-					<span v-show="!isCollapse">没课去哪儿</span>
+					<span v-show="!isCollapse">智慧校园</span>
 				</div>
 				<el-scrollbar>
 					<el-menu
