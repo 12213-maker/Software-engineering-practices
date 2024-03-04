@@ -39,7 +39,7 @@ router.beforeEach(async (to, from, next) => {
 	NProgress.start();
 
 	// 2.动态设置标题
-	document.title = to.meta.title ? `${to.meta.title} - 没课去哪儿` : "没课去哪儿";
+	document.title = to.meta.title ? `${to.meta.title} - LNL智慧校园` : "LNL智慧校园";
 
 	// 3.判断是访问登陆页，有 Token 就在当前页面，没有 Token 重置路由并放行到登陆页
 	if (to.path === LOGIN_URL) {

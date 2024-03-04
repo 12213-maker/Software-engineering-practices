@@ -260,7 +260,6 @@ const load = async () => {
 	// 		await apireturndataback(params);
 	// 	} else return;
 	// }
-	console.log(apiParams);
 
 	if (infiniteValue.current < infiniteValue.pages) {
 		const params = { ...apiParams, ...route.query, page: ++apiParams.page };

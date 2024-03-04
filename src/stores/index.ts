@@ -17,6 +17,10 @@ export const GlobalStore = defineStore({
 		userInfo: "",
 		image: "",
 		userInformation: {},
+		params: {
+			pageNum: 0,
+			pageSize: 5
+		},
 		// element组件大小
 		assemblySize: "default",
 		// language

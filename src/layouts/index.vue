@@ -1,6 +1,6 @@
 <!-- 💥 这里是一次性加载 LayoutComponents -->
 <template>
-	<component :is="LayoutTransverse" />
+	<component :is="LayoutColumns" />
 	<ThemeDrawer />
 </template>
 
@@ -10,8 +10,8 @@
 import ThemeDrawer from "./components/ThemeDrawer/index.vue";
 // import LayoutVertical from "./LayoutVertical/index.vue";
 // import LayoutClassic from "./LayoutClassic/index.vue";
-import LayoutTransverse from "./LayoutTransverse/index.vue";
-// import LayoutColumns from "./LayoutColumns/index.vue";
+// import LayoutTransverse from "./LayoutTransverse/index.vue";
+import LayoutColumns from "./LayoutColumns/index.vue";
 
 // const LayoutComponents: { [key: string]: Component } = {
 // 	vertical: LayoutVertical,

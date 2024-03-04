@@ -102,10 +102,10 @@ import { ColumnProps } from "@/components/ProTable/interface";
 import { ElMessageBox, ElTable, TableProps } from "element-plus";
 import { Operation, Search, Delete } from "@element-plus/icons-vue";
 import { handleProp } from "@/utils/util";
-// import SearchForm from "@/components/SearchForm/index.vue";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
 import router from "@/routers";
+import { GlobalStore } from "@/stores";
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	columns: ColumnProps[]; // 列配置项
@@ -147,12 +147,14 @@ let params = reactive({
 	total: 0
 });
 
-const paramsTrue = reactive<{
+interface paramsType {
 	pageSize: number;
 	pageNum: number;
 	info: undefined | string;
 	roleId: undefined | number;
-}>({
+}
+
+const paramsTrue = reactive<paramsType>({
 	pageSize: 5, // 每页的数据条数
 	pageNum: 1, //当前的页数
 	info: undefined,

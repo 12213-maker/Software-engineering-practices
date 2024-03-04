@@ -5,7 +5,7 @@
 			<div class="header-lf">
 				<div class="logo flx-center">
 					<img src="@/assets/images/logo.svg" alt="logo" />
-					<span>Geeker Admin</span>
+					<span>LNL Admin</span>
 				</div>
 				<ToolBarLeft />
 			</div>

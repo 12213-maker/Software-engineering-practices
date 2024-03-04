@@ -74,8 +74,6 @@ const curveRef = ref();
 const value1 = ref(5);
 const globalStore = GlobalStore();
 
-onMounted(() => {});
-
 const tab = [
 	{
 		label: "西藏",

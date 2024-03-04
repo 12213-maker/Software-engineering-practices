@@ -3,7 +3,7 @@
 	<el-container class="layout">
 		<div class="aside-split">
 			<div class="logo flx-center">
-				<img src="@/assets/images/logo.svg" alt="logo" />
+				<img src="@/assets/lnl_images/R2.jpg" style="width: 100%; height: 100%" alt="logo" />
 			</div>
 			<el-scrollbar>
 				<div class="split-list">
@@ -24,7 +24,7 @@
 		</div>
 		<el-aside :class="{ 'not-aside': !subMenu.length }" :style="{ width: isCollapse ? '65px' : '210px' }">
 			<div class="logo flx-center">
-				<span v-show="subMenu.length">{{ isCollapse ? "G" : "Geeker Admin" }}</span>
+				<span v-show="subMenu.length">{{ isCollapse ? "L" : "Li Nan Lin" }}</span>
 			</div>
 			<el-scrollbar>
 				<el-menu

@@ -8,6 +8,7 @@ export interface GlobalState {
 	userInformation?: any;
 	image?: any;
 	systemMessageLength?: any;
+	params?: any;
 }
 
 /* themeConfigProp */
