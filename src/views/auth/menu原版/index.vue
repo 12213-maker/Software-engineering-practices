@@ -4,7 +4,7 @@
 		<!-- 主体 -->
 		<div class="body">
 			<div v-if="!ischangepage" class="left">
-				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in showData.data" :key="item.img">
+				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in data" :key="item.img">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userImg">
 							<el-avatar :size="50" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + item.userImg)"></el-avatar>
@@ -22,7 +22,8 @@
 						{{ item.content }}
 					</div>
 					<div class="imageOter" v-if="item.img">
-						<img class="image" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/getselfcommunity/' + item.img)" alt="" />
+						<!-- <img class="image" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/community/' + item.img)" alt="" /> -->
+						<img class="image" :src="item.img" alt="" />
 					</div>
 					<div class="timecontanerall">
 						<div class="timecontaner">
@@ -44,35 +45,41 @@
 				<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
 			</div>
 			<Editpage @returnback="returnback" @refreshpage="refreshpage" :changeParams="changeParams" v-else />
+
 			<div class="right">
 				<div class="selfinformation">
 					<el-card shadow="always">
 						<div class="avatar">
-							<el-avatar
+							<!-- <el-avatar
 								:size="120"
-								:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + globalStore.userInformation.img)"
-							></el-avatar>
+								:src="getIcon('https://737a8db5.r1.cpolar.top/img/user/' + globalStore.userInformation.img)"
+							></el-avatar> -->
+							<img src="../img/avtar.jpg" alt="user" class="user-image" />
 						</div>
 						<div class="username">{{ globalStore.userInformation.username }}</div>
-						<div class="desx">{{ globalStore.userInformation.description }}</div>
+						<div class="desx">
+							<el-tooltip class="box-item" effect="dark" :content="globalStore.userInformation.description" placement="top">
+								{{ globalStore.userInformation.description }}
+							</el-tooltip>
+						</div>
 						<div class="button" @click="changerouter('userSelf')">
 							<el-button type="primary" :icon="!ischangepage ? Edit : Back">{{ !ischangepage ? "发布动态" : "返回" }}</el-button>
 						</div>
 					</el-card>
 				</div>
 				<div class="notice" v-if="!ischangepage">
-					<el-cardischangepage发布 shadow="always">
+					<el-card shadow="always">
 						<div class="switchschool">
 							<div>
 								<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
 							</div>
-							<el-select v-model="params.school" @change="changeSchool()" class="m-2" placeholder="Select" size="small">
+							<el-select v-model="value" @change="changeSchool()" class="m-2" placeholder="Select" size="small">
 								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
 							</el-select>
 						</div>
 						<div class="noticeinfo">
 							{{ `你好，欢迎来到${value === 1 ? "西南石油大学（成都校区）" : "西南石油大学（南充校区）"}动态推荐！` }}
-						</div></el-cardischangepage发布
+						</div></el-card
 					>
 				</div>
 				<div class="notice" v-else>
@@ -114,11 +121,12 @@
 
 <script setup lang="ts" name="authMenu">
 import { Edit, Delete, Back } from "@element-plus/icons-vue";
-import { getselfcommunity, deletecommunity } from "@/api/modules/lnl-paly";
+import { community, deletecommunity } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
 import { onMounted, reactive, ref } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Editpage from "../edit/index.vue";
+// import Card from "../Card/index.vue";
 
 const globalStore = GlobalStore();
 const ischangepage = ref(false);
@@ -167,15 +175,30 @@ const params = reactive<{ subject?: number; pageNum: number; pageSize: number; s
 	school: 1
 });
 
+const data = [
+	{
+		time: "2024.3.5",
+		subject: 1,
+		content: "content",
+		img: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg",
+		userImg: "",
+		uesrname: "lnl",
+		id: 1,
+		uid: 1
+	},
+	{ time: "2024.3.5", subject: 2, content: "content", img: "", userImg: "", uesrname: "lnl", id: 1, uid: 1 },
+	{ time: "2024.3.5", subject: 1, content: "content", img: "", userImg: "", uesrname: "lnl", id: 1, uid: 1 }
+];
+
 //存放数据
-const showData = reactive<{ data: Array<DataValueInterface> }>({ data: [] });
+const showData = reactive<{ data: any }>({ data: [] });
 //获取动态数据
 const getdata = async () => {
-	// const { pageNum, pageSize } = params;
-	const res = (await getselfcommunity(params)) as any;
+	const res = (await community(params)) as any;
 	infiniteValue.current = res.data.current;
 	infiniteValue.pages = res.data.pages;
-	showData.data.push(...res.data.records);
+	// showData.data.push(...res.data.records);
+	showData.data.push(...data);
 };
 
 //懒加载数据
@@ -207,16 +230,16 @@ console.log(load);
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;
 };
-interface DataValueInterface {
-	time: string;
-	subject: number;
-	content: string;
-	img: string;
-	userImg: string;
-	username: string;
-	id: number;
-	uid: number;
-}
+// interface DataValueInterface {
+// 	time: string;
+// 	subject: number;
+// 	content: string;
+// 	img: string;
+// 	userImg: string;
+// 	username: string;
+// 	id: number;
+// 	uid: number;
+// }
 
 //改变主题
 const changeType = (value: any) => {

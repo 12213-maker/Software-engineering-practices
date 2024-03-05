@@ -23,38 +23,25 @@
 		margin: 0;
 		opacity: 0.9;
 		.left {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			justify-content: space-around;
-			width: 63%;
+			width: 50%;
 			margin-right: 20px;
-
-			// background-color: red;
 			transform: translate(22%);
 			.comment {
-				position: relative;
-				width: 26%;
-				height: 350px;
 				padding: 20px;
-
-				// padding-left: 120px;
+				padding-left: 120px;
 				margin-bottom: 20px;
 				color: #4f4f4f;
 				cursor: pointer;
 				background-color: white;
 				border-radius: 10px;
-				box-shadow: 0 2px 10px rgb(0 0 0 / 20%);
 				.avatar {
-					// position: relative;
-					// left: -60px;
+					position: relative;
+					left: -60px;
 					display: flex;
 					align-items: center;
-
-					// background-color: pink;
 					.ipschool {
-						// position: absolute;
-						// right: -60px;
+						position: absolute;
+						right: -60px;
 						display: flex;
 						align-items: center;
 					}
@@ -73,46 +60,30 @@
 					}
 					.username {
 						margin-right: 20px;
-						font-size: 14px;
+						font-size: 18px;
 					}
 					.score {
 						color: #f56c6c;
 					}
 				}
 				.usercomment {
-					// background-color: red;
-					display: -webkit-box;
-					height: 58px;
-					padding: 5px 0;
-					overflow: hidden;
-					font-size: 15px;
-					color: #777777;
-					word-break: break-all;
-					-webkit-line-clamp: 3;
-					-webkit-box-orient: vertical;
+					padding: 20px 0;
+					font-size: 17px;
+					color: #4f4f4f;
 				}
 				.imageOter {
 					display: flex;
-					width: 100%;
-					height: 200px;
-					border-radius: 10px;
+					width: 100px;
+					height: 100px;
 					.image {
 						width: 100%;
 						margin: 0 3px;
-						border-radius: 10px;
 					}
 				}
 				.timecontanerall {
-					position: absolute;
-					bottom: 10px;
 					display: flex;
 					align-items: center;
-					justify-content: space-around;
-
-					// width: 100%;
-					font-size: 12px;
-
-					// background-color: blueviolet;
+					justify-content: space-between;
 					.timecontaner {
 						display: flex;
 						align-items: center;

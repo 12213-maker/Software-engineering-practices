@@ -1,91 +1,5 @@
 <template>
 	<div class="dataVisualize-box">
-		<div class="card homeContainer">
-			<div class="home2024 left">
-				<div class="title">
-					<div class="info">好友动态</div>
-					<!-- <div class="more">查看更多</div> -->
-				</div>
-				<div><Random /></div>
-			</div>
-			<div class="home2024 center">
-				<div class="title">
-					<div class="info">随机推荐</div>
-					<div class="more">查看更多</div>
-				</div>
-				<Card />
-			</div>
-			<div class="home2024 right">
-				<div class="title">
-					<div class="info">校内热搜</div>
-					<!-- <div class="more">查看更多</div>/ -->
-				</div>
-				<Hot />
-			</div>
-		</div>
-		<div class="card eat">
-			<div class="title">
-				<div class="info">随机推荐</div>
-				<div class="more">查看更多</div>
-			</div>
-			<div class="container">
-				<div
-					:class="{ active: classActive[0], panel: true }"
-					@click="
-						() => {
-							changeClass(0);
-						}
-					"
-					style="background-image: url('https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg')"
-				>
-					<h3>Explore The World</h3>
-				</div>
-				<div
-					:class="{ active: classActive[1], panel: true }"
-					@click="
-						() => {
-							changeClass(1);
-						}
-					"
-					style="background-image: url('https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg')"
-				>
-					<h3>Wild Forest</h3>
-				</div>
-				<div
-					:class="{ active: classActive[2], panel: true }"
-					@click="
-						() => {
-							changeClass(2);
-						}
-					"
-					style="background-image: url('https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg')"
-				>
-					<h3>Sunny Beach</h3>
-				</div>
-				<div
-					:class="{ active: classActive[3], panel: true }"
-					@click="
-						() => {
-							changeClass(3);
-						}
-					"
-					style="background-image: url('https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg')"
-				>
-					<h3>City on Winter</h3>
-				</div>
-				<div
-					:class="{ active: classActive[4], panel: true }"
-					@click="
-						() => {
-							changeClass(4);
-						}
-					"
-					style="background-image: url('https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg')"
-				>
-					<h3>Mountains - Clouds</h3>
-				</div>
-			</div>
-		</div>
 		<div class="card top-box">
 			<div class="top-title">热门旅游地区</div>
 			<el-tabs v-model="tabActive" class="demo-tabs">
@@ -151,9 +65,6 @@
 <script setup lang="ts" name="dataVisualize">
 import { ref, onMounted } from "vue";
 import Curve from "./components/curve.vue";
-import Card from "./components/Card/index.vue";
-import Random from "./components/Random/index.vue";
-import Hot from "./components/Hot/index.vue";
 import { systemMessageunread } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
 
@@ -161,7 +72,6 @@ const tabActive = ref(1);
 const tabActive2 = ref(1);
 const curveRef = ref();
 const value1 = ref(5);
-const classActive = ref([true, false, false, false, false]);
 const globalStore = GlobalStore();
 
 const tab = [
@@ -307,12 +217,6 @@ const curveData = [
 	{ value: 1012, spotName: "甘肃" },
 	{ value: 1002, spotName: "上海" }
 ];
-
-const changeClass = (index: any) => {
-	const newClass = [false, false, false, false, false];
-	newClass[index] = true;
-	classActive.value = newClass;
-};
 
 const getIcon = (name: string) => {
 	return new URL(name, import.meta.url).href;

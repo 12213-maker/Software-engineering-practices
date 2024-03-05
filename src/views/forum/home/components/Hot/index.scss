@@ -1,0 +1,60 @@
+.campus-side {
+	width: 100%;
+	padding-top: 5px;
+
+	// margin: 20px 0 0;
+	margin-left: 8px;
+
+	// background-color: red;
+}
+.campus-side-main {
+	// position: sticky;
+	// top: 45px;
+	// width: 280px;
+}
+.campus-side-card .con {
+	position: relative;
+	height: 40px;
+	padding: 0 20px 0 24px;
+	margin-bottom: 10px;
+	overflow: hidden;
+	white-space: nowrap;
+
+	// background-color: blue;
+}
+.wbpro-side-tit {
+	height: 40px;
+	padding: 0 18px;
+}
+.campus-side-title {
+	align-self: center;
+	font-size: 14px;
+	line-height: 18px;
+}
+.side-rank-num {
+	position: absolute;
+	left: 0;
+	width: 20px;
+	font-size: 16px;
+	font-weight: 700;
+	color: #ff8200;
+	text-align: center;
+}
+.side-f12 {
+	font-size: 12px;
+	line-height: 16px;
+}
+.info {
+	overflow: hidden;
+
+	// overflow: hidden;
+	font-size: 13px;
+
+	// color: #777777;
+	// word-break: break-all;
+	// -webkit-line-clamp: 1;
+	// -webkit-box-orient: vertical;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	white-space: nowrap;
+}

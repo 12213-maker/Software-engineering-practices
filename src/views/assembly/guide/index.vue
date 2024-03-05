@@ -162,7 +162,7 @@ const options = [
 	},
 	{
 		value: 2,
-		label: "成都理工大学"
+		label: "西南石油大学（南充校区）"
 	}
 ];
 const clickgivemymessage = async () => {

@@ -3,14 +3,11 @@
 		<div class="leftinner" :style="{ height: item.data.img ? '' : '51vh' }">
 			<div class="comment">
 				<div class="avatar">
-					<div class="avatarimage1" v-if="item.data.userImg || item.data.img">
-						<el-avatar
-							:size="50"
-							:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + `${isSelfPage ? item.data.userImg : item.data.img}`)"
-						></el-avatar>
+					<div class="avatarimage1" v-if="item.data.userPhoto">
+						<img class="image" :src="item.data.userPhoto" alt="" />
 					</div>
 					<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
-					<span class="username">{{ item.data.username }}</span>
+					<span class="username">{{ item.data.create }}</span>
 					<div v-if="isSelfPage" class="ipschool">
 						<el-tag size="large" round v-if="item.data.subject === 1" class="ml-2" type="warning">校内美食推荐</el-tag>
 						<el-tag size="large" round v-else-if="item.data.subject === 4" class="ml-2" type="danger">周末游线路推荐</el-tag>
@@ -135,7 +132,7 @@ const options2 = [
 	},
 	{
 		value: 2,
-		label: "成都理工大学"
+		label: "西南石油大学（南充校区）"
 	}
 ];
 
@@ -163,7 +160,7 @@ let item = reactive<{ data: DataType }>({
 });
 if (isSelfPage) {
 	Object.assign(item.data, props.changeParams);
-	console.log("我是item数据");
+	console.log("我是item数据", item);
 } else {
 	Object.assign(item.data, userInformation);
 	console.log("我是发布动态数据", item.data);
@@ -225,7 +222,8 @@ const inputstatus = async () => {
 </script>
 
 <style scoped lang="scss">
-.left {
+@import "./index.scss";
+/* .left {
 	width: 50%;
 	height: 84vh;
 	margin-right: 20px;
@@ -346,5 +344,5 @@ const inputstatus = async () => {
 			}
 		}
 	}
-}
+} */
 </style>
