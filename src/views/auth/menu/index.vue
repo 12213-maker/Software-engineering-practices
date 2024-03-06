@@ -4,7 +4,7 @@
 		<!-- 主体 -->
 		<div class="body">
 			<div v-if="!ischangepage" class="left">
-				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in data" :key="item.img">
+				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in article" :key="item.img">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.userPhoto">
 							<!-- <el-avatar :size="50" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + item.userImg)"></el-avatar> -->
@@ -13,9 +13,9 @@
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 						<span class="username">{{ item.create }}</span>
 						<div class="ipschool">
-							<el-tag size="small" round v-if="item.type === 1" class="ml-2" type="warning">表白</el-tag>
-							<el-tag size="small" round v-else-if="item.type === 2" class="ml-2" type="danger">日常</el-tag>
-							<el-tag size="small" round v-else-if="item.type === 3" class="ml-2">知识</el-tag>
+							<el-tag size="small" round v-if="item.subject === 1" class="ml-2" type="warning">表白</el-tag>
+							<el-tag size="small" round v-else-if="item.subject === 2" class="ml-2" type="danger">日常</el-tag>
+							<el-tag size="small" round v-else-if="item.subject === 3" class="ml-2">知识</el-tag>
 							<el-tag size="small" round class="ml-2" type="success" v-else>趣玩</el-tag>
 						</div>
 					</div>
@@ -50,11 +50,8 @@
 				<div class="selfinformation">
 					<el-card shadow="always">
 						<div class="avatar">
-							<!-- <el-avatar
-								:size="120"
-								:src="getIcon('https://737a8db5.r1.cpolar.top/img/user/' + globalStore.userInformation.img)"
-							></el-avatar> -->
-							<img src="../img/avtar.jpg" alt="user" class="user-image" />
+							<el-avatar :size="120" :src="globalStore.userInformation.img"></el-avatar>
+							<!-- <img src="../img/avtar.jpg" alt="user" class="user-image" /> -->
 						</div>
 						<div class="username">{{ globalStore.userInformation.username }}</div>
 						<div class="desx">
@@ -100,17 +97,17 @@
 						<div class="tagtitle">动态主题</div>
 						<div class="tags" v-if="!ischangepage">
 							<el-tag size="large" class="ml-2" type="danger" @click="changeType(0)">全部</el-tag>
-							<el-tag size="large" class="ml-2" type="warning" @click="changeType(1)">校内美食</el-tag>
-							<el-tag size="large" class="ml-2" @click="changeType(4)">周末游线路</el-tag>
-							<el-tag size="large" class="ml-2" @click="changeType(2)">校园周边地点</el-tag>
-							<el-tag size="large" class="ml-2" type="success" @click="changeType(3)">一日游线路推荐</el-tag>
+							<el-tag size="large" class="ml-2" type="warning" @click="changeType(1)">表白</el-tag>
+							<el-tag size="large" class="ml-2" @click="changeType(4)">趣玩</el-tag>
+							<el-tag size="large" class="ml-2" @click="changeType(2)">日常</el-tag>
+							<el-tag size="large" class="ml-2" type="success" @click="changeType(3)">知识</el-tag>
 						</div>
 						<div class="tags" v-else>
 							<el-tag size="large" class="ml-2" type="danger">全部</el-tag>
-							<el-tag size="large" class="ml-2" type="warning">校内美食</el-tag>
-							<el-tag size="large" class="ml-2">周末游线路</el-tag>
-							<el-tag size="large" class="ml-2">校园周边地点</el-tag>
-							<el-tag size="large" class="ml-2" type="success">一日游线路推荐</el-tag>
+							<el-tag size="large" class="ml-2" type="warning">表白</el-tag>
+							<el-tag size="large" class="ml-2">趣玩</el-tag>
+							<el-tag size="large" class="ml-2">日常</el-tag>
+							<el-tag size="large" class="ml-2" type="success">知识</el-tag>
 						</div>
 					</el-card>
 				</div>
@@ -123,7 +120,7 @@
 import { Edit, Delete, Back } from "@element-plus/icons-vue";
 import { community, deletecommunity } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Editpage from "../edit/index.vue";
 // import Card from "../Card/index.vue";
@@ -131,6 +128,15 @@ import Editpage from "../edit/index.vue";
 const globalStore = GlobalStore();
 const ischangepage = ref(false);
 
+const article = ref(globalStore.article);
+const getArticle = computed(() => globalStore.article);
+watch(
+	getArticle,
+	(newvalue: any) => {
+		article.value = newvalue;
+	},
+	{ immediate: true, deep: true }
+);
 //更新页面数据
 const refreshpage = async () => {
 	params.pageNum = 1;
@@ -174,47 +180,6 @@ const params = reactive<{ subject?: number; pageNum: number; pageSize: number; s
 	subject: 0,
 	school: 1
 });
-
-// const data = [
-// 	{
-// 		time: "2024.3.5",
-// 		subject: 1,
-// 		content:
-// 			"contenttps://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jptps://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jp",
-// 		img: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg",
-// 		userImg: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg",
-// 		username: "不是风动",
-// 		id: 1,
-// 		uid: 1
-// 	},
-// 	{ time: "2024.3.5", subject: 2, content: "content", img: "", userImg: "", username: "lnl", id: 1, uid: 1 },
-// 	{ time: "2024.3.5", subject: 1, content: "content", img: "", userImg: "", username: "lnl", id: 1, uid: 1 },
-// 	{
-// 		time: "2024.3.5",
-// 		subject: 1,
-// 		content: "content",
-// 		img: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg",
-// 		userImg: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg",
-// 		username: "lnl",
-// 		id: 1,
-// 		uid: 1
-// 	},
-// 	{ time: "2024.3.5", subject: 2, content: "content", img: "", userImg: "", username: "lnl", id: 1, uid: 1 },
-// 	{ time: "2024.3.5", subject: 1, content: "content", img: "", userImg: "", username: "lnl", id: 1, uid: 1 },
-// 	{
-// 		time: "2024.3.5",
-// 		subject: 1,
-// 		content: "content",
-// 		img: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg",
-// 		userImg: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg",
-// 		username: "lnl",
-// 		id: 1,
-// 		uid: 1
-// 	},
-// 	{ time: "2024.3.5", subject: 2, content: "content", img: "", userImg: "", username: "lnl", id: 1, uid: 1 },
-// 	{ time: "2024.3.5", subject: 1, content: "content", img: "", userImg: "", username: "lnl", id: 1, uid: 1 }
-// ];
-
 const data = [
 	// {
 	// 	id: 0, //文章id
@@ -461,8 +426,6 @@ const data = [
 	}
 ];
 
-// console.log(article);
-
 //存放数据
 const showData = reactive<{ data: any }>({ data: [] });
 //获取动态数据
@@ -498,21 +461,6 @@ const load = () => {
 	}, 1000);
 };
 console.log(load);
-
-//处理图片
-// const getIcon = (name: string) => {
-// 	return new URL(name, import.meta.url).href;
-// };
-// interface DataValueInterface {
-// 	time: string;
-// 	subject: number;
-// 	content: string;
-// 	img: string;
-// 	userImg: string;
-// 	username: string;
-// 	id: number;
-// 	uid: number;
-// }
 
 //改变主题
 const changeType = (value: any) => {

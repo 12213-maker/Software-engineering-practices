@@ -8,11 +8,14 @@
 					</div>
 					<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
 					<span class="username">{{ item.data.create }}</span>
+					<div class="timecontaner">
+						<span class="time">{{ item.data.time }}</span>
+					</div>
 					<div v-if="isSelfPage" class="ipschool">
-						<el-tag size="large" round v-if="item.data.subject === 1" class="ml-2" type="warning">校内美食推荐</el-tag>
-						<el-tag size="large" round v-else-if="item.data.subject === 4" class="ml-2" type="danger">周末游线路推荐</el-tag>
-						<el-tag size="large" round v-else-if="item.data.subject === 2" class="ml-2">校园周边地点推荐</el-tag>
-						<el-tag size="large" round class="ml-2" type="success" v-else>一日游线路推荐</el-tag>
+						<el-tag size="large" round v-if="item.data.subject === 1" class="ml-2" type="warning">表白</el-tag>
+						<el-tag size="large" round v-else-if="item.data.subject === 4" class="ml-2" type="danger">趣玩</el-tag>
+						<el-tag size="large" round v-else-if="item.data.subject === 2" class="ml-2">日常</el-tag>
+						<el-tag size="large" round class="ml-2" type="success" v-else>知识</el-tag>
 					</div>
 				</div>
 
@@ -57,28 +60,63 @@
 					</el-select>
 				</div>
 
-				<div class="imageOter showimg" v-else>
-					<img
-						class="image"
-						v-if="item.data.img"
-						:src="getIcon(' https://737a8db5.r1.cpolar.top/img/community/' + item.data.img)"
-						alt=""
-					/>
+				<div class="imageOter" v-else>
+					<div class="imgimg">
+						<img v-for="item2 in item.data.photo" :key="item2" class="image" :src="item2" alt="" />
+					</div>
 				</div>
 
-				<div class="timecontanerall" :style="{ position: item.data.img ? '' : 'relative', top: '-200px' }" v-if="isSelfPage">
-					<div class="timecontaner">
-						<span class="time">{{ item.data.time }}</span>
+				<div class="bottom">
+					<div>
+						<el-icon><Share /></el-icon>转发
 					</div>
-					<div v-if="id === item.data.uid">
-						<el-button :icon="Delete" type="primary" @click="deletedongati(item.data.id)">删除</el-button>
+					<div>
+						<el-icon><ChatLineSquare /></el-icon>评论
+					</div>
+					<div>
+						<el-icon><Star /></el-icon>点赞
 					</div>
 				</div>
-				<div v-else class="btns">
+
+				<div
+					v-if="id === item.data.uid && isSelfPage"
+					class="timecontanerall"
+					:style="{ position: item.data.img ? '' : 'relative', top: '-200px' }"
+				>
+					<div>
+						<el-button :icon="Delete" type="primary" @click="deletedongati(item.data.id)"
+							>删除{{ id }}{{ item.data.uid }}</el-button
+						>
+					</div>
+				</div>
+				<div v-if="!isSelfPage" class="btns">
 					<el-button :icon="Delete" type="primary" @click="emit('returnback')">取消</el-button>
 					<el-button :icon="Position" type="primary" @click="inputstatus">发布</el-button>
 				</div>
 			</div>
+			<el-card>
+				<div class="mybottom">
+					<div class="mycomment">我的评论</div>
+					<div class="allcomment" v-for="item2 in item.data.comment" :key="item2.username">
+						<div class="userinfo">
+							<div class="avatarimage1" v-if="item.data.userPhoto">
+								<img class="image" :src="item.data.userPhoto" alt="" />
+							</div>
+							<div class="avatarimage" v-else>
+								<img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" />
+							</div>
+							<span class="username"
+								><span class="name">{{ item.data.create }}</span
+								><span class="time">{{ item.data.time }}</span></span
+							>
+							<!-- <div class="timecontaner">
+								<span class="time">{{ item.data.time }}</span>
+							</div> -->
+						</div>
+						<div class="commentinfo">{{ item2.info }}</div>
+					</div>
+				</div>
+			</el-card>
 		</div>
 	</div>
 </template>
@@ -100,28 +138,29 @@ const emit = defineEmits(["returnback", "refreshpage"]);
 const props = withDefaults(defineProps<{ changeParams: any }>(), {
 	changeParams: {}
 });
+console.log("shwme11111111", id, props.changeParams);
+
 //isSelfPage 标识从发布动态转过来以及可以编辑动态
 const isSelfPage = Object.keys(props.changeParams).length;
-console.log(isSelfPage);
 const textarea = ref("");
 
 const value = ref(1);
 const options = [
 	{
 		value: 1,
-		label: "校内美食推荐"
+		label: "表白"
 	},
 	{
 		value: 2,
-		label: "校园周边地点推荐"
+		label: "日常"
 	},
 	{
 		value: 3,
-		label: "一日游线路推荐"
+		label: "知识"
 	},
 	{
 		value: 4,
-		label: "周末游线路推荐"
+		label: "趣玩"
 	}
 ];
 const value2 = ref(1);
@@ -183,9 +222,9 @@ const deletedongati = async (value: any) => {
 		});
 	});
 };
-const getIcon = (name: string) => {
-	return new URL(name, import.meta.url).href;
-};
+// const getIcon = (name: string) => {
+// 	return new URL(name, import.meta.url).href;
+// };
 
 const imageUrl = reactive<Array<any>>([]);
 const beforeAvatarUpload = (file: any) => {
@@ -223,126 +262,4 @@ const inputstatus = async () => {
 
 <style scoped lang="scss">
 @import "./index.scss";
-/* .left {
-	width: 50%;
-	height: 84vh;
-	margin-right: 20px;
-	visibility: hidden;
-	background-color: pink;
-	border-radius: 10px;
-	transform: translate(22%);
-	.leftinner {
-		width: 100%;
-		height: 80vh;
-		overflow: hidden;
-		visibility: visible;
-		background-color: white;
-		border-radius: 10px;
-		opacity: 0.98;
-		.comment {
-			display: flex;
-			flex-direction: column;
-			padding: 20px;
-			padding-left: 120px;
-			margin-bottom: 20px;
-			color: #4f4f4f;
-			background-color: white;
-			border-radius: 10px;
-			.avatar {
-				position: relative;
-				left: -60px;
-				display: flex;
-				align-items: center;
-				padding-bottom: 15px;
-				.ipschool {
-					position: absolute;
-					right: -60px;
-					display: flex;
-					align-items: center;
-				}
-				.avatarimage1 {
-					width: 50px;
-					height: 50px;
-					margin-right: 10px;
-					overflow: hidden;
-					border-radius: 50%;
-					img {
-						width: 100%;
-					}
-				}
-				.avatarimage {
-					overflow: hidden;
-				}
-				.username {
-					margin-right: 20px;
-					font-size: 18px;
-				}
-				.score {
-					color: #f56c6c;
-				}
-			}
-			.usercomment {
-				padding-bottom: 15px;
-				font-size: 17px;
-				color: #4f4f4f;
-				.usercommentsize {
-					font-size: 20px;
-				}
-			}
-			.imageOter {
-				display: flex;
-				width: 100px;
-				height: 100px;
-				.image {
-					width: 100%;
-					margin: 0 3px;
-				}
-				.selecttag {
-					position: absolute;
-					left: 290px;
-					display: flex;
-					align-items: center;
-				}
-				.ipschool {
-					position: absolute;
-					left: 530px;
-					display: flex;
-					align-items: center;
-				}
-			}
-			.uploadone {
-				padding-top: 30px;
-			}
-			.showimg {
-				width: 300px;
-				height: 300px;
-			}
-			.timecontanerall {
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				height: 100px;
-				.timecontaner {
-					display: flex;
-					align-items: center;
-					.time {
-						display: block;
-						margin-top: 5px;
-						margin-right: 30px;
-					}
-				}
-			}
-			.btns {
-				position: absolute;
-				bottom: 165px;
-				left: 575px;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				width: 100px;
-				height: 100px;
-			}
-		}
-	}
-} */
 </style>

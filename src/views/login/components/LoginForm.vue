@@ -32,7 +32,7 @@ import { ref, reactive, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { Login } from "@/api/interface";
 import { ElNotification } from "element-plus";
-import { loginApi } from "@/api/modules/login";
+// import { loginApi } from "@/api/modules/login";
 import { GlobalStore } from "@/stores";
 import { TabsStore } from "@/stores/modules/tabs";
 import { KeepAliveStore } from "@/stores/modules/keepAlive";
@@ -65,11 +65,33 @@ const login = (formEl: FormInstance | undefined) => {
 		if (!valid) return;
 		loading.value = true;
 		try {
+			const res = {
+				code: 200,
+				data: {
+					token:
+						"-BUl8EZf65F-Dvy_yR8FoATTxCjn6VHsoiZMFDorJfghOCyll4lqYB_rv-6WsuIctJJpwgn1WlJLpi0mjv5K9K_RUU2emAM7lbiIa1fk3o5_Nj8iL6tUS-ILnso1HRml",
+					user: {
+						id: 0,
+						roleId: 1,
+						username: "更与行人别",
+						img: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
+						password: "123456",
+						birthday: "2001-10-27",
+						phone: "18980530858",
+						sex: 2,
+						description: "人生如逆旅，我亦是行人。",
+						school: 1
+					}
+				}
+			};
+
 			// 1.执行登录接口
-			const { code, data } = await loginApi({ ...loginForm });
+			// const { code, data } = await loginApi({ ...loginForm });
+			const { code, data } = res;
 
 			if (Number(code) === 200) {
 				globalStore.setToken(data.token);
+				globalStore.setLogin(true);
 				//保存用户信息
 				globalStore.setUserInformation(data.user);
 

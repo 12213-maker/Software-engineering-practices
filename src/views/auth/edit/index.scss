@@ -1,5 +1,6 @@
 .left {
 	width: 50%;
+
 	// height: 84vh;
 	margin-right: 20px;
 	visibility: hidden;
@@ -8,8 +9,10 @@
 	transform: translate(22%);
 	.leftinner {
 		width: 100%;
-		height: 80vh;
-		overflow: hidden;
+		margin-right: 60px;
+
+		// height: 80vh;
+		// overflow: hidden;
 		visibility: visible;
 		background-color: white;
 		border-radius: 10px;
@@ -18,22 +21,25 @@
 			display: flex;
 			flex-direction: column;
 			padding: 20px;
-			padding-left: 120px;
+
+			// padding-left: 120px;
 			margin-bottom: 20px;
 			color: #4f4f4f;
 			background-color: white;
 			border-radius: 10px;
 			.avatar {
 				position: relative;
-				left: -60px;
+				left: 0;
 				display: flex;
 				align-items: center;
 				padding-bottom: 15px;
 				.ipschool {
-					position: absolute;
-					right: -60px;
 					display: flex;
 					align-items: center;
+
+					// position: absolute;
+					// right: -60px;
+					margin-left: 20px;
 				}
 				.avatarimage1 {
 					width: 50px;
@@ -61,16 +67,26 @@
 				font-size: 17px;
 				color: #4f4f4f;
 				.usercommentsize {
-					font-size: 20px;
+					font-size: 17px;
 				}
 			}
 			.imageOter {
-				display: flex;
-				width: 100px;
-				height: 100px;
-				.image {
-					width: 100%;
-					margin: 0 3px;
+				// display: flex;
+				// flex-direction: row;
+				// flex-wrap: wrap;
+				width: 100%;
+
+				// background-color: red;
+				.imgimg {
+					// width: 45%;
+					// height: 400px;
+					.image {
+						width: 45%;
+						height: 350px;
+						margin-right: 10px;
+						margin-bottom: 10px;
+						border-radius: 10px;
+					}
 				}
 				.selecttag {
 					position: absolute;
@@ -85,18 +101,28 @@
 					align-items: center;
 				}
 			}
+			.bottom {
+				display: flex;
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-between;
+				width: 85%;
+				height: 50px;
+			}
 			.uploadone {
 				padding-top: 30px;
 			}
 			.showimg {
-				width: 300px;
-				height: 300px;
+				// width: 300px;
+				// height: 300px;
 			}
 			.timecontanerall {
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				height: 100px;
+
+				// height: 100px;
+				background-color: pink;
 				.timecontaner {
 					display: flex;
 					align-items: center;
@@ -116,6 +142,49 @@
 				justify-content: space-between;
 				width: 100px;
 				height: 100px;
+			}
+		}
+		.mybottom {
+			.mycomment {
+			}
+			.allcomment {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: nowrap;
+				margin: 10px 0;
+				background-color: pink;
+				.userinfo {
+					display: flex;
+					align-items: center;
+					background-color: salmon;
+					.avatarimage1 {
+						width: 40px;
+						height: 40px;
+						margin-right: 10px;
+						overflow: hidden;
+						border-radius: 50%;
+						img {
+							width: 100%;
+						}
+					}
+					.avatarimage {
+						overflow: hidden;
+					}
+					.username {
+						display: flex;
+						flex-direction: column;
+						margin-right: 20px;
+						font-size: 18px;
+						.name {
+							font-size: 14px;
+						}
+						.time {
+							font-size: 12px;
+						}
+					}
+				}
+				.commentinfo {
+				}
 			}
 		}
 	}

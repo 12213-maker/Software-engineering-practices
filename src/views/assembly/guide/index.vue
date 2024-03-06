@@ -7,16 +7,9 @@
 						<!-- 头像 -->
 						<div class="avatar">
 							<el-upload :on-change="change" :before-upload="beforeAvatarUpload" :show-file-list="false">
-								<el-avatar
-									v-if="imageUrl"
-									:size="80"
-									:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + imageUrl)"
-								></el-avatar>
-								<el-avatar
-									v-else
-									:size="80"
-									:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + FormValue.userinfo.img)"
-								></el-avatar>
+								<el-avatar v-if="login" :size="80" :src="FormValue.userinfo.img"></el-avatar>
+								<!-- <img v-if="login" :size="80" :src="FormValue.userinfo.img" /> -->
+								<el-avatar v-else :size="80" src="../../../assets/lnl_images/default.png"></el-avatar>
 							</el-upload>
 						</div>
 
@@ -129,6 +122,7 @@ import { ElMessageBox, ElMessage } from "element-plus";
 
 const globalStore = GlobalStore();
 const imageUrl = ref("");
+const login = ref(globalStore.login);
 
 const FormValue = reactive<{ userinfo: any }>({
 	userinfo: {}
@@ -200,9 +194,9 @@ const rules = {
 	phone: [{ validator: checkPhone, message: "请输入正确的手机号", trigger: "blur" }]
 };
 //处理图片
-const getIcon = (name: string) => {
-	return new URL(name, import.meta.url).href;
-};
+// const getIcon = (name: string) => {
+// 	return new URL(name, import.meta.url).href;
+// };
 const handleClick = async (tab: TabsPaneContext, event: Event) => {
 	if (tab.props.label === "我的举报") {
 		// const { data } = await report({});
@@ -271,6 +265,7 @@ const getuserInfo = async () => {
 };
 
 onMounted(async () => {
+	console.log(FormValue, "showme");
 	getuserInfo();
 	const { data } = await message({});
 	messageValue.data = data as any;

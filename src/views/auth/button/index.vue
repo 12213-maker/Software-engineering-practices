@@ -9,13 +9,15 @@
 						<div class="avatarimage1" v-if="item.userImg">
 							<el-avatar :size="50" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + item.userImg)"></el-avatar>
 						</div>
-						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
+						<div class="avatarimage" v-else>
+							<img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" />
+						</div>
 						<span class="username">{{ item.username }}</span>
 						<div class="ipschool">
-							<el-tag size="large" round v-if="item.subject === 1" class="ml-2" type="warning">校内美食推荐</el-tag>
-							<el-tag size="large" round v-else-if="item.subject === 4" class="ml-2" type="danger">周末游线路推荐</el-tag>
-							<el-tag size="large" round v-else-if="item.subject === 2" class="ml-2">校园周边地点推荐</el-tag>
-							<el-tag size="large" round class="ml-2" type="success" v-else>一日游线路推荐</el-tag>
+							<el-tag size="large" round v-if="item.subject === 1" class="ml-2" type="warning">表白</el-tag>
+							<el-tag size="large" round v-else-if="item.subject === 4" class="ml-2" type="danger">趣玩</el-tag>
+							<el-tag size="large" round v-else-if="item.subject === 2" class="ml-2">日常</el-tag>
+							<el-tag size="large" round class="ml-2" type="success" v-else>知识</el-tag>
 						</div>
 					</div>
 					<div class="usercomment">
@@ -61,7 +63,7 @@
 					</el-card>
 				</div>
 				<div class="notice" v-if="!ischangepage">
-					<el-cardischangepage发布 shadow="always">
+					<el-cardischangepage shadow="always">
 						<div class="switchschool">
 							<div>
 								<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
@@ -72,7 +74,7 @@
 						</div>
 						<div class="noticeinfo">
 							{{ `你好，欢迎来到${value === 1 ? "西南石油大学（成都校区）" : "西南石油大学（南充校区）"}动态推荐！` }}
-						</div></el-cardischangepage发布
+						</div></el-cardischangepage
 					>
 				</div>
 				<div class="notice" v-else>
@@ -93,17 +95,17 @@
 						<div class="tagtitle">动态主题</div>
 						<div class="tags" v-if="!ischangepage">
 							<el-tag size="large" class="ml-2" type="danger" @click="changeType(0)">全部</el-tag>
-							<el-tag size="large" class="ml-2" type="warning" @click="changeType(1)">校内美食</el-tag>
-							<el-tag size="large" class="ml-2" @click="changeType(4)">周末游线路</el-tag>
-							<el-tag size="large" class="ml-2" @click="changeType(2)">校园周边地点</el-tag>
-							<el-tag size="large" class="ml-2" type="success" @click="changeType(3)">一日游线路推荐</el-tag>
+							<el-tag size="large" class="ml-2" type="warning" @click="changeType(1)">表白</el-tag>
+							<el-tag size="large" class="ml-2" @click="changeType(4)">趣玩</el-tag>
+							<el-tag size="large" class="ml-2" @click="changeType(2)">日常</el-tag>
+							<el-tag size="large" class="ml-2" type="success" @click="changeType(3)">知识</el-tag>
 						</div>
 						<div class="tags" v-else>
 							<el-tag size="large" class="ml-2" type="danger">全部</el-tag>
-							<el-tag size="large" class="ml-2" type="warning">校内美食</el-tag>
-							<el-tag size="large" class="ml-2">周末游线路</el-tag>
-							<el-tag size="large" class="ml-2">校园周边地点</el-tag>
-							<el-tag size="large" class="ml-2" type="success">一日游线路推荐</el-tag>
+							<el-tag size="large" class="ml-2" type="warning">表白</el-tag>
+							<el-tag size="large" class="ml-2">趣玩</el-tag>
+							<el-tag size="large" class="ml-2">日常</el-tag>
+							<el-tag size="large" class="ml-2" type="success">知识</el-tag>
 						</div>
 					</el-card>
 				</div>

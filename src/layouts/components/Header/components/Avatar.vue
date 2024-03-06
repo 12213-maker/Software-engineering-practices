@@ -1,8 +1,8 @@
 <template>
 	<el-dropdown trigger="click">
 		<el-badge :is-dot="unreadmessage ? true : false" class="item">
-			<el-avatar v-if="image" :size="40" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + image)"></el-avatar>
-			<el-avatar v-else :size="40" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + userinfo.img)"></el-avatar>
+			<el-avatar v-if="login" :size="40" :src="userinfo.img"></el-avatar>
+			<el-avatar v-else :size="40" src="../../../../assets/lnl_images/default.png"></el-avatar>
 		</el-badge>
 
 		<template #dropdown>
@@ -28,11 +28,12 @@
 	<PasswordDialog ref="passwordRef"></PasswordDialog>
 	<el-dialog v-model="dialogTableVisible" title="系统信息">
 		<el-table :data="systeminfo.data">
-			<el-table-column property="title" label="消息简要" width="110">
+			<el-table-column property="title" label="消息简要" width="120">
 				<template #default="scope">
 					<el-tag class="ml-2" v-if="scope.row.title === 1" type="success">举报成功</el-tag>
 					<el-tag class="ml-2" v-else-if="scope.row.title === 2" type="info">举报失败</el-tag>
 					<el-tag class="ml-2" v-else-if="scope.row.title === 3" type="warning">评论被举报</el-tag>
+					<el-tag class="ml-2" v-else-if="scope.row.title === 4" type="warning">管理员有话说</el-tag>
 					<el-tag class="ml-2" v-else>留言回复</el-tag>
 				</template>
 			</el-table-column>
@@ -41,17 +42,18 @@
 			<el-table-column property="content" label="消息内容" />
 			<el-table-column property="status" label="消息状态" width="100">
 				<template #default="scope2">
-					<el-checkbox
+					{{ scope2.row.status === 1 ? "已读" : "未读" }}
+					<!-- <el-checkbox
 						@change="changestatusresolve(scope2.row)"
 						:checked="scope2.row.status === 1 ? true : false"
 						:disabled="scope2.row.status === 1 ? true : false"
 						:label="scope2.row.status === 1 ? '已读' : '未读'"
 						size="large"
-					/>
+					/> -->
 				</template>
 			</el-table-column>
 		</el-table>
-		<div class="readall" @click="readAllnews"><el-button>一键全读</el-button></div>
+		<!-- <div class="readall" @click="readAllnews"><el-button>一键全读</el-button></div> -->
 	</el-dialog>
 </template>
 
@@ -59,20 +61,37 @@
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { GlobalStore } from "@/stores";
 import { LOGIN_URL } from "@/config/config";
-import { logoutApi, myMessage, putsystemMessage, putsystemMessagereadAll, systemMessageunread } from "@/api/modules/lnl-paly";
+import { systemMessageunread } from "@/api/modules/lnl-paly";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElMessage } from "element-plus";
 import InfoDialog from "./InfoDialog.vue";
 import PasswordDialog from "./PasswordDialog.vue";
 
 const globalStore = GlobalStore();
-const userinfo = globalStore.userInformation || sessionStorage.getItem("sessionImg");
+
+const userinfo = ref();
+userinfo.value = globalStore.userInformation;
+
+const login = computed(() => globalStore.login);
+
+const getProjectList = computed(() => {
+	return globalStore.userInformation;
+});
+watch(
+	getProjectList,
+	(newValue: any) => {
+		userinfo.value = newValue;
+	},
+	{ immediate: true, deep: true }
+);
+
+// const userinfo = globalStore.userInformation || sessionStorage.getItem("sessionImg");
 const router = useRouter();
 let dialogTableVisible = ref(false);
 //处理图片
-const getIcon = (name: string) => {
-	return new URL(name, import.meta.url).href;
-};
+// const getIcon = (name: string) => {
+// 	return new URL(name, import.meta.url).href;
+// };
 
 // 退出登录
 const logout = () => {
@@ -82,10 +101,11 @@ const logout = () => {
 		type: "warning"
 	}).then(async () => {
 		// 1.调用退出登录接口
-		await logoutApi({});
+		// await logoutApi({});
 		// 2.清除 Token
 		globalStore.setToken("");
 		globalStore.setImage("");
+		globalStore.setLogin(false);
 		// 3.重定向到登陆页
 		router.replace(LOGIN_URL);
 		ElMessage.success("退出登录成功！");
@@ -95,7 +115,21 @@ const logout = () => {
 const systeminfo = reactive<{ data: any }>({ data: {} });
 const showMymessage = async () => {
 	dialogTableVisible.value = true;
-	const { data } = (await myMessage({})) as any;
+
+	const data = [
+		{
+			title: 1,
+			time: "2024-3-4",
+			content: "文章内容有问题",
+			status: 2
+		},
+		{
+			title: 4,
+			time: "2024-3-3",
+			content: "欢迎登录智慧校园~",
+			status: 1
+		}
+	];
 	refreshmessage();
 	systeminfo.data = data;
 };
@@ -113,24 +147,24 @@ const passwordRef = ref<null | DialogExpose>(null);
 const changerouter = () => {
 	router.push("/assembly/guide");
 };
-let image = ref("");
+let image = ref(globalStore.image);
 const imageUrl = computed(() => {
 	return globalStore.image;
 });
 //点击已读
-const changestatusresolve = async (row: any) => {
-	console.log(row);
-	await putsystemMessage({ systemMessageId: row.id });
-	showMymessage();
-	refreshmessage();
-};
+// const changestatusresolve = async (row: any) => {
+// 	console.log(row);
+// 	await putsystemMessage({ systemMessageId: row.id });
+// 	showMymessage();
+// 	refreshmessage();
+// };
 //点击全读
-const readAllnews = async () => {
-	await putsystemMessagereadAll({});
-	ElMessage.success("全部已读！");
-	refreshmessage();
-	dialogTableVisible.value = false;
-};
+// const readAllnews = async () => {
+// 	await putsystemMessagereadAll({});
+// 	ElMessage.success("全部已读！");
+// 	refreshmessage();
+// 	dialogTableVisible.value = false;
+// };
 watch(
 	imageUrl,
 	(newValue: any) => {
@@ -138,6 +172,7 @@ watch(
 	},
 	{ immediate: true, deep: true }
 );
+
 const unreadmessage = ref();
 unreadmessage.value = globalStore.systemMessageLength;
 const mesage = computed(() => {
@@ -147,7 +182,9 @@ watch(mesage, newvalue => {
 	unreadmessage.value = newvalue;
 });
 
-onMounted(() => {});
+onMounted(() => {
+	console.log(image.value, "showme", globalStore.article, globalStore.user);
+});
 </script>
 
 <style scoped lang="scss">
