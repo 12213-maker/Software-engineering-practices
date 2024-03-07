@@ -118,7 +118,7 @@
 
 <script setup lang="ts" name="authMenu">
 import { Edit, Delete, Back } from "@element-plus/icons-vue";
-import { deletecommunity } from "@/api/modules/lnl-paly";
+// import { deletecommunity } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -163,8 +163,12 @@ const returnback = () => {
 	// refreshpage();
 };
 
-const value = ref(1);
+const value = ref(0);
 const options = [
+	{
+		value: 0,
+		label: "全部"
+	},
 	{
 		value: 1,
 		label: "西南石油大学（成都校区）"
@@ -466,10 +470,20 @@ console.log(load);
 
 //改变主题
 const changeType = (value: any) => {
-	console.log(value);
 	params.subject = value;
 	params.pageNum = 1;
 	showData.data = [];
+
+	if (value === 0) {
+		const origin = globalStore.originArticle;
+		globalStore.setArticles(origin);
+	} else {
+		const article = globalStore.originArticle;
+		const newArticle = article.filter((item: any) => {
+			return item.subject === value;
+		});
+		globalStore.setArticles(newArticle);
+	}
 	getdata();
 };
 //改变学校
@@ -477,6 +491,18 @@ const changeSchool = () => {
 	params.school = value.value;
 	params.pageNum = 1;
 	showData.data = [];
+
+	if (value.value === 0) {
+		const origin = globalStore.originArticle;
+		globalStore.setArticles(origin);
+	} else {
+		const article = globalStore.originArticle;
+		const newArticle = article.filter((item: any) => {
+			return item.school === value.value;
+		});
+		globalStore.setArticles(newArticle);
+	}
+
 	getdata();
 };
 //删除动态
@@ -487,10 +513,18 @@ const deletedongati = async (value: any) => {
 		type: "warning",
 		draggable: true
 	}).then(async () => {
-		await deletecommunity({ id: value });
+		// await deletecommunity({ id: value });
+
+		const article = globalStore.article;
+		const newArticle = article.filter((item: any) => {
+			return item.id !== value;
+		});
+		globalStore.setArticles(newArticle);
+		globalStore.setOriginArticles(newArticle);
+
 		params.pageNum = 1;
 		showData.data = [];
-		await getdata();
+		// await getdata();
 		ElMessage({
 			type: "success",
 			message: `删除成功!`

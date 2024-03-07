@@ -153,7 +153,7 @@
 import { reactive, ref } from "vue";
 import { GlobalStore } from "@/stores";
 import { Delete, Position, User } from "@element-plus/icons-vue";
-import { deletecommunity } from "@/api/modules/lnl-paly";
+// import { deletecommunity } from "@/api/modules/lnl-paly";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 const globalStore = GlobalStore();
@@ -256,6 +256,7 @@ const submit = () => {
 		return item;
 	});
 	globalStore.setArticles(newArticle);
+	globalStore.setOriginArticles(newArticle);
 	input.value = "";
 };
 
@@ -267,7 +268,15 @@ const deletedongati = async (value: any) => {
 		type: "warning",
 		draggable: true
 	}).then(async () => {
-		await deletecommunity({ id: value });
+		// await deletecommunity({ id: value });
+
+		const article = globalStore.article;
+		const newArticle = article.filter((item: any) => {
+			return item.id !== value;
+		});
+		globalStore.setArticles(newArticle);
+		globalStore.setOriginArticles(newArticle);
+
 		emit("returnback");
 		emit("refreshpage");
 		ElMessage({
@@ -324,6 +333,7 @@ const inputstatus = async () => {
 	const article = globalStore.article;
 	article.unshift(params);
 	globalStore.setArticles(article);
+	globalStore.setOriginArticles(article);
 
 	ElMessage({
 		type: "success",

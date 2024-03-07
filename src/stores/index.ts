@@ -12,6 +12,7 @@ export const GlobalStore = defineStore({
 	state: (): any => ({
 		//文章
 		article: [],
+		originArticle: [],
 		//用户
 		user: [],
 
@@ -79,6 +80,9 @@ export const GlobalStore = defineStore({
 		//setArticles
 		setArticles(article: any) {
 			this.article = article;
+		},
+		setOriginArticles(article: any) {
+			this.originArticle = article;
 		},
 		//setusers
 		setUsers(users: any) {
