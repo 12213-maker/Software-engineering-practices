@@ -36,7 +36,15 @@ const article = [
 	// 	photo: "文章图片", //文章图片
 	// 	subject: "文章类别", //表白：1，日常：2，知识：3，趣玩：4
 	// 	stars: "点赞数", //点赞数量
-	// 	comment: "文章留言" //文章留言
+	// comment: [
+	// username: "用户1",
+	// 		userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+	// 		info: "留言内容11111111", //留言内容
+	// 		time: "2024.3.6",
+	// 		adress: "北京",
+	// 		reply
+	// ]
+	// "文章留言" //文章留言
 	// },
 	{
 		id: 1, //文章id
@@ -44,7 +52,7 @@ const article = [
 		create: "不是风动", //创建人
 		userPhoto: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg", //用户头像
 		adress: "四川", //地址
-		time: "2024-3-5", //发布时间
+		time: "2024/3/5", //发布时间
 		title: "不是风动的文章标题", //文章标题
 		content:
 			"凤凰古城建于清康熙四十三年（1704年），东门和北门古城楼尚在。城内青石板街道、江边木结构吊脚楼，以及朝阳宫、古城博物馆、杨家祠堂、沈从文故居、熊希龄故居、天王庙、大成殿、万寿宫等建筑，全都透着古城特色。", //文章内容
@@ -58,23 +66,85 @@ const article = [
 			{
 				username: "用户1",
 				userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
-				info: "留言内容11111111", //留言内容
-				time: "2024.3.6",
-				adress: "北京"
+				info: "我觉得非常不错但是很多内容都是没有必要的江东父老看书看对方哈理工 领导机构 ", //留言内容
+				time: "2024/3/6",
+				adress: "北京",
+				reply: [
+					{
+						username: "用户2",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容", //留言内容
+						time: "2024/3/6",
+						adress: "上海"
+					},
+					{
+						username: "用户3",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "留言内容333333333", //留言内容
+						time: "2024/3/6",
+						adress: "深圳"
+					}
+				]
 			},
 			{
 				username: "用户2",
 				userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
 				info: "留言内容222222222", //留言内容
 				time: "2024.3.6",
-				adress: "上海"
+				adress: "上海",
+				reply: [
+					{
+						username: "用户2",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容", //留言内容
+						time: "2024.3.6",
+						adress: "上海"
+					},
+					{
+						username: "用户3",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "留言内容333333333", //留言内容
+						time: "2024.3.6",
+						adress: "深圳"
+					}
+				]
 			},
 			{
 				username: "用户3",
 				userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
 				info: "留言内容333333333", //留言内容
 				time: "2024.3.6",
-				adress: "深圳"
+				adress: "深圳",
+				reply: [
+					{
+						username: "用户2",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容", //留言内容
+						time: "2024.3.6",
+						adress: "上海"
+					},
+					{
+						username: "用户3",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "留言内容333333333", //留言内容
+						time: "2024.3.6",
+						adress: "深圳"
+					},
+					{
+						username: "用户2",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容", //留言内容
+						time: "2024.3.6",
+						adress: "上海"
+					},
+					{
+						username: "用户3",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "留言内容333333333", //留言内容
+						time: "2024.3.6",
+						adress: "深圳"
+					}
+				]
 			}
 		] //文章留言
 	},

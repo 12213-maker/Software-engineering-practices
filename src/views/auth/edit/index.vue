@@ -96,24 +96,52 @@
 			</div>
 			<el-card>
 				<div class="mybottom">
-					<div class="mycomment">我的评论</div>
-					<div class="allcomment" v-for="item2 in item.data.comment" :key="item2.username">
-						<div class="userinfo">
-							<div class="avatarimage1" v-if="item.data.userPhoto">
-								<img class="image" :src="item.data.userPhoto" alt="" />
+					<div class="mycomment">
+						<div class="img"><img class="image" :src="userInformation.img" alt="" /></div>
+						<div class="input"><el-input v-model="input" style="width: 100%" size="large" placeholder="发布你的评论" /></div>
+						<div class="btn" @click="submit"><el-button size="large">发布</el-button></div>
+					</div>
+					<div class="allcomment" v-for="(item2, index2) in item.data.comment" :key="index2">
+						<div class="topcoment">
+							<div class="userinfo">
+								<div class="avatarimage1" v-if="item2.userPhoto">
+									<img class="image" :src="item2.userPhoto" alt="" />
+								</div>
+								<div class="avatarimage" v-else>
+									<img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" />
+								</div>
+								<span class="username"
+									><span class="name">{{ item2.username }}</span
+									><span class="time">{{ item2.time }}</span></span
+								>
 							</div>
-							<div class="avatarimage" v-else>
-								<img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" />
+							<div class="commentinfo">
+								<div class="info">{{ item2.info }}</div>
 							</div>
-							<span class="username"
-								><span class="name">{{ item.data.create }}</span
-								><span class="time">{{ item.data.time }}</span></span
-							>
-							<!-- <div class="timecontaner">
-								<span class="time">{{ item.data.time }}</span>
-							</div> -->
+							<div class="bottom">
+								<div>
+									<el-icon><ChatLineSquare /></el-icon>
+								</div>
+								<div>
+									<el-icon><Star /></el-icon>
+								</div>
+							</div>
 						</div>
-						<div class="commentinfo">{{ item2.info }}</div>
+						<div class="reply">
+							<el-steps style="max-width: 600px" space="30" v-if="item2.reply" direction="vertical" :active="0">
+								<el-step
+									:title="item3.username"
+									v-for="(item3, index) in item2.reply"
+									:key="index"
+									space="30"
+									:description="item3.info"
+									:icon="User"
+								/>
+
+								<!-- <el-step title="Step 2" space="30" /> -->
+								<!-- <el-step title="Step 3" space="30" /> -->
+							</el-steps>
+						</div>
 					</div>
 				</div>
 			</el-card>
@@ -124,7 +152,7 @@
 <script setup lang="ts" name="authMenu">
 import { reactive, ref } from "vue";
 import { GlobalStore } from "@/stores";
-import { Delete, Position } from "@element-plus/icons-vue";
+import { Delete, Position, User } from "@element-plus/icons-vue";
 import { deletecommunity, postcommunity } from "@/api/modules/lnl-paly";
 import { ElMessage, ElMessageBox } from "element-plus";
 
@@ -138,11 +166,11 @@ const emit = defineEmits(["returnback", "refreshpage"]);
 const props = withDefaults(defineProps<{ changeParams: any }>(), {
 	changeParams: {}
 });
-console.log("shwme11111111", id, props.changeParams);
 
 //isSelfPage 标识从发布动态转过来以及可以编辑动态
 const isSelfPage = Object.keys(props.changeParams).length;
 const textarea = ref("");
+const input = ref("");
 
 const value = ref(1);
 const options = [
@@ -204,6 +232,33 @@ if (isSelfPage) {
 	Object.assign(item.data, userInformation);
 	console.log("我是发布动态数据", item.data);
 }
+
+//发布评论
+const submit = () => {
+	if (!input.value) return;
+	const { id } = props.changeParams;
+	const comment = {
+		username: userInformation.username,
+		userPhoto: userInformation.img,
+		info: input.value,
+		time: new Date().toLocaleDateString(),
+		adress: "四川"
+	};
+
+	const article = globalStore.article;
+	const newArticle = article.map((item: any) => {
+		const articleId = item.id;
+		if (id === articleId) {
+			item.comment.unshift(comment);
+			return item;
+		}
+		return item;
+	});
+	globalStore.setArticles(newArticle);
+	console.log("idcomment", id, comment);
+
+	input.value = "";
+};
 
 //删除动态
 const deletedongati = async (value: any) => {

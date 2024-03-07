@@ -4,7 +4,8 @@
 	// height: 84vh;
 	margin-right: 20px;
 	visibility: hidden;
-	background-color: pink;
+
+	// background-color: pink;
 	border-radius: 10px;
 	transform: translate(22%);
 	.leftinner {
@@ -145,45 +146,97 @@
 			}
 		}
 		.mybottom {
+			padding: 20px;
+
+			// 发送评论
 			.mycomment {
-			}
-			.allcomment {
 				display: flex;
 				flex-direction: row;
 				flex-wrap: nowrap;
-				margin: 10px 0;
-				background-color: pink;
-				.userinfo {
-					display: flex;
-					align-items: center;
-					background-color: salmon;
-					.avatarimage1 {
-						width: 40px;
-						height: 40px;
-						margin-right: 10px;
-						overflow: hidden;
+				align-items: center;
+				justify-content: space-between;
+				width: 100%;
+				margin-bottom: 40px;
+
+				// background-color: lightblue;
+				.img {
+					width: 60px;
+					height: 60px;
+					.image {
+						width: 100%;
+						height: 100%;
 						border-radius: 50%;
-						img {
-							width: 100%;
-						}
-					}
-					.avatarimage {
-						overflow: hidden;
-					}
-					.username {
-						display: flex;
-						flex-direction: column;
-						margin-right: 20px;
-						font-size: 18px;
-						.name {
-							font-size: 14px;
-						}
-						.time {
-							font-size: 12px;
-						}
 					}
 				}
-				.commentinfo {
+				.input {
+					width: 80%;
+				}
+				.btn {
+				}
+			}
+
+			// 回复内容
+			.allcomment {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				margin: 10px 0;
+				.topcoment {
+					display: flex;
+					flex-direction: row;
+					align-items: center;
+					.userinfo {
+						display: flex;
+						align-items: center;
+
+						// background-color: salmon;
+						.avatarimage1 {
+							width: 40px;
+							height: 40px;
+							margin-right: 10px;
+							overflow: hidden;
+							border-radius: 50%;
+							img {
+								width: 100%;
+							}
+						}
+						.avatarimage {
+							overflow: hidden;
+						}
+						.username {
+							display: flex;
+							flex-direction: column;
+							margin-right: 20px;
+							font-size: 18px;
+							.name {
+								font-size: 14px;
+								color: rgb(235 115 80);
+							}
+							.time {
+								font-size: 12px;
+							}
+						}
+					}
+					.commentinfo {
+						.info {
+							// background-color: lightgreen;
+						}
+					}
+					.bottom {
+						position: absolute;
+						right: 0;
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						justify-content: space-between;
+						width: 50px;
+						height: 30px;
+					}
+				}
+				.reply {
+					margin-top: 20px;
+					margin-bottom: 10px;
+					margin-left: 50px;
 				}
 			}
 		}
