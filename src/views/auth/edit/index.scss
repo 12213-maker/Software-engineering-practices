@@ -34,6 +34,27 @@
 				display: flex;
 				align-items: center;
 				padding-bottom: 15px;
+				.timecontanerall {
+					position: absolute;
+					right: 0;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+
+					// width: 500px;
+
+					// height: 100px;
+					background-color: pink;
+					.timecontaner {
+						display: flex;
+						align-items: center;
+						.time {
+							display: block;
+							margin-top: 5px;
+							margin-right: 30px;
+						}
+					}
+				}
 				.ipschool {
 					display: flex;
 					align-items: center;
@@ -72,8 +93,9 @@
 				}
 			}
 			.imageOter {
-				// display: flex;
-				// flex-direction: row;
+				display: flex;
+				flex-direction: row;
+
 				// flex-wrap: wrap;
 				width: 100%;
 
@@ -89,26 +111,52 @@
 						border-radius: 10px;
 					}
 				}
-				.selecttag {
-					position: absolute;
-					left: 290px;
+				.btnsss {
 					display: flex;
+					flex-direction: row;
 					align-items: center;
-				}
-				.ipschool {
-					position: absolute;
-					left: 530px;
-					display: flex;
-					align-items: center;
+					justify-content: space-around;
+					margin-left: 20px;
+					flex-wrap: wrap;
+					// background-color: lightblue;
+					.selecttag {
+						// position: absolute;
+						// left: 290px;
+						display: flex;
+						align-items: center;
+					}
+					.ipschool {
+						// position: absolute;
+						// left: 530px;
+						display: flex;
+						align-items: center;
+						margin: 0 20px;
+					}
+					.btns {
+						// background-color: lightpink;
+
+						// position: absolute;
+						// bottom: 165px;
+						// left: 575px;
+						// display: flex;
+						// align-items: center;
+						// justify-content: space-between;
+						// width: 100px;
+						// height: 100px;
+					}
 				}
 			}
+
+			// 点赞转发
 			.bottom {
+				// background-color: lightblue;
 				display: flex;
 				flex-direction: row;
 				align-items: center;
 				justify-content: space-between;
-				width: 85%;
+				width: 90%;
 				height: 50px;
+				margin: 0 auto;
 			}
 			.uploadone {
 				padding-top: 30px;
@@ -123,7 +171,7 @@
 				justify-content: space-between;
 
 				// height: 100px;
-				background-color: pink;
+				// background-color: pink;
 				.timecontaner {
 					display: flex;
 					align-items: center;
@@ -133,16 +181,6 @@
 						margin-right: 30px;
 					}
 				}
-			}
-			.btns {
-				position: absolute;
-				bottom: 165px;
-				left: 575px;
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				width: 100px;
-				height: 100px;
 			}
 		}
 		.mybottom {

@@ -23,6 +23,24 @@ const config = reactive({
 	autoInsertSpace: false
 });
 
+//登录用户
+// data: {
+// 					token:
+// 						"-BUl8EZf65F-Dvy_yR8FoATTxCjn6VHsoiZMFDorJfghOCyll4lqYB_rv-6WsuIctJJpwgn1WlJLpi0mjv5K9K_RUU2emAM7lbiIa1fk3o5_Nj8iL6tUS-ILnso1HRml",
+// 					user: {
+// 						id: 0,
+// 						roleId: 1,
+// 						username: "更与行人别",
+// 						img: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
+// 						password: "123456",
+// 						birthday: "2001-10-27",
+// 						phone: "18980530858",
+// 						sex: 2,
+// 						description: "人生如逆旅，我亦是行人。",
+// 						school: 1
+// 					}
+// 				}
+
 const article = [
 	// {
 	// 	id: 0, //文章id

@@ -17,9 +17,16 @@
 						<el-tag size="large" round v-else-if="item.data.subject === 2" class="ml-2">日常</el-tag>
 						<el-tag size="large" round class="ml-2" type="success" v-else>知识</el-tag>
 					</div>
+
+					<div v-if="id === item.data.uid && isSelfPage" class="timecontanerall">
+						<div>
+							<el-button plain type="primary" @click="deletedongati(item.data.id)">删除动态</el-button>
+						</div>
+					</div>
 				</div>
 
 				<div class="usercomment">
+					<el-input v-if="!isSelfPage" v-model="title" placeholder="文章标题" style="margin-bottom: 20px; width: 400px" />
 					<el-input v-if="!isSelfPage" v-model="textarea" :rows="7" type="textarea" placeholder="Please input" />
 					<div v-else class="usercommentsize">
 						{{ item.data.content }}
@@ -34,7 +41,7 @@
 							:before-upload="beforeAvatarUpload"
 							:on-change="change"
 							:auto-upload="false"
-							:limit="1"
+							:limit="2"
 						>
 							<el-icon><Plus /></el-icon>
 
@@ -46,18 +53,26 @@
 						</el-upload>
 					</div>
 
-					<!-- 选择tag -->
-					<el-select class="selecttag" v-model="value" placeholder="Select">
-						<el-option v-for="(item2, index) in options" :key="item2.value" :label="item2.label" :value="item2.value">
-							<el-tag size="large" round v-if="index + 1 === 1" class="ml-2" type="warning">{{ item2.label }}</el-tag>
-							<el-tag size="large" round v-else-if="index + 1 === 4" class="ml-2" type="danger">{{ item2.label }}</el-tag>
-							<el-tag size="large" round v-else-if="index + 1 === 2" class="ml-2">{{ item2.label }}</el-tag>
-							<el-tag size="large" round class="ml-2" type="success" v-else>{{ item2.label }}</el-tag>
-						</el-option>
-					</el-select>
-					<el-select class="ipschool" v-model="value2" placeholder="Select">
-						<el-option v-for="item3 in options2" :key="item3.value" :label="item3.label" :value="item3.value" />
-					</el-select>
+					<div class="btnsss">
+						<!-- 选择tag -->
+						<el-select class="selecttag" v-model="value" placeholder="Select">
+							<el-option v-for="(item2, index) in options" :key="item2.value" :label="item2.label" :value="item2.value">
+								<el-tag size="large" round v-if="index + 1 === 1" class="ml-2" type="warning">{{ item2.label }}</el-tag>
+								<el-tag size="large" round v-else-if="index + 1 === 4" class="ml-2" type="danger">{{ item2.label }}</el-tag>
+								<el-tag size="large" round v-else-if="index + 1 === 2" class="ml-2">{{ item2.label }}</el-tag>
+								<el-tag size="large" round class="ml-2" type="success" v-else>{{ item2.label }}</el-tag>
+							</el-option>
+						</el-select>
+						<el-select class="ipschool" v-model="value2" placeholder="Select">
+							<el-option v-for="item3 in options2" :key="item3.value" :label="item3.label" :value="item3.value" />
+						</el-select>
+
+						<!-- 发布取消按钮 -->
+						<div v-if="!isSelfPage" class="btns">
+							<el-button :icon="Delete" type="primary" @click="emit('returnback')">取消</el-button>
+							<el-button :icon="Position" type="primary" @click="inputstatus">发布</el-button>
+						</div>
+					</div>
 				</div>
 
 				<div class="imageOter" v-else>
@@ -66,35 +81,20 @@
 					</div>
 				</div>
 
-				<div class="bottom">
+				<!-- 点赞转发 -->
+				<div class="bottom" v-if="isSelfPage">
 					<div>
 						<el-icon><Share /></el-icon>转发
 					</div>
 					<div>
-						<el-icon><ChatLineSquare /></el-icon>评论
+						<el-icon><ChatLineSquare /></el-icon>{{ item.data.comment.length }}
 					</div>
 					<div>
-						<el-icon><Star /></el-icon>点赞
+						<el-icon><Star /></el-icon>{{ item.data.stars }}
 					</div>
-				</div>
-
-				<div
-					v-if="id === item.data.uid && isSelfPage"
-					class="timecontanerall"
-					:style="{ position: item.data.img ? '' : 'relative', top: '-200px' }"
-				>
-					<div>
-						<el-button :icon="Delete" type="primary" @click="deletedongati(item.data.id)"
-							>删除{{ id }}{{ item.data.uid }}</el-button
-						>
-					</div>
-				</div>
-				<div v-if="!isSelfPage" class="btns">
-					<el-button :icon="Delete" type="primary" @click="emit('returnback')">取消</el-button>
-					<el-button :icon="Position" type="primary" @click="inputstatus">发布</el-button>
 				</div>
 			</div>
-			<el-card>
+			<el-card v-if="isSelfPage">
 				<div class="mybottom">
 					<div class="mycomment">
 						<div class="img"><img class="image" :src="userInformation.img" alt="" /></div>
@@ -153,7 +153,7 @@
 import { reactive, ref } from "vue";
 import { GlobalStore } from "@/stores";
 import { Delete, Position, User } from "@element-plus/icons-vue";
-import { deletecommunity, postcommunity } from "@/api/modules/lnl-paly";
+import { deletecommunity } from "@/api/modules/lnl-paly";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 const globalStore = GlobalStore();
@@ -170,6 +170,7 @@ const props = withDefaults(defineProps<{ changeParams: any }>(), {
 //isSelfPage 标识从发布动态转过来以及可以编辑动态
 const isSelfPage = Object.keys(props.changeParams).length;
 const textarea = ref("");
+const title = ref("");
 const input = ref("");
 
 const value = ref(1);
@@ -255,8 +256,6 @@ const submit = () => {
 		return item;
 	});
 	globalStore.setArticles(newArticle);
-	console.log("idcomment", id, comment);
-
 	input.value = "";
 };
 
@@ -294,19 +293,38 @@ const change = async (uploadFile: any) => {
 };
 //发送动态
 const inputstatus = async () => {
-	if (textarea.value === "") {
+	if (textarea.value === "" || title.value === "") {
 		ElMessage({
 			type: "warning",
 			message: `请输入!`
 		});
 	}
 	const params = {
+		id: new Date().getTime(),
+		uid: userInformation.id,
+		create: userInformation.username,
+		userPhoto: userInformation.img,
+		time: new Date().toLocaleDateString(),
+		title: title.value,
+		stars: 0,
+		comment: [],
+		adress: "四川",
+		photo: [
+			"https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+			"https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg"
+		], //文章图片
 		content: textarea.value,
 		subject: value.value,
-		file: formdata.get("file"),
+		// file: formdata.get("file"),
 		school: value2.value
 	};
-	await postcommunity(params);
+
+	// await postcommunity(params);
+
+	const article = globalStore.article;
+	article.unshift(params);
+	globalStore.setArticles(article);
+
 	ElMessage({
 		type: "success",
 		message: `发布成功!`

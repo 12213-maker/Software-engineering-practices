@@ -23,6 +23,53 @@
 				<Hot />
 			</div>
 		</div>
+		<div class="card top-box">
+			<div class="top-title">热门旅游地区</div>
+			<el-tabs v-model="tabActive" class="demo-tabs">
+				<el-tab-pane v-for="item in tab" :key="item.name" :label="item.label" :name="item.name">
+					<div class="top-content">
+						<el-row :gutter="40">
+							<el-col class="mb40" :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+								<div class="item-left sle" :style="{ backgroundImage: `url(${item.url})` }">
+									<span class="left-title">游客访问总数</span>
+									<div class="img-box">
+										<img src="./images/today.png" alt="" />
+									</div>
+									<span class="left-number">4150w</span>
+								</div>
+							</el-col>
+							<el-col class="mb40" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+								<div class="item-center">
+									<div v-for="(item2, index) in item.cities" :key="index" class="gitee-traffic traffic-box">
+										<div class="traffic-img" :style="{ backgroundImage: `url(${item2.url})` }">
+											<img :src="getIcon(item2.url)" alt="" />
+										</div>
+										<span class="item-value">{{ item2.tourists }}</span>
+										<span class="traffic-name sle">{{ item2.name }}</span>
+										<el-rate disabled v-model="value1" score-template="{value} points" />
+									</div>
+								</div>
+							</el-col>
+							<el-col class="mb40" :xs="24" :sm="24" :md="24" :lg="10" :xl="10">
+								<div class="item-right">
+									<div class="book-echarts">
+										<el-carousel class="carousel">
+											<el-carousel-item class="carouselItem" v-for="city in item.cities" :key="city">
+												<img :src="getIcon(city.url)" alt="" />
+												<h3 class="small justify-center" text="2xl">
+													<div class="titile">{{ city.name }}</div>
+													{{ city.des }}
+												</h3>
+											</el-carousel-item>
+										</el-carousel>
+									</div>
+								</div>
+							</el-col>
+						</el-row>
+					</div>
+				</el-tab-pane>
+			</el-tabs>
+		</div>
 		<div class="card eat">
 			<div class="title">
 				<div class="info">随机推荐</div>
@@ -85,53 +132,6 @@
 					<h3>Mountains - Clouds</h3>
 				</div>
 			</div>
-		</div>
-		<div class="card top-box">
-			<div class="top-title">热门旅游地区</div>
-			<el-tabs v-model="tabActive" class="demo-tabs">
-				<el-tab-pane v-for="item in tab" :key="item.name" :label="item.label" :name="item.name">
-					<div class="top-content">
-						<el-row :gutter="40">
-							<el-col class="mb40" :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
-								<div class="item-left sle" :style="{ backgroundImage: `url(${item.url})` }">
-									<span class="left-title">游客访问总数</span>
-									<div class="img-box">
-										<img src="./images/today.png" alt="" />
-									</div>
-									<span class="left-number">4150w</span>
-								</div>
-							</el-col>
-							<el-col class="mb40" :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
-								<div class="item-center">
-									<div v-for="(item2, index) in item.cities" :key="index" class="gitee-traffic traffic-box">
-										<div class="traffic-img" :style="{ backgroundImage: `url(${item2.url})` }">
-											<img :src="getIcon(item2.url)" alt="" />
-										</div>
-										<span class="item-value">{{ item2.tourists }}</span>
-										<span class="traffic-name sle">{{ item2.name }}</span>
-										<el-rate disabled v-model="value1" score-template="{value} points" />
-									</div>
-								</div>
-							</el-col>
-							<el-col class="mb40" :xs="24" :sm="24" :md="24" :lg="10" :xl="10">
-								<div class="item-right">
-									<div class="book-echarts">
-										<el-carousel class="carousel">
-											<el-carousel-item class="carouselItem" v-for="city in item.cities" :key="city">
-												<img :src="getIcon(city.url)" alt="" />
-												<h3 class="small justify-center" text="2xl">
-													<div class="titile">{{ city.name }}</div>
-													{{ city.des }}
-												</h3>
-											</el-carousel-item>
-										</el-carousel>
-									</div>
-								</div>
-							</el-col>
-						</el-row>
-					</div>
-				</el-tab-pane>
-			</el-tabs>
 		</div>
 		<div class="card bottom-box">
 			<div class="bottom-title">数据来源</div>

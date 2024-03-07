@@ -118,7 +118,7 @@
 
 <script setup lang="ts" name="authMenu">
 import { Edit, Delete, Back } from "@element-plus/icons-vue";
-import { community, deletecommunity } from "@/api/modules/lnl-paly";
+import { deletecommunity } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
@@ -141,7 +141,7 @@ watch(
 const refreshpage = async () => {
 	params.pageNum = 1;
 	showData.data = [];
-	await getdata();
+	getdata();
 };
 
 let changeParams = reactive({});
@@ -157,8 +157,10 @@ const changerouter = (data: any) => {
 };
 //点击返回
 const returnback = () => {
-	ischangepage.value = false;
-	refreshpage();
+	changerouter("userSelf");
+	// ischangepage.value = false;
+	console.log(globalStore.article, "articel");
+	// refreshpage();
 };
 
 const value = ref(1);
@@ -429,10 +431,10 @@ const data = [
 //存放数据
 const showData = reactive<{ data: any }>({ data: [] });
 //获取动态数据
-const getdata = async () => {
-	const res = (await community(params)) as any;
-	infiniteValue.current = res.data.current;
-	infiniteValue.pages = res.data.pages;
+const getdata = () => {
+	// const res = (await community(params)) as any;
+	// infiniteValue.current = res.data.current;
+	// infiniteValue.pages = res.data.pages;
 	// showData.data.push(...res.data.records);
 	showData.data.push(...data);
 };
@@ -497,6 +499,7 @@ const deletedongati = async (value: any) => {
 };
 
 onMounted(() => {
+	console.log(globalStore.article, "globalstore");
 	getdata();
 });
 </script>
