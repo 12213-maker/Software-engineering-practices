@@ -1,30 +1,50 @@
 <template>
 	<div class="content-box">
-		<div class="backgroundtrue"></div>
+		<div class="background"></div>
+		<div class="userinfo">
+			<div class="avatar">
+				<el-avatar :size="120" :src="globalStore.userInformation.img"></el-avatar>
+			</div>
+			<div class="username">{{ globalStore.userInformation.username }}</div>
+			<div class="desx">
+				<el-tooltip class="box-item" effect="dark" :content="globalStore.userInformation.description" placement="top">
+					{{ globalStore.userInformation.description }}
+				</el-tooltip>
+			</div>
+		</div>
 		<!-- 主体 -->
-		<div class="body">
+		<!-- <el-card shadow="always">
+			<div class="avatar">
+				<el-avatar :size="120" :src="globalStore.userInformation.img"></el-avatar>
+			</div>
+			<div class="username">{{ globalStore.userInformation.username }}</div>
+			<div class="desx">
+				<el-tooltip class="box-item" effect="dark" :content="globalStore.userInformation.description" placement="top">
+					{{ globalStore.userInformation.description }}
+				</el-tooltip>
+			</div>
+		</el-card> -->
+		<!-- <div class="body">
 			<div v-if="!ischangepage" class="left">
-				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in showData.data" :key="item.img">
+				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in article" :key="item.img">
 					<div class="avatar">
-						<div class="avatarimage1" v-if="item.userImg">
-							<el-avatar :size="50" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + item.userImg)"></el-avatar>
+						<div class="avatarimage1" v-if="item.userPhoto">
+							<img class="image" :src="item.userPhoto" alt="" />
 						</div>
-						<div class="avatarimage" v-else>
-							<img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" />
-						</div>
-						<span class="username">{{ item.username }}</span>
+						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
+						<span class="username">{{ item.create }}</span>
 						<div class="ipschool">
-							<el-tag size="large" round v-if="item.subject === 1" class="ml-2" type="warning">表白</el-tag>
-							<el-tag size="large" round v-else-if="item.subject === 4" class="ml-2" type="danger">趣玩</el-tag>
-							<el-tag size="large" round v-else-if="item.subject === 2" class="ml-2">日常</el-tag>
-							<el-tag size="large" round class="ml-2" type="success" v-else>知识</el-tag>
+							<el-tag size="small" round v-if="item.subject === 1" class="ml-2" type="warning">表白</el-tag>
+							<el-tag size="small" round v-else-if="item.subject === 2" class="ml-2" type="danger">日常</el-tag>
+							<el-tag size="small" round v-else-if="item.subject === 3" class="ml-2">知识</el-tag>
+							<el-tag size="small" round class="ml-2" type="success" v-else>趣玩</el-tag>
 						</div>
 					</div>
 					<div class="usercomment">
 						{{ item.content }}
 					</div>
-					<div class="imageOter" v-if="item.img">
-						<img class="image" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/getselfcommunity/' + item.img)" alt="" />
+					<div class="imageOter" v-if="item.photo">
+						<img class="image" :src="item.photo[0]" alt="" />
 					</div>
 					<div class="timecontanerall">
 						<div class="timecontaner">
@@ -42,39 +62,39 @@
 						</div>
 					</div>
 				</div>
-				<el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
-				<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider>
 			</div>
 			<Editpage @returnback="returnback" @refreshpage="refreshpage" :changeParams="changeParams" v-else />
+
 			<div class="right">
 				<div class="selfinformation">
 					<el-card shadow="always">
 						<div class="avatar">
-							<el-avatar
-								:size="120"
-								:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + globalStore.userInformation.img)"
-							></el-avatar>
+							<el-avatar :size="120" :src="globalStore.userInformation.img"></el-avatar>
 						</div>
 						<div class="username">{{ globalStore.userInformation.username }}</div>
-						<div class="desx">{{ globalStore.userInformation.description }}</div>
+						<div class="desx">
+							<el-tooltip class="box-item" effect="dark" :content="globalStore.userInformation.description" placement="top">
+								{{ globalStore.userInformation.description }}
+							</el-tooltip>
+						</div>
 						<div class="button" @click="changerouter('userSelf')">
 							<el-button type="primary" :icon="!ischangepage ? Edit : Back">{{ !ischangepage ? "发布动态" : "返回" }}</el-button>
 						</div>
 					</el-card>
 				</div>
 				<div class="notice" v-if="!ischangepage">
-					<el-cardischangepage shadow="always">
+					<el-card shadow="always">
 						<div class="switchschool">
 							<div>
 								<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
 							</div>
-							<el-select v-model="params.school" @change="changeSchool()" class="m-2" placeholder="Select" size="small">
+							<el-select v-model="value" @change="changeSchool()" class="m-2" placeholder="Select" size="small">
 								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
 							</el-select>
 						</div>
 						<div class="noticeinfo">
 							{{ `你好，欢迎来到${value === 1 ? "西南石油大学（成都校区）" : "西南石油大学（南充校区）"}动态推荐！` }}
-						</div></el-cardischangepage
+						</div></el-card
 					>
 				</div>
 				<div class="notice" v-else>
@@ -110,153 +130,20 @@
 					</el-card>
 				</div>
 			</div>
-		</div>
+		</div> -->
 	</div>
 </template>
 
 <script setup lang="ts" name="authMenu">
-import { Edit, Delete, Back } from "@element-plus/icons-vue";
-import { getselfcommunity, deletecommunity } from "@/api/modules/lnl-paly";
+// import { Edit, Delete, Back } from "@element-plus/icons-vue";
+// // import { deletecommunity } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
-import { onMounted, reactive, ref } from "vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import Editpage from "../edit/index.vue";
+// import { computed, onMounted, reactive, ref, watch } from "vue";
+// import { ElMessage, ElMessageBox } from "element-plus";
+// import Editpage from "../edit/index.vue";
+// // import Card from "../Card/index.vue";
 
 const globalStore = GlobalStore();
-const ischangepage = ref(false);
-
-//更新页面数据
-const refreshpage = async () => {
-	params.pageNum = 1;
-	showData.data = [];
-	await getdata();
-};
-
-let changeParams = reactive({});
-//点击跳转
-const changerouter = (data: any) => {
-	if (!ischangepage.value) {
-		changeParams = data === "userSelf" ? {} : data;
-		//确认跳转
-		ischangepage.value = true;
-	} else {
-		ischangepage.value = false;
-	}
-};
-//点击返回
-const returnback = () => {
-	ischangepage.value = false;
-	refreshpage();
-};
-
-const value = ref(1);
-const options = [
-	{
-		value: 1,
-		label: "西南石油大学（成都校区）"
-	},
-	{
-		value: 2,
-		label: "西南石油大学（南充校区）"
-	}
-];
-
-const id = globalStore.userInformation.id;
-const params = reactive<{ subject?: number; pageNum: number; pageSize: number; school: number }>({
-	pageNum: 1,
-	pageSize: 3,
-	subject: 0,
-	school: 1
-});
-
-//存放数据
-const showData = reactive<{ data: Array<DataValueInterface> }>({ data: [] });
-//获取动态数据
-const getdata = async () => {
-	// const { pageNum, pageSize } = params;
-	const res = (await getselfcommunity(params)) as any;
-	infiniteValue.current = res.data.current;
-	infiniteValue.pages = res.data.pages;
-	showData.data.push(...res.data.records);
-};
-
-//懒加载数据
-const infiniteValue = reactive({
-	current: 0,
-	pages: 1
-});
-//懒加载
-const loadmore = async () => {
-	if (infiniteValue.current < infiniteValue.pages) {
-		params.pageNum++;
-		getdata();
-	} else return;
-};
-//防抖
-let timer = ref();
-const load = () => {
-	if (timer.value) {
-		clearTimeout(timer.value);
-	}
-	timer.value = setTimeout(() => {
-		console.log("继续加载");
-		loadmore();
-	}, 1000);
-};
-console.log(load);
-
-//处理图片
-const getIcon = (name: string) => {
-	return new URL(name, import.meta.url).href;
-};
-interface DataValueInterface {
-	time: string;
-	subject: number;
-	content: string;
-	img: string;
-	userImg: string;
-	username: string;
-	id: number;
-	uid: number;
-}
-
-//改变主题
-const changeType = (value: any) => {
-	console.log(value);
-	params.subject = value;
-	params.pageNum = 1;
-	showData.data = [];
-	getdata();
-};
-//改变学校
-const changeSchool = () => {
-	params.school = value.value;
-	params.pageNum = 1;
-	showData.data = [];
-	getdata();
-};
-//删除动态
-const deletedongati = async (value: any) => {
-	ElMessageBox.confirm(`是否删除此条动态?`, "温馨提示", {
-		confirmButtonText: "确定",
-		cancelButtonText: "取消",
-		type: "warning",
-		draggable: true
-	}).then(async () => {
-		await deletecommunity({ id: value });
-		params.pageNum = 1;
-		showData.data = [];
-		await getdata();
-		ElMessage({
-			type: "success",
-			message: `删除成功!`
-		});
-	});
-};
-
-onMounted(() => {
-	getdata();
-});
 </script>
 
 <style scoped lang="scss">

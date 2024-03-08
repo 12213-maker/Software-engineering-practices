@@ -669,7 +669,8 @@ const user = [
 			userName: "用户名",
 			des: "用户简介",
 			photo: "头像", //头像
-			adress: "地址" //地址
+			adress: "地址", //地址
+			backgroundImg: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg"
 		},
 		articles: "发表文章", //发布文章
 		collect: "我的收藏", //我的收藏
@@ -685,7 +686,8 @@ const user = [
 			userName: "用户名",
 			des: "用户简介",
 			photo: "头像", //头像
-			adress: "地址" //地址
+			adress: "地址", //地址
+			backgroundImg: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg"
 		},
 		articles: "发表文章", //发布文章
 		collect: "我的收藏", //我的收藏
