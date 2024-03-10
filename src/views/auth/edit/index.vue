@@ -3,11 +3,11 @@
 		<div class="leftinner" :style="{ height: item.data.img ? '' : '51vh' }">
 			<div class="comment">
 				<div class="avatar">
-					<div class="avatarimage1" v-if="item.data.userPhoto">
-						<img class="image" :src="item.data.userPhoto" alt="" />
+					<div class="avatarimage1" v-if="item.data.img">
+						<img class="image" :src="item.data.img" alt="" />
 					</div>
 					<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
-					<span class="username">{{ item.data.create }}</span>
+					<span class="username">{{ item.data.username }}</span>
 					<div class="timecontaner">
 						<span class="time">{{ item.data.time }}</span>
 					</div>
@@ -104,8 +104,8 @@
 					<div class="allcomment" v-for="(item2, index2) in item.data.comment" :key="index2">
 						<div class="topcoment">
 							<div class="userinfo">
-								<div class="avatarimage1" v-if="item2.userPhoto">
-									<img class="image" :src="item2.userPhoto" alt="" />
+								<div class="avatarimage1" v-if="item2.img">
+									<img class="image" :src="item2.img" alt="" />
 								</div>
 								<div class="avatarimage" v-else>
 									<img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" />
@@ -240,7 +240,7 @@ const submit = () => {
 	const { id } = props.changeParams;
 	const comment = {
 		username: userInformation.username,
-		userPhoto: userInformation.img,
+		img: userInformation.img,
 		info: input.value,
 		time: new Date().toLocaleDateString(),
 		adress: "四川"
@@ -311,8 +311,8 @@ const inputstatus = async () => {
 	const params = {
 		id: new Date().getTime(),
 		uid: userInformation.id,
-		create: userInformation.username,
-		userPhoto: userInformation.img,
+		username: userInformation.username,
+		img: userInformation.img,
 		time: new Date().toLocaleDateString(),
 		title: title.value,
 		stars: 0,
@@ -325,7 +325,8 @@ const inputstatus = async () => {
 		content: textarea.value,
 		subject: value.value,
 		// file: formdata.get("file"),
-		school: value2.value
+		school: value2.value,
+		...userInformation
 	};
 
 	// await postcommunity(params);

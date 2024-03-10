@@ -29,7 +29,8 @@ const config = reactive({
 // 						"-BUl8EZf65F-Dvy_yR8FoATTxCjn6VHsoiZMFDorJfghOCyll4lqYB_rv-6WsuIctJJpwgn1WlJLpi0mjv5K9K_RUU2emAM7lbiIa1fk3o5_Nj8iL6tUS-ILnso1HRml",
 // 					user: {
 // 						id: 0,
-// 						roleId: 1,
+// 						roleId: 1,//1-管理员  0-普通用户
+//						account:admin, //用户名
 // 						username: "更与行人别",
 // 						img: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
 // 						password: "123456",
@@ -41,7 +42,7 @@ const config = reactive({
 // 					}
 // 				}
 
-const article = [
+let article = [
 	// {
 	// 	id: 0, //文章id
 	//	create: "创建人", //创建人
@@ -66,12 +67,13 @@ const article = [
 	// },
 	{
 		id: 1, //文章id
-		uid: 1,
+		uid: 0,
 		create: "不是风动", //创建人
 		userPhoto: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg", //用户头像
 		adress: "四川", //地址
+
 		time: "2024/3/5", //发布时间
-		title: "不是风动的文章标题", //文章标题
+		title: "凤凰古城非常美丽", //文章标题
 		content:
 			"凤凰古城建于清康熙四十三年（1704年），东门和北门古城楼尚在。城内青石板街道、江边木结构吊脚楼，以及朝阳宫、古城博物馆、杨家祠堂、沈从文故居、熊希龄故居、天王庙、大成殿、万寿宫等建筑，全都透着古城特色。", //文章内容
 		photo: [
@@ -101,6 +103,29 @@ const article = [
 						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
 						info: "留言内容333333333", //留言内容
 						time: "2024/3/6",
+						adress: "深圳"
+					}
+				]
+			},
+			{
+				username: "用户2",
+				userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+				info: "留言内容222222222", //留言内容
+				time: "2024.3.6",
+				adress: "上海",
+				reply: [
+					{
+						username: "用户2",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容回复内容", //留言内容
+						time: "2024.3.6",
+						adress: "上海"
+					},
+					{
+						username: "用户3",
+						userPhoto: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
+						info: "留言内容333333333", //留言内容
+						time: "2024.3.6",
 						adress: "深圳"
 					}
 				]
@@ -211,7 +236,7 @@ const article = [
 	},
 	{
 		id: 3, //文章id
-		uid: 0,
+		uid: 2,
 		create: "不是风动", //创建人
 		userPhoto: "https://img0.baidu.com/it/u=3457760878,2087865210&fm=253&fmt=auto&app=120&f=PNG?w=746&h=500", //用户头像
 		adress: "云南", //地址
@@ -249,7 +274,7 @@ const article = [
 	},
 	{
 		id: 4, //文章id
-		uid: 0,
+		uid: 1,
 		create: "不是风动", //创建人
 		userPhoto: "https://img0.baidu.com/it/u=3457760878,2087865210&fm=253&fmt=auto&app=120&f=PNG?w=746&h=500", //用户头像
 		adress: "云南", //地址
@@ -325,7 +350,7 @@ const article = [
 	},
 	{
 		id: 6, //文章id
-		uid: 0,
+		uid: 1,
 		create: "不是风动", //创建人
 		userPhoto: "https://img0.baidu.com/it/u=3457760878,2087865210&fm=253&fmt=auto&app=120&f=PNG?w=746&h=500", //用户头像
 		adress: "云南", //地址
@@ -362,8 +387,8 @@ const article = [
 		] //文章留言
 	},
 	{
-		id: 1, //文章id
-		uid: 1,
+		id: 7, //文章id
+		uid: 0,
 		create: "不是风动", //创建人
 		userPhoto: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg", //用户头像
 		adress: "四川", //地址
@@ -465,7 +490,7 @@ const article = [
 		] //文章留言
 	},
 	{
-		id: 2, //文章id
+		id: 8, //文章id
 		uid: 1,
 		create: "lnl", //创建人
 		userPhoto: "https://img0.baidu.com/it/u=3457760878,2087865210&fm=253&fmt=auto&app=120&f=PNG?w=746&h=500", //用户头像
@@ -507,7 +532,7 @@ const article = [
 		] //文章留言
 	},
 	{
-		id: 3, //文章id
+		id: 9, //文章id
 		uid: 0,
 		create: "不是风动", //创建人
 		userPhoto: "https://img0.baidu.com/it/u=3457760878,2087865210&fm=253&fmt=auto&app=120&f=PNG?w=746&h=500", //用户头像
@@ -545,8 +570,8 @@ const article = [
 		] //文章留言
 	},
 	{
-		id: 4, //文章id
-		uid: 0,
+		id: 10, //文章id
+		uid: 2,
 		create: "不是风动", //创建人
 		userPhoto: "https://img0.baidu.com/it/u=3457760878,2087865210&fm=253&fmt=auto&app=120&f=PNG?w=746&h=500", //用户头像
 		adress: "云南", //地址
@@ -583,8 +608,8 @@ const article = [
 		] //文章留言
 	},
 	{
-		id: 5, //文章id
-		uid: 0,
+		id: 11, //文章id
+		uid: 2,
 		create: "不是风动", //创建人
 		userPhoto: "https://img0.baidu.com/it/u=3457760878,2087865210&fm=253&fmt=auto&app=120&f=PNG?w=746&h=500", //用户头像
 		adress: "云南", //地址
@@ -621,8 +646,8 @@ const article = [
 		] //文章留言
 	},
 	{
-		id: 6, //文章id
-		uid: 0,
+		id: 12, //文章id
+		uid: 2,
 		create: "不是风动", //创建人
 		userPhoto: "https://img0.baidu.com/it/u=3457760878,2087865210&fm=253&fmt=auto&app=120&f=PNG?w=746&h=500", //用户头像
 		adress: "云南", //地址
@@ -664,38 +689,129 @@ const user = [
 	{
 		id: 0,
 		userinfo: {
+			id: 0,
 			password: 123456,
 			account: "admin", //校园账号
-			userName: "用户名",
-			des: "用户简介",
-			photo: "头像", //头像
-			adress: "地址", //地址
+			username: "更与行人别",
+			roleId: 1, //1-管理员  0-普通用户
+			description: "人生如逆旅，我亦是行人。",
+			img: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e", //头像
+			adress: "四川", //地址
+			phone: "18980530858",
+			birthday: "2001-10-27",
+			sex: 2,
+			school: 1,
 			backgroundImg: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg"
 		},
-		articles: "发表文章", //发布文章
-		collect: "我的收藏", //我的收藏
-		starts: "我的点赞", //我的点赞
-		fans: "我的粉丝", //我的粉丝
-		follow: "我的关注" //我的关注
+		articles: [1, 5, 7, 9], //发布文章
+		collect: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], //我的收藏
+		starts: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], //我的点赞
+		fans: [1, 2], //我的粉丝
+		follow: [1, 2, 3, 4] //我的关注
 	},
 	{
 		id: 1,
 		userinfo: {
+			id: 1,
 			password: 123456,
-			account: "admin", //校园账号
-			userName: "用户名",
-			des: "用户简介",
-			photo: "头像", //头像
-			adress: "地址", //地址
-			backgroundImg: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg"
+			account: "admin1", //校园账号
+			username: "兔兔",
+			description: "欲买桂花同载酒,终不似,少年游",
+			img: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500", //头像
+			roleId: 0,
+			phone: "19980834457",
+			adress: "四川", //地址
+			sex: 1,
+			school: 2,
+			birthday: "2002-1-2",
+			backgroundImg:
+				"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0"
 		},
-		articles: "发表文章", //发布文章
-		collect: "我的收藏", //我的收藏
-		starts: "我的点赞", //我的点赞
-		fans: "我的粉丝", //我的粉丝
-		follow: "我的关注" //我的关注
+		articles: [2, 4, 6, 8], //发布文章
+		collect: [3, 4, 5], //我的收藏
+		starts: [3, 4, 5], //我的点赞
+		fans: [0, 2], //我的粉丝
+		follow: [0, 2] //我的关注
+	},
+	{
+		id: 2,
+		userinfo: {
+			id: 2,
+			password: 123456,
+			account: "admin2", //校园账号
+			username: "知觉钝化",
+			description: "我从一出生就是一个自闭小孩",
+			roleId: 1,
+			img: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202106%2F22%2F20210622210133_f97c0.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712652190&t=f9c79aa803549c9402ba43ab6e156d74", //头像
+			phone: "15928778347",
+			adress: "四川", //地址
+			sex: 2,
+			school: 1,
+			birthday: "2000-6-7",
+			backgroundImg:
+				"https://ts1.cn.mm.bing.net/th/id/R-C.15e970cd0765096178a6da16993cfbb1?rik=IT5KfevidZcTig&riu=http%3a%2f%2fimg.pconline.com.cn%2fimages%2fupload%2fupc%2ftx%2fwallpaper%2f1210%2f22%2fc0%2f14558824_1350879506501.jpg&ehk=X9ro%2fg%2fGTmsglVrbV%2bmy8c3wsAvcHseqcEhsf80RMWA%3d&risl=&pid=ImgRaw&r=0"
+		},
+		articles: [10, 3, 11, 12], //发布文章
+		collect: [6, 7, 8], //我的收藏
+		starts: [6, 7, 8], //我的点赞
+		fans: [0, 1], //我的粉丝
+		follow: [0, 1] //我的关注
+	},
+	{
+		id: 3,
+		userinfo: {
+			id: 3,
+			password: 123456,
+			account: "admin1", //校园账号
+			username: "兔兔2",
+			description: "欲买桂花同载酒,终不似,少年游",
+			img: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500", //头像
+			roleId: 0,
+			phone: "19980834457",
+			adress: "四川", //地址
+			sex: 1,
+			school: 2,
+			birthday: "2002-1-2",
+			backgroundImg:
+				"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0"
+		},
+		articles: [], //发布文章
+		collect: [3, 4, 5], //我的收藏
+		starts: [3, 4, 5], //我的点赞
+		fans: [0, 2], //我的粉丝
+		follow: [0, 2] //我的关注
+	},
+	{
+		id: 4,
+		userinfo: {
+			id: 4,
+			password: 123456,
+			account: "admin2", //校园账号
+			username: "知觉钝化2",
+			description: "我从一出生就是一个自闭小孩",
+			roleId: 1,
+			img: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202106%2F22%2F20210622210133_f97c0.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712652190&t=f9c79aa803549c9402ba43ab6e156d74", //头像
+			phone: "15928778347",
+			adress: "四川", //地址
+			sex: 2,
+			school: 1,
+			birthday: "2000-6-7",
+			backgroundImg:
+				"https://ts1.cn.mm.bing.net/th/id/R-C.15e970cd0765096178a6da16993cfbb1?rik=IT5KfevidZcTig&riu=http%3a%2f%2fimg.pconline.com.cn%2fimages%2fupload%2fupc%2ftx%2fwallpaper%2f1210%2f22%2fc0%2f14558824_1350879506501.jpg&ehk=X9ro%2fg%2fGTmsglVrbV%2bmy8c3wsAvcHseqcEhsf80RMWA%3d&risl=&pid=ImgRaw&r=0"
+		},
+		articles: [], //发布文章
+		collect: [6, 7, 8], //我的收藏
+		starts: [6, 7, 8], //我的点赞
+		fans: [0, 1], //我的粉丝
+		follow: [0, 1] //我的关注
 	}
 ];
+
+article = article.map((item: any) => {
+	const { uid } = item;
+	const { id, ...userInfo } = user.find((item2: any) => item2.id === uid)?.userinfo || {};
+	return { id, ...item, ...userInfo };
+});
 
 globalStore.setArticles(article);
 globalStore.setOriginArticles(article);

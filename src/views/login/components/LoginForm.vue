@@ -47,6 +47,7 @@ const router = useRouter();
 const tabsStore = TabsStore();
 const keepAlive = KeepAliveStore();
 const globalStore = GlobalStore();
+const userInfos = globalStore.user;
 
 // 定义 formRef（校验规则）
 type FormInstance = InstanceType<typeof ElForm>;
@@ -59,18 +60,26 @@ const loginRules = reactive({
 const loading = ref(false);
 let dialogVisible = ref(false);
 const loginForm = reactive<Login.ReqLoginForm>({ username: "", password: "" });
+
 const login = (formEl: FormInstance | undefined) => {
 	if (!formEl) return;
 	formEl.validate(async valid => {
 		if (!valid) return;
 		loading.value = true;
 		try {
+			const userInfo = userInfos.find((item: any) => {
+				const { password, account } = item.userinfo;
+				// if (password === loginForm.password && acount === loginForm.username) return item;
+				console.log(loginForm, password, account, item);
+				return password == loginForm.password && account == loginForm.username;
+			});
+			console.log(userInfo, "userInfo");
 			const res = {
 				code: 200,
 				data: {
 					token:
 						"-BUl8EZf65F-Dvy_yR8FoATTxCjn6VHsoiZMFDorJfghOCyll4lqYB_rv-6WsuIctJJpwgn1WlJLpi0mjv5K9K_RUU2emAM7lbiIa1fk3o5_Nj8iL6tUS-ILnso1HRml",
-					user: {
+					user: userInfo.userinfo || {
 						id: 0,
 						roleId: 1,
 						username: "更与行人别",
