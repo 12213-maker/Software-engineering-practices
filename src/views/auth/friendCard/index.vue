@@ -1,6 +1,6 @@
 <template>
 	<div class="allCard">
-		<div class="card" v-for="item in props.friendList" :key="item.id">
+		<div class="card" @click="() => props.clickFriendCard(item.id)" v-for="item in props.friendList" :key="item.id">
 			<div class="card-header animated-bg" id="header"><img :src="item.img" alt="" />&nbsp;</div>
 			<div class="card-content">
 				<h3 :class="{ 'card-title': true, 'animated-bg': item.username ? false : true, 'animated-bg-text': true }" id="title">
@@ -24,10 +24,11 @@
 </template>
 
 <script setup lang="ts" name="Loading">
-const props = withDefaults(defineProps<{ friendList: any }>(), {
-	friendList: []
+const props = withDefaults(defineProps<{ friendList: any; clickFriendCard: any }>(), {
+	friendList: [],
+	clickFriendCard: () => {}
 });
-console.log(props.friendList, "frend");
+console.log(props.clickFriendCard, "propsvalue");
 </script>
 
 <style scoped lang="scss">

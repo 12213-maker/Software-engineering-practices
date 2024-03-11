@@ -46,8 +46,8 @@
 	<!--顶部图片-->
 	<div class="m-bg-class_outer" style="width: 100%; height: 750px">
 		<img
-			:src="globalStore.userInformation.img"
-			:th:src="globalStore.userInformation.img"
+			:src="userInformation.img"
+			:th:src="userInformation.img"
 			alt=""
 			class="ui m-bg image"
 			style="width: 100%; height: 100%"
@@ -57,7 +57,7 @@
 				<img
 					class="ui circular image"
 					align="center"
-					:src="globalStore.userInformation.img"
+					:src="userInformation.img"
 					th:src="@{/images/me.jpg}"
 					style="width: 150px; height: 150px"
 				/>
@@ -92,18 +92,12 @@
 			</div>
 
 			<div class="ui tencent-qr flowing popup transition hidden">
-				<img
-					:src="globalStore.userInformation.img"
-					th:src="@{/images/oneStar.jpg}"
-					alt=""
-					class="ui rounded image"
-					style="width: 110px"
-				/>
+				<img :src="userInformation.img" th:src="@{/images/oneStar.jpg}" alt="" class="ui rounded image" style="width: 110px" />
 				<div align="center">公众号</div>
 			</div>
 			<div class="ui wechat-qr flowing popup transition hidden">
 				<img
-					:src="globalStore.userInformation.img"
+					:src="userInformation.img"
 					th:src="@{/images/oneStarWechat.jpg}"
 					alt=""
 					class="ui rounded image"
@@ -112,13 +106,7 @@
 				<div align="center">微信</div>
 			</div>
 			<div class="ui qq-qr flowing popup transition hidden">
-				<img
-					:src="globalStore.userInformation.img"
-					th:src="@{/images/qq.jpg}"
-					alt=""
-					class="ui rounded image"
-					style="width: 110px"
-				/>
+				<img :src="userInformation.img" th:src="@{/images/qq.jpg}" alt="" class="ui rounded image" style="width: 110px" />
 				<div align="center">QQ</div>
 			</div>
 
@@ -188,7 +176,7 @@
 			<div class="ui secondary segment" align="center"><i class="bookmark icon"></i>我的关注</div>
 		</div>
 		<!-- 我的关注 -->
-		<FriendCard :friendList="myBlogInfo.follow" />
+		<FriendCard :friendList="myBlogInfo.follow" :clickFriendCard="clickFriendCard" />
 	</div>
 
 	<!--中间内容-->
@@ -236,7 +224,7 @@
 									<div class="eleven wide column">
 										<div class="ui mini horizontal link list">
 											<div class="item">
-												<img :src="globalStore.userInformation.img" alt="" class="ui avatar image" />
+												<img :src="userInformation.img" alt="" class="ui avatar image" />
 												<div class="content">
 													<a href="#" target="_blank" class="header">{{ userInformation.username }}</a>
 												</div>
@@ -282,20 +270,20 @@ import FriendCard from "../friendCard/index.vue";
 import { computed, reactive, ref, watch } from "vue";
 
 const globalStore = GlobalStore();
-const myUserId = globalStore.userInformation.id;
-const userInformation = globalStore.userInformation;
+const myUserId = ref(globalStore.userInformation.id);
+const userInformation = ref(globalStore.userInformation);
 //博客内容
 const myBlogInfo = reactive<any>({});
 let myArticle = reactive<any>([]);
 
 //全部用户
-let myUserInfo = reactive(globalStore.user.find((item: any) => item.id === myUserId));
-const getUsers = computed(() => globalStore.user);
+let myUserInfo = reactive(globalStore.user.find((item: any) => item.id === myUserId.value));
+let getUsers = computed(() => globalStore.user);
 watch(
 	getUsers,
 	(newvalue: any) => {
-		myUserInfo.value = newvalue.find((item: any) => item.id === myUserId);
-		const { fans, follow } = newvalue.find((item: any) => item.id === myUserId) || {};
+		myUserInfo.value = newvalue.find((item: any) => item.id === myUserId.value);
+		const { fans, follow } = newvalue.find((item: any) => item.id === myUserId.value) || {};
 		myBlogInfo.fans = newvalue.filter((item: any) => fans.includes(item.id));
 		myBlogInfo.follow = newvalue.filter((item: any) => follow.includes(item.id)).map((item: any) => item.userinfo);
 	},
@@ -304,7 +292,7 @@ watch(
 
 //全部文章
 let article = ref(globalStore.article);
-const getArticle = computed(() => globalStore.article);
+let getArticle = computed(() => globalStore.article);
 watch(
 	getArticle,
 	(newvalue: any) => {
@@ -317,6 +305,34 @@ watch(
 	},
 	{ immediate: true, deep: true }
 );
+
+watch(
+	myUserId,
+	(newvalue: any) => {
+		//关注和粉丝
+		myUserInfo.value = getUsers.value.find((item: any) => item.id === newvalue);
+		//当前用户
+		userInformation.value = myUserInfo.value.userinfo;
+		const { fans, follow } = getUsers.value.find((item: any) => item.id === newvalue) || {};
+		myBlogInfo.fans = getUsers.value.filter((item: any) => fans.includes(item.id));
+		myBlogInfo.follow = getUsers.value.filter((item: any) => follow.includes(item.id)).map((item: any) => item.userinfo);
+
+		//文章收藏点赞
+		article.value = getArticle.value;
+		const { articles, collect, starts } = myUserInfo.value;
+		myBlogInfo.articles = getArticle.value.filter((item: any) => articles.includes(item.id));
+		myBlogInfo.collect = getArticle.value.filter((item: any) => collect.includes(item.id));
+		myBlogInfo.starts = getArticle.value.filter((item: any) => starts.includes(item.id));
+		myArticle = myBlogInfo.articles;
+	},
+	{ immediate: true, deep: true }
+);
+
+//点击我的关注
+const clickFriendCard = (value: any) => {
+	myUserId.value = value;
+	console.log(value, "userId");
+};
 </script>
 
 <style scoped lang="scss">
