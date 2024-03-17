@@ -161,7 +161,6 @@ const changerouter = (data: any) => {
 const returnback = () => {
 	changerouter("userSelf");
 	// ischangepage.value = false;
-	console.log(globalStore.article, "articel");
 	// refreshpage();
 };
 

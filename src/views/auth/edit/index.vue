@@ -104,8 +104,8 @@
 					<div class="allcomment" v-for="(item2, index2) in item.data.comment" :key="index2">
 						<div class="topcoment">
 							<div class="userinfo">
-								<div class="avatarimage1" v-if="item2.img">
-									<img class="image" :src="item2.img" alt="" />
+								<div class="avatarimage1" v-if="item2.userPhoto">
+									<img class="image" :src="item2.userPhoto" alt="" />
 								</div>
 								<div class="avatarimage" v-else>
 									<img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" />
@@ -240,7 +240,7 @@ const submit = () => {
 	const { id } = props.changeParams;
 	const comment = {
 		username: userInformation.username,
-		img: userInformation.img,
+		userPhoto: userInformation.img,
 		info: input.value,
 		time: new Date().toLocaleDateString(),
 		adress: "四川"

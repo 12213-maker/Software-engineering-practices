@@ -173,20 +173,20 @@
 	<!--最新推荐-->
 	<div class="ui m-padded-tb-large">
 		<div class="ui m-container-small m-opacity">
-			<div class="ui secondary segment" align="center"><i class="bookmark icon"></i>我的关注</div>
+			<div class="ui secondary segment" align="center"><i class="bookmark icon"></i>关注</div>
 		</div>
 		<!-- 我的关注 -->
 		<FriendCard :friendList="myBlogInfo.follow" :clickFriendCard="clickFriendCard" />
 	</div>
 
 	<!--中间内容-->
-	<div class="m-padded-tb-big animated fadeIn">
+	<div class="m-padded-tb-big animated fadeIn" v-if="myArticle.length != 0">
 		<div class="ui container">
 			<div class="ui stackable grid">
 				<!--博客内容-->
 				<div class="ui vertical segment">
 					<div class="ui m-container-small m-opacity">
-						<div class="ui secondary segment" align="center"><i class="bookmark icon"></i>我的文章</div>
+						<div class="ui secondary segment" align="center"><i class="bookmark icon"></i>文章</div>
 					</div>
 					<!--博文列表-->
 					<div
@@ -198,11 +198,13 @@
 						"
 					>
 						<div
+							@click="() => clickarticle(item)"
 							v-for="(item, index) in myArticle"
 							:key="index"
 							style="
 								 {
 									margin: 20px 0;
+									cursor: pointer;
 								}
 							"
 							class="ui large aligned mobile reversed stackable grid"
@@ -332,6 +334,10 @@ watch(
 const clickFriendCard = (value: any) => {
 	myUserId.value = value;
 	console.log(value, "userId");
+};
+
+const clickarticle = (value: any) => {
+	console.log(value, "valueskdjf");
 };
 </script>
 
