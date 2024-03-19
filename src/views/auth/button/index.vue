@@ -342,8 +342,8 @@ const clickarticle = (value: any) => {
 </script>
 
 <style scoped lang="scss">
+/* @import "./editormd.min.css"; */
 @import "./index.scss";
 /* @import "./index2.css"; */
 @import "https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css";
-@import "./editormd.min.css";
 </style>

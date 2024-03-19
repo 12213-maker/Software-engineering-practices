@@ -7,7 +7,6 @@
 				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in article" :key="item.img">
 					<div class="avatar">
 						<div class="avatarimage1" v-if="item.img">
-							<!-- <el-avatar :size="50" :src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' + item.userImg)"></el-avatar> -->
 							<img class="image" :src="item.img" alt="" />
 						</div>
 						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
@@ -44,72 +43,173 @@
 				<!-- <el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
 				<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider> -->
 			</div>
-			<Editpage @returnback="returnback" @refreshpage="refreshpage" :changeParams="changeParams" v-else />
+			<Editpage v-else @returnback="returnback" @refreshpage="refreshpage" :changeParams="changeParams" />
 
 			<div class="right">
-				<div class="selfinformation">
-					<el-card shadow="always">
-						<div class="avatar">
-							<el-avatar :size="120" :src="globalStore.userInformation.img"></el-avatar>
-							<!-- <img src="../img/avtar.jpg" alt="user" class="user-image" /> -->
-						</div>
-						<div class="username">{{ globalStore.userInformation.username }}</div>
+				<!-- more -->
+				<div>
+					<!-- 头像信息 -->
+					<div class="card-content1 shadow-box background-opacity">
+						<el-avatar
+							style="margin-top: 20px"
+							class="user-avatar"
+							:size="120"
+							:src="globalStore.userInformation.img"
+						></el-avatar>
+						<div class="web-name">{{ globalStore.userInformation.username }}</div>
 						<div class="desx">
 							<el-tooltip class="box-item" effect="dark" :content="globalStore.userInformation.description" placement="top">
 								{{ globalStore.userInformation.description }}
 							</el-tooltip>
 						</div>
-						<div class="button" @click="changerouter('userSelf')">
-							<el-button type="primary" :icon="!ischangepage ? Edit : Back">{{ !ischangepage ? "发布动态" : "返回" }}</el-button>
-						</div>
-					</el-card>
-				</div>
-				<div class="notice" v-if="!ischangepage">
-					<el-card shadow="always">
-						<div class="switchschool">
-							<div>
-								<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
+						<div class="web-info">
+							<div class="blog-info-box">
+								<span>文章</span>
+								<span class="blog-info-num">5</span>
 							</div>
-							<el-select v-model="value" @change="changeSchool()" class="m-2" placeholder="Select" size="small">
-								<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
-							</el-select>
-						</div>
-						<div class="noticeinfo">
-							{{ `你好，欢迎来到${value === 1 ? "西南石油大学（成都校区）" : "西南石油大学（南充校区）"}动态推荐！` }}
-						</div></el-card
-					>
-				</div>
-				<div class="notice" v-else>
-					<el-card shadow="always">
-						<div class="switchschool">
-							<div>
-								<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
+							<div class="blog-info-box">
+								<span>分类</span>
+								<span class="blog-info-num">4</span>
+							</div>
+							<div class="blog-info-box">
+								<span>访问量</span>
+								<span class="blog-info-num">23</span>
 							</div>
 						</div>
-						<div class="noticeinfo">
-							{{ `你好，欢迎来到用户页面，详情见右侧！` }}
-						</div></el-card
-					>
-				</div>
+						<div class="button collection-btn" @click="changerouter('userSelf')">
+							{{ !ischangepage ? "发布动态" : "返回" }}
+							<!-- <el-button type="primary" :icon="!ischangepage ? Edit : Back">{{ !ischangepage ? "发布动态" : "返回" }}</el-button> -->
+						</div>
+						<!-- <a class="collection-btn" @click="showTip()"> <i class="el-icon-star-off" style="margin-right: 2px"></i>朋友圈 </a> -->
+					</div>
 
-				<div class="tag">
-					<el-card shadow="always">
-						<div class="tagtitle">动态主题</div>
-						<div class="tags" v-if="!ischangepage">
-							<el-tag size="large" class="ml-2" type="danger" @click="changeType(0)">全部</el-tag>
-							<el-tag size="large" class="ml-2" type="warning" @click="changeType(1)">表白</el-tag>
-							<el-tag size="large" class="ml-2" @click="changeType(4)">趣玩</el-tag>
-							<el-tag size="large" class="ml-2" @click="changeType(2)">日常</el-tag>
-							<el-tag size="large" class="ml-2" type="success" @click="changeType(3)">知识</el-tag>
+					<!-- 搜索 -->
+					<div
+						v-if="!ischangepage"
+						style="padding: 15px; border-radius: 10px; margin-top: 30px; animation: hideToShow 1s ease-in-out"
+						class="shadow-box background-opacity wow"
+					>
+						<div style="color: var(--lightGreen); font-size: 20px; font-weight: bold; margin-bottom: 10px">搜索</div>
+						<div style="display: flex">
+							<input class="ais-SearchBox-input" type="text" v-model="articleSearch" placeholder="搜索文章" maxlength="32" />
+							<!-- 搜索按钮 -->
+							<div class="ais-SearchBox-submit" @click="selectArticle()">
+								<svg style="margin-top: 3.5px; margin-left: 18px" viewBox="0 0 1024 1024" width="20" height="20">
+									<path
+										d="M51.2 508.8c0 256.8 208 464.8 464.8 464.8s464.8-208 464.8-464.8-208-464.8-464.8-464.8-464.8 208-464.8 464.8z"
+										fill="#51C492"
+									></path>
+									<path
+										d="M772.8 718.4c48-58.4 76.8-132.8 76.8-213.6 0-186.4-151.2-337.6-337.6-337.6-186.4 0-337.6 151.2-337.6 337.6 0 186.4 151.2 337.6 337.6 337.6 81.6 0 156-28.8 213.6-76.8L856 896l47.2-47.2-130.4-130.4zM512 776c-149.6 0-270.4-121.6-270.4-271.2S363.2 233.6 512 233.6c149.6 0 271.2 121.6 271.2 271.2C782.4 654.4 660.8 776 512 776z"
+										fill="#FFFFFF"
+									></path>
+								</svg>
+							</div>
 						</div>
-						<div class="tags" v-else>
-							<el-tag size="large" class="ml-2" type="danger">全部</el-tag>
-							<el-tag size="large" class="ml-2" type="warning">表白</el-tag>
-							<el-tag size="large" class="ml-2">趣玩</el-tag>
-							<el-tag size="large" class="ml-2">日常</el-tag>
-							<el-tag size="large" class="ml-2" type="success">知识</el-tag>
+					</div>
+
+					<!-- 学校分类 -->
+					<div
+						class="notice shadow-box"
+						style="border-radius: 10px; margin-top: 30px; animation: hideToShow 1s ease-in-out"
+						v-if="!ischangepage"
+					>
+						<el-card shadow="always">
+							<div class="switchschool">
+								<div>
+									<el-icon color="rgb(98, 79, 60)"><Promotion /></el-icon>公告
+								</div>
+								<el-select v-model="value" @change="changeSchool()" class="m-2" placeholder="Select" size="small">
+									<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+								</el-select>
+							</div>
+							<div class="noticeinfo">
+								{{ `你好，欢迎来到${value === 1 ? "西南石油大学（成都校区）" : "西南石油大学（南充校区）"}动态推荐！` }}
+							</div></el-card
+						>
+					</div>
+					<!-- 推荐文章 -->
+					<div
+						v-if="!ischangepage"
+						style="padding: 25px; border-radius: 10px; margin-top: 30px; animation: hideToShow 1s ease-in-out"
+						class="shadow-box background-opacity wow"
+					>
+						<div class="card-content2-title">
+							<i class="el-icon-reading card-content2-icon"></i>
+							<span>推荐文章</span>
 						</div>
-					</el-card>
+						<div
+							v-for="(article2, index) in recommendArticles"
+							:key="index"
+							@click="$router.push({ path: '/article', query: { id: article2.id } })"
+						>
+							<div class="aside-post-detail">
+								<div class="aside-post-image">
+									<el-image lazy class="my-el-image" :src="article2.articleCover" fit="cover">
+										<div class="image-slot">
+											<div class="error-aside-image">
+												{{ article2.username }}
+											</div>
+										</div>
+									</el-image>
+								</div>
+								<div class="aside-post-title">
+									{{ article2.articleTitle }}
+								</div>
+							</div>
+							<div class="aside-post-date">
+								<i class="el-icon-date" style="color: var(--greyFont)"></i>{{ article2.createTime }}
+							</div>
+						</div>
+					</div>
+
+					<!-- 速览 -->
+					<div v-if="!ischangepage">
+						<div
+							v-for="(sort, index) in sortInfo"
+							@click="selectSort()"
+							:key="index"
+							:style="{ background: constant.sortColor[index % constant.sortColor.length] }"
+							class="shadow-box-mini background-opacity wow"
+							style="
+								position: relative;
+								padding: 10px 25px 15px;
+								border-radius: 10px;
+								animation: hideToShow 1s ease-in-out;
+								margin-top: 30px;
+								cursor: pointer;
+								color: var(--white);
+							"
+						>
+							<div>速览</div>
+							<div class="sort-name">
+								{{ sort.sortName }}
+							</div>
+							<div style="font-weight: bold; margin-top: 15px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden">
+								{{ sort.sortDescription }}
+							</div>
+						</div>
+					</div>
+
+					<div class="tag" v-if="ischangepage">
+						<el-card shadow="always">
+							<div class="tagtitle">动态主题</div>
+							<div class="tags" v-if="!ischangepage">
+								<el-tag size="large" class="ml-2" type="danger" @click="changeType(0)">全部</el-tag>
+								<el-tag size="large" class="ml-2" type="warning" @click="changeType(1)">表白</el-tag>
+								<el-tag size="large" class="ml-2" @click="changeType(4)">趣玩</el-tag>
+								<el-tag size="large" class="ml-2" @click="changeType(2)">日常</el-tag>
+								<el-tag size="large" class="ml-2" type="success" @click="changeType(3)">知识</el-tag>
+							</div>
+							<div class="tags" v-else>
+								<el-tag size="large" class="ml-2" type="danger">全部</el-tag>
+								<el-tag size="large" class="ml-2" type="warning">表白</el-tag>
+								<el-tag size="large" class="ml-2">趣玩</el-tag>
+								<el-tag size="large" class="ml-2">日常</el-tag>
+								<el-tag size="large" class="ml-2" type="success">知识</el-tag>
+							</div>
+						</el-card>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -117,13 +217,152 @@
 </template>
 
 <script setup lang="ts" name="authMenu">
-import { Edit, Delete, Back } from "@element-plus/icons-vue";
+import { Delete } from "@element-plus/icons-vue";
 // import { deletecommunity } from "@/api/modules/lnl-paly";
 import { GlobalStore } from "@/stores";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Editpage from "../edit/index.vue";
 // import Card from "../Card/index.vue";
+
+//more
+const articleSearch = ref();
+const selectArticle = () => {};
+const selectSort = () => {};
+// const showTip = () => {};
+const recommendArticles = [
+	{
+		id: 1,
+		username: "lnl",
+		articleTitle: "一场说走就走的旅行上课的韩国代购",
+		createTime: "2024-01-10 17：19：21",
+		articleCover: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg"
+	},
+	{
+		id: 1,
+		username: "lnl",
+		articleTitle: "凤凰古城 | 建于清康熙四十三年（1704年）",
+		createTime: "2024-01-10 17：19：21",
+		articleCover: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg"
+	},
+	{
+		id: 1,
+		username: "lnl",
+		articleTitle: "凤凰古 | 城建于清康熙四十三年（1704年）",
+		createTime: "2024-01-10 17：19：21",
+		articleCover: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg"
+	}
+];
+// const webInfo = { avatar: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg" };
+const sortInfo = [
+	{ id: 2, sortName: "知识", sortDescription: "前端 后端 考研" },
+	{ id: 5, sortName: "日常", sortDescription: "风景 美食 拍照" },
+	{ id: 0, sortName: "表白", sortDescription: "i like you" },
+	{ id: 1, sortName: "吐槽", sortDescription: "吃食 教室 配套设施" },
+	{ id: 4, sortName: "实习兼职", sortDescription: "实习城市 实习互助" },
+	{ id: 3, sortName: "趣玩", sortDescription: "周边玩乐" }
+];
+const constant = {
+	baseURL: "http://localhost:8081",
+	imBaseURL: "http://localhost:81",
+	webURL: "http://localhost",
+
+	// baseURL: "https://poetize.cn/api",
+	// imBaseURL: "https://poetize.cn/im",
+	// webURL: "https://poetize.cn",
+
+	live2d_path: "https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/",
+	cdnPath: "https://cdn.jsdelivr.net/gh/fghrsh/live2d_api/",
+	waifuPath: "/webInfo/getWaifuJson",
+	hitokoto: "https://v1.hitokoto.cn",
+	shehui: "https://api.oick.cn/yulu/api.php",
+	tocbot: "https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js",
+	jinrishici: "https://v1.jinrishici.com/all.json",
+	random_image: "https://s1.ax1x.com/2022/12/04/zsKgDs.jpg?",
+	//前后端定义的密钥，AES使用16位
+	cryptojs_key: "aoligeimeimaobin",
+	qiniuUrl: "https://upload.qiniup.com",
+	qiniuDownload: "$$$$七牛云下载地址，仿照【https://file.poetize.cn/】",
+
+	friendWebName: "POETIZE",
+	friendUrl: "https://poetize.cn",
+	friendAvatar: "https://s1.ax1x.com/2022/11/10/z9E7X4.jpg",
+	friendIntroduction: "这是一个 Vue2 Vue3 与 SpringBoot 结合的产物～",
+	friendCover: "https://s1.ax1x.com/2022/11/10/z9VlHs.png",
+
+	favoriteVideo: "$$$$自己找一个视频链接作为百宝箱的封面",
+
+	loveWeiYan: "https://s1.ax1x.com/2022/12/04/zsKgDs.jpg",
+	loveMessage: "https://s1.ax1x.com/2022/12/04/zsKgDs.jpg",
+	lovePhoto: "https://s1.ax1x.com/2022/12/04/zsKh5V.jpg",
+	loveLike: "https://cdn.cbd.int//hexo-butterfly-envelope/lib/violet.jpg",
+	loveSortId: 1,
+	loveLabelId: 1,
+
+	friendBG: "https://s1.ax1x.com/2022/12/04/zsKgDs.jpg",
+	friendLetterTop: "https://cdn.cbd.int/hexo-butterfly-envelope/lib/before.png",
+	friendLetterBottom: "https://cdn.cbd.int/hexo-butterfly-envelope/lib/after.png",
+	friendLetterBiLi: "https://cdn.cbd.int/hexo-butterfly-envelope/lib/line.png",
+	friendLetterMiddle: "https://cdn.cbd.int//hexo-butterfly-envelope/lib/violet.jpg",
+
+	before_color_list: ["#ff4b2b", "#EF794F", "#67C23A", "orange", "rgb(131, 123, 199)", "#23d5ab"],
+
+	tree_hole_color: ["#ee7752", "#e73c7e", "#23a6d5", "#23d5ab", "rgb(131, 123, 199)", "#23d5ab"],
+
+	before_color_1: "black",
+	after_color_1: "linear-gradient(45deg, #f43f3b, #ec008c)",
+
+	before_color_2: "rgb(131, 123, 199)",
+	after_color_2: "linear-gradient(45deg, #f43f3b, #ec008c)",
+
+	sortColor: [
+		"linear-gradient(to right, #358bff, #15c6ff)",
+		"linear-gradient(to right, #18e7ae, #1eebeb)",
+		"linear-gradient(to right, #ff6655, #ffbf37)",
+		"linear-gradient(120deg, rgba(255, 39, 232, 1) 0%, rgba(255, 128, 0, 1) 100%)",
+		"linear-gradient(120deg, rgba(91, 39, 255, 1) 0%, rgba(0, 212, 255, 1) 100%)"
+	],
+
+	pageColor: "#ee7752",
+	commentPageColor: "#23d5ab",
+	userId: 1,
+	source: 0,
+
+	emojiList: [
+		"衰",
+		"鄙视",
+		"再见",
+		"捂嘴",
+		"摸鱼",
+		"奋斗",
+		"白眼",
+		"可怜",
+		"皱眉",
+		"鼓掌",
+		"烦恼",
+		"吐舌",
+		"挖鼻",
+		"委屈",
+		"滑稽",
+		"啊这",
+		"生气",
+		"害羞",
+		"晕",
+		"好色",
+		"流泪",
+		"吐血",
+		"微笑",
+		"酷",
+		"坏笑",
+		"吓",
+		"大兵",
+		"哭笑",
+		"困",
+		"呲牙"
+	]
+};
+
+//
 
 const globalStore = GlobalStore();
 const ischangepage = ref(false);
@@ -296,4 +535,5 @@ onMounted(() => {
 
 <style scoped lang="scss">
 @import "./index.scss";
+/* @import "https://cdn.bootcdn.net/ajax/libs/wow/1.1.2/wow.min.js"; */
 </style>

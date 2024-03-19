@@ -6076,9 +6076,9 @@ i.icon.asterisk:before {
 i.icon.square.outline:before {
 	content: "\f096";
 }
-i.icon.certificate:before {
+/* i.icon.certificate:before {
 	content: "\f0a3";
-}
+} */
 i.icon.square:before {
 	content: "\f0c8";
 }
