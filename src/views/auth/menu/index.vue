@@ -40,9 +40,63 @@
 						</div>
 					</div>
 				</div>
-				<!-- <el-divider v-if="infiniteValue.current < infiniteValue.pages"> 加载中 </el-divider>
-				<el-divider v-if="infiniteValue.current >= infiniteValue.pages"> 没有更多了 </el-divider> -->
+
+				<!-- 加载更多样式———————————————————————————————————————————————————————————————— -->
+				<div class="recent-posts">
+					<div class="announcement background-opacity">
+						<i class="fa fa-volume-up" aria-hidden="true"></i>
+						<div>
+							<div v-for="(notice, index) in webInfo.notices" :key="index">
+								{{ notice }}
+							</div>
+						</div>
+					</div>
+
+					<div v-if="indexType === 1">
+						<div v-for="(sort, index) in sortArticle" :key="index">
+							<div>
+								<div class="sort-article-first">
+									<div>
+										<svg viewBox="0 0 1024 1024" width="20" height="20" style="vertical-align: -2px; margin-bottom: -2px">
+											<path
+												d="M367.36 482.304H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3536 114.688-114.688 114.688zM367.36 938.752H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3536 114.6368-114.688 114.6368zM828.672 938.752h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3024 114.6368-114.6368 114.6368zM828.672 482.304h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3024 114.688-114.6368 114.688z"
+												fill="#FF623E"
+											></path>
+										</svg>
+										{{ titleName[index] }}
+									</div>
+									<div class="article-more" @click="$router.push({ path: '/sort', query: { sortId: sort.id } })">
+										<svg viewBox="0 0 1024 1024" width="20" height="20" style="vertical-align: -2px; margin-bottom: -2px">
+											<path
+												d="M347.3 897.3H142.2c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L103.3 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L386.3 872.1c-6.9 15.3-22.1 25.2-39 25.2z"
+												fill="#009F72"
+											></path>
+											<path
+												d="M730.4 897.3H525.3c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L486.4 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L769.3 872.1c-6.8 15.3-22.1 25.2-38.9 25.2z"
+												fill="#F9DB88"
+											></path>
+										</svg>
+										MORE
+									</div>
+								</div>
+								<SortArticle :articleList="sort" />
+								<!-- <SortArticle :articleList="article[sort.id]"></SortArticle> -->
+							</div>
+						</div>
+					</div>
+
+					<!-- <div v-show="indexType === 2">
+						<articleList :articleList="articles"></articleList>
+						<div class="pagination-wrap">
+							<div @click="pageArticles()" class="pagination" v-if="pagination.total !== articles.length">下一页</div>
+							<div v-else style="user-select: none">~~到底啦~~</div>
+						</div>
+					</div> -->
+				</div>
 			</div>
+
+			<!-- *************** -->
+
 			<Editpage v-else @returnback="returnback" @refreshpage="refreshpage" :changeParams="changeParams" />
 
 			<div class="right">
@@ -223,7 +277,7 @@ import { GlobalStore } from "@/stores";
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { ElMessage, ElMessageBox } from "element-plus";
 import Editpage from "../edit/index.vue";
-// import Card from "../Card/index.vue";
+import SortArticle from "../sortArticle/index.vue";
 
 //more
 const articleSearch = ref();
@@ -253,7 +307,6 @@ const recommendArticles = [
 		articleCover: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg"
 	}
 ];
-// const webInfo = { avatar: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg" };
 const sortInfo = [
 	{ id: 2, sortName: "知识", sortDescription: "前端 后端 考研" },
 	{ id: 5, sortName: "日常", sortDescription: "风景 美食 拍照" },
@@ -263,121 +316,43 @@ const sortInfo = [
 	{ id: 3, sortName: "趣玩", sortDescription: "周边玩乐" }
 ];
 const constant = {
-	baseURL: "http://localhost:8081",
-	imBaseURL: "http://localhost:81",
-	webURL: "http://localhost",
-
-	// baseURL: "https://poetize.cn/api",
-	// imBaseURL: "https://poetize.cn/im",
-	// webURL: "https://poetize.cn",
-
-	live2d_path: "https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/",
-	cdnPath: "https://cdn.jsdelivr.net/gh/fghrsh/live2d_api/",
-	waifuPath: "/webInfo/getWaifuJson",
-	hitokoto: "https://v1.hitokoto.cn",
-	shehui: "https://api.oick.cn/yulu/api.php",
-	tocbot: "https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.18.2/tocbot.min.js",
-	jinrishici: "https://v1.jinrishici.com/all.json",
-	random_image: "https://s1.ax1x.com/2022/12/04/zsKgDs.jpg?",
-	//前后端定义的密钥，AES使用16位
-	cryptojs_key: "aoligeimeimaobin",
-	qiniuUrl: "https://upload.qiniup.com",
-	qiniuDownload: "$$$$七牛云下载地址，仿照【https://file.poetize.cn/】",
-
-	friendWebName: "POETIZE",
-	friendUrl: "https://poetize.cn",
-	friendAvatar: "https://s1.ax1x.com/2022/11/10/z9E7X4.jpg",
-	friendIntroduction: "这是一个 Vue2 Vue3 与 SpringBoot 结合的产物～",
-	friendCover: "https://s1.ax1x.com/2022/11/10/z9VlHs.png",
-
-	favoriteVideo: "$$$$自己找一个视频链接作为百宝箱的封面",
-
-	loveWeiYan: "https://s1.ax1x.com/2022/12/04/zsKgDs.jpg",
-	loveMessage: "https://s1.ax1x.com/2022/12/04/zsKgDs.jpg",
-	lovePhoto: "https://s1.ax1x.com/2022/12/04/zsKh5V.jpg",
-	loveLike: "https://cdn.cbd.int//hexo-butterfly-envelope/lib/violet.jpg",
-	loveSortId: 1,
-	loveLabelId: 1,
-
-	friendBG: "https://s1.ax1x.com/2022/12/04/zsKgDs.jpg",
-	friendLetterTop: "https://cdn.cbd.int/hexo-butterfly-envelope/lib/before.png",
-	friendLetterBottom: "https://cdn.cbd.int/hexo-butterfly-envelope/lib/after.png",
-	friendLetterBiLi: "https://cdn.cbd.int/hexo-butterfly-envelope/lib/line.png",
-	friendLetterMiddle: "https://cdn.cbd.int//hexo-butterfly-envelope/lib/violet.jpg",
-
-	before_color_list: ["#ff4b2b", "#EF794F", "#67C23A", "orange", "rgb(131, 123, 199)", "#23d5ab"],
-
-	tree_hole_color: ["#ee7752", "#e73c7e", "#23a6d5", "#23d5ab", "rgb(131, 123, 199)", "#23d5ab"],
-
-	before_color_1: "black",
-	after_color_1: "linear-gradient(45deg, #f43f3b, #ec008c)",
-
-	before_color_2: "rgb(131, 123, 199)",
-	after_color_2: "linear-gradient(45deg, #f43f3b, #ec008c)",
-
 	sortColor: [
 		"linear-gradient(to right, #358bff, #15c6ff)",
 		"linear-gradient(to right, #18e7ae, #1eebeb)",
 		"linear-gradient(to right, #ff6655, #ffbf37)",
 		"linear-gradient(120deg, rgba(255, 39, 232, 1) 0%, rgba(255, 128, 0, 1) 100%)",
 		"linear-gradient(120deg, rgba(91, 39, 255, 1) 0%, rgba(0, 212, 255, 1) 100%)"
-	],
-
-	pageColor: "#ee7752",
-	commentPageColor: "#23d5ab",
-	userId: 1,
-	source: 0,
-
-	emojiList: [
-		"衰",
-		"鄙视",
-		"再见",
-		"捂嘴",
-		"摸鱼",
-		"奋斗",
-		"白眼",
-		"可怜",
-		"皱眉",
-		"鼓掌",
-		"烦恼",
-		"吐舌",
-		"挖鼻",
-		"委屈",
-		"滑稽",
-		"啊这",
-		"生气",
-		"害羞",
-		"晕",
-		"好色",
-		"流泪",
-		"吐血",
-		"微笑",
-		"酷",
-		"坏笑",
-		"吓",
-		"大兵",
-		"哭笑",
-		"困",
-		"呲牙"
 	]
 };
-
-//
+const webInfo = {
+	notices: ["notices1", "notices2"]
+};
+const indexType = ref(1);
+//____________________________
 
 const globalStore = GlobalStore();
 const ischangepage = ref(false);
 
 let article = ref(globalStore.article);
+const sortArticle = reactive([[], [], [], [], [], []]) as any;
+// article.value.forEach((item: any) => {
+// 	const { subject } = item;
+// 	sortArticle[subject].push(item);
+// });
+const titleName = ["表白", "吐槽", "知识", "趣玩", "实习兼职", "日常"];
+
 const getArticle = computed(() => globalStore.article);
 watch(
 	getArticle,
 	(newvalue: any) => {
 		article.value = newvalue;
+		newvalue.forEach((item: any) => {
+			const { subject } = item;
+			sortArticle[subject].push(item);
+		});
 	},
 	{ immediate: true, deep: true }
 );
-
-console.log(article.value, "article");
 //更新页面数据
 const refreshpage = async () => {
 	params.pageNum = 1;
@@ -399,8 +374,6 @@ const changerouter = (data: any) => {
 //点击返回
 const returnback = () => {
 	changerouter("userSelf");
-	// ischangepage.value = false;
-	// refreshpage();
 };
 
 const value = ref(0);
@@ -430,13 +403,7 @@ const params = reactive<{ subject?: number; pageNum: number; pageSize: number; s
 //存放数据
 const showData = reactive<{ data: any }>({ data: [] });
 //获取动态数据
-const getdata = () => {
-	// const res = (await community(params)) as any;
-	// infiniteValue.current = res.data.current;
-	// infiniteValue.pages = res.data.pages;
-	// showData.data.push(...res.data.records);
-	// showData.data.push(...data);
-};
+const getdata = () => {};
 
 //懒加载数据
 const infiniteValue = reactive({
@@ -461,7 +428,6 @@ const load = () => {
 		loadmore();
 	}, 1000);
 };
-console.log(load);
 
 //改变主题
 const changeType = (value: any) => {
@@ -535,5 +501,4 @@ onMounted(() => {
 
 <style scoped lang="scss">
 @import "./index.scss";
-/* @import "https://cdn.bootcdn.net/ajax/libs/wow/1.1.2/wow.min.js"; */
 </style>
