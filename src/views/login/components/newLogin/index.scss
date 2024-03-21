@@ -6,7 +6,7 @@
 .in-up {
 	opacity: 0.9;
 	border-radius: 10px;
-	box-shadow: 0 15px 30px var(--miniMask), 0 10px 10px var(--miniMask);
+	box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.15);
 	position: relative;
 	overflow: hidden;
 	width: 750px;
@@ -22,7 +22,7 @@
 }
 
 .in-up a {
-	color: var(--black);
+	color: black;
 	font-size: 14px;
 	text-decoration: none;
 	margin: 15px 0;
@@ -46,14 +46,14 @@
 }
 
 .form-container div {
-	background: var(--white);
+	background: white;
 	flex-direction: column;
 	padding: 0 20px;
 	height: 100%;
 }
 
 .form-container input {
-	background: var(--maxLightGray);
+	background: #eeeeee;
 	border-radius: 2px;
 	border: none;
 	padding: 12px 15px;
@@ -65,8 +65,8 @@
 .in-up button {
 	border-radius: 2rem;
 	border: none;
-	background: var(--lightRed);
-	color: var(--white);
+	background: #ff4b2b;
+	color: white;
 	font-size: 16px;
 	font-weight: bold;
 	padding: 12px 45px;
@@ -80,7 +80,7 @@
 
 .in-up button.ghost {
 	background: transparent;
-	border: 1px solid var(--white);
+	border: 1px solid white;
 }
 
 .sign-up-container button {
@@ -97,8 +97,8 @@
 }
 
 .overlay {
-	background: var(--gradualRed);
-	color: var(--white);
+	background: linear-gradient(to right, #ff4b2b, #ff416c);
+	color: white;
 	position: relative;
 	left: -100%;
 	height: 100%;
@@ -166,7 +166,7 @@
 
 .user-left {
 	width: 50%;
-	background: var(--maxMaxWhiteMask);
+	background: rgba(255, 255, 255, 0.7);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -176,7 +176,7 @@
 
 .user-right {
 	width: 50%;
-	background: var(--maxWhiteMask);
+	background: rgba(255, 255, 255, 0.5);
 	padding: 20px;
 }
 
@@ -204,19 +204,19 @@
 .user-content >>> .el-input__inner,
 .user-content >>> .el-textarea__inner {
 	border: none;
-	background: var(--whiteMask);
+	background: rgba(255, 255, 255, 0.3);
 }
 
 .user-content >>> .el-input__count {
-	background: var(--transparent);
+	background: rgba(0, 0, 0, 0);
 	user-select: none;
 }
 
 .changeInfo {
-	color: var(--white);
+	color: white;
 	font-size: 0.75rem;
 	cursor: pointer;
-	background: var(--themeBackground);
+	background: orange;
 	padding: 3px;
 	border-radius: 0.2rem;
 	user-select: none;

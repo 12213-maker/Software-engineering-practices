@@ -36,6 +36,7 @@ const config = reactive({
 // 						password: "123456",
 // 						birthday: "2001-10-27",
 // 						phone: "18980530858",
+// 						email: "18980530858",
 // 						sex: 2,
 // 						description: "人生如逆旅，我亦是行人。",
 // 						school: 1
@@ -698,6 +699,7 @@ const user = [
 			img: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e", //头像
 			adress: "四川", //地址
 			phone: "18980530858",
+			email: "2822592790@qq.com",
 			birthday: "2001-10-27",
 			sex: 2,
 			school: 1,
@@ -722,6 +724,8 @@ const user = [
 			phone: "19980834457",
 			adress: "四川", //地址
 			sex: 1,
+			email: "282292790@qq.com",
+
 			school: 2,
 			birthday: "2002-1-2",
 			backgroundImg:
@@ -746,6 +750,8 @@ const user = [
 			phone: "15928778347",
 			adress: "四川", //地址
 			sex: 2,
+			email: "282259270@qq.com",
+
 			school: 1,
 			birthday: "2000-6-7",
 			backgroundImg:
@@ -770,6 +776,8 @@ const user = [
 			phone: "19980834457",
 			adress: "四川", //地址
 			sex: 1,
+			email: "222592790@qq.com",
+
 			school: 2,
 			birthday: "2002-1-2",
 			backgroundImg:
@@ -793,6 +801,8 @@ const user = [
 			img: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202106%2F22%2F20210622210133_f97c0.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712652190&t=f9c79aa803549c9402ba43ab6e156d74", //头像
 			phone: "15928778347",
 			adress: "四川", //地址
+			email: "28225790@qq.com",
+
 			sex: 2,
 			school: 1,
 			birthday: "2000-6-7",

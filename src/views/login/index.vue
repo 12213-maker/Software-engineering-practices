@@ -1,12 +1,9 @@
 <template>
-	<div class="login-container flx-center">
+	<!-- <div class="login-container flx-center">
 		<div class="login-box">
 			<div class="login-left">
 				<img src="@/assets/lnl_images/infinity-2168510.jpg" alt="login" />
 			</div>
-
-			<!-- 轮播图 -->
-			<!-- <LoginCarousel /> -->
 
 			<div class="login-form">
 				<div class="login-logo">
@@ -16,11 +13,13 @@
 				<LoginForm />
 			</div>
 		</div>
-	</div>
+	</div> -->
+	<NewLoginForm />
 </template>
 
 <script setup lang="ts" name="login">
-import LoginForm from "./components/LoginForm.vue";
+// import LoginForm from "./components/LoginForm.vue";
+import NewLoginForm from "./components/newLogin/index.vue";
 // import LoginCarousel from "./components/LoginCarousel.vue";
 </script>
 
