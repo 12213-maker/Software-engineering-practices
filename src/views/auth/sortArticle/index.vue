@@ -2,19 +2,13 @@
 	<div class="recent-post-container">
 		<div
 			class="recent-post-item shadow-box background-opacity wow"
+			@click="() => props.changerouter(article)"
 			v-for="(article, index) in props.articleList"
 			:key="index"
-			@click="$router.push({ path: '/article', query: { id: article.id } })"
 		>
 			<!-- 封面 -->
 			<div class="recent-post-item-image">
-				<el-image class="my-el-image" v-once lazy :src="article.photo[0]" fit="cover">
-					<div class="image-slot myCenter" style="background-color: #39c5bb">
-						<div class="error-text">
-							<div>遇事不决，可问春风</div>
-						</div>
-					</div>
-				</el-image>
+				<el-image class="my-el-image" v-once lazy :src="article.photo[0]" fit="cover"> </el-image>
 			</div>
 			<!-- 内容 -->
 			<div class="recent-post-item-post">
@@ -31,12 +25,15 @@
 							fill="#FFFFFF"
 						></path>
 					</svg>
-					发布于 {{ article.time }}
+					<!-- <el-image class="userphoto" style="width: 20px; height: 20px; border-radius: 50%" :src="article.userPhoto" fit="cover">
+					</el-image> -->
+
+					{{ article.username }}发布于 {{ article.time }}
 				</div>
 				<!-- 标题 -->
 
 				<el-tooltip placement="top" effect="light">
-					<div>{{ article.title }}</div>
+					<!-- <div>{{ article.title }}</div> -->
 					<h3>{{ article.title }}</h3>
 				</el-tooltip>
 
@@ -133,7 +130,7 @@
 								fill="#FFA86A"
 							></path>
 						</svg>
-						{{ article.time }}zheshisha
+						生活中的小确幸
 					</span>
 					<span @click.stop="$router.push({ path: '/sort', query: { sortId: article.sortId, labelId: article.labelId } })">
 						<svg viewBox="0 0 1024 1024" width="15" height="15" style="vertical-align: -3px">
@@ -146,7 +143,7 @@
 								fill="#FFE37B"
 							></path>
 						</svg>
-						{{ article.time }}zhesss
+						春日
 					</span>
 				</div>
 			</div>
@@ -156,11 +153,10 @@
 
 <script setup lang="ts" name="authMenu">
 //第一个定义类型，第二个默认值
-const props = withDefaults(defineProps<{ articleList: any }>(), {
-	articleList: {}
+const props = withDefaults(defineProps<{ articleList: any; changerouter: any }>(), {
+	articleList: {},
+	changerouter: () => {}
 });
-console.log(props.articleList, "articleList");
-// const titleName = ["表白", "吐槽", "知识", "趣玩", "实习兼职", "日常"];
 </script>
 
 <style scoped lang="scss">

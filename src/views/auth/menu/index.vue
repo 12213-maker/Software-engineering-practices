@@ -4,98 +4,115 @@
 		<!-- 主体 -->
 		<div class="body">
 			<div v-if="!ischangepage" class="left">
-				<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in article" :key="item.img">
-					<div class="avatar">
-						<div class="avatarimage1" v-if="item.img">
-							<img class="image" :src="item.img" alt="" />
-						</div>
-						<div class="avatarimage" v-else><img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" /></div>
-						<span class="username">{{ item.username }}</span>
-						<div class="ipschool">
-							<el-tag size="small" round v-if="item.subject === 1" class="ml-2" type="warning">表白</el-tag>
-							<el-tag size="small" round v-else-if="item.subject === 2" class="ml-2" type="danger">日常</el-tag>
-							<el-tag size="small" round v-else-if="item.subject === 3" class="ml-2">知识</el-tag>
-							<el-tag size="small" round class="ml-2" type="success" v-else>趣玩</el-tag>
-						</div>
-					</div>
-					<div class="usercomment">
-						{{ item.content }}
-					</div>
-					<div class="imageOter" v-if="item.photo">
-						<img class="image" :src="item.photo[0]" alt="" />
-					</div>
-					<div class="timecontanerall">
-						<div class="timecontaner">
-							<span class="time">{{ item.time }}</span>
-
-							<div v-if="params.school === 1">
-								<el-icon><School /></el-icon>{{ "西南石油大学（成都校区）" }}
-							</div>
-							<div v-else>
-								<el-icon><School /></el-icon>{{ "西南石油大学（南充校区）" }}
-							</div>
-						</div>
-						<div v-if="id === item.uid">
-							<el-button :icon="Delete" @click.stop="deletedongati(item.id)" size="small">删除</el-button>
-						</div>
-					</div>
-				</div>
-
 				<!-- 加载更多样式———————————————————————————————————————————————————————————————— -->
-				<div class="recent-posts">
-					<div class="announcement background-opacity">
-						<i class="fa fa-volume-up" aria-hidden="true"></i>
-						<div>
-							<div v-for="(notice, index) in webInfo.notices" :key="index">
-								{{ notice }}
-							</div>
-						</div>
-					</div>
-
-					<div v-if="indexType === 1">
-						<div v-for="(sort, index) in sortArticle" :key="index">
-							<div>
-								<div class="sort-article-first">
+				<div class="page-container-wrap" v-if="!showmore">
+					<div class="page-container">
+						<div class="recent-posts">
+							<div v-if="indexType === 1">
+								<div v-for="(sort, index) in sortArticle" :key="index">
 									<div>
-										<svg viewBox="0 0 1024 1024" width="20" height="20" style="vertical-align: -2px; margin-bottom: -2px">
-											<path
-												d="M367.36 482.304H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3536 114.688-114.688 114.688zM367.36 938.752H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3536 114.6368-114.688 114.6368zM828.672 938.752h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3024 114.6368-114.6368 114.6368zM828.672 482.304h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3024 114.688-114.6368 114.688z"
-												fill="#FF623E"
-											></path>
-										</svg>
-										{{ titleName[index] }}
-									</div>
-									<div class="article-more" @click="$router.push({ path: '/sort', query: { sortId: sort.id } })">
-										<svg viewBox="0 0 1024 1024" width="20" height="20" style="vertical-align: -2px; margin-bottom: -2px">
-											<path
-												d="M347.3 897.3H142.2c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L103.3 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L386.3 872.1c-6.9 15.3-22.1 25.2-39 25.2z"
-												fill="#009F72"
-											></path>
-											<path
-												d="M730.4 897.3H525.3c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L486.4 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L769.3 872.1c-6.8 15.3-22.1 25.2-38.9 25.2z"
-												fill="#F9DB88"
-											></path>
-										</svg>
-										MORE
+										<div class="sort-article-first">
+											<div>
+												<svg viewBox="0 0 1024 1024" width="20" height="20" style="vertical-align: -2px; margin-bottom: -2px">
+													<path
+														d="M367.36 482.304H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3536 114.688-114.688 114.688zM367.36 938.752H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3536 114.6368-114.688 114.6368zM828.672 938.752h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3024 114.6368-114.6368 114.6368zM828.672 482.304h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3024 114.688-114.6368 114.688z"
+														fill="#FF623E"
+													></path>
+												</svg>
+												{{ titleName[index] }}
+											</div>
+											<div class="article-more" @click="() => clickMore('more')">
+												<svg viewBox="0 0 1024 1024" width="20" height="20" style="vertical-align: -2px; margin-bottom: -2px">
+													<path
+														d="M347.3 897.3H142.2c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L103.3 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L386.3 872.1c-6.9 15.3-22.1 25.2-39 25.2z"
+														fill="#009F72"
+													></path>
+													<path
+														d="M730.4 897.3H525.3c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L486.4 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L769.3 872.1c-6.8 15.3-22.1 25.2-38.9 25.2z"
+														fill="#F9DB88"
+													></path>
+												</svg>
+												MORE
+											</div>
+										</div>
+										<SortArticle :articleList="sort" :changerouter="(sort:any) => changerouter(sort)" />
 									</div>
 								</div>
-								<SortArticle :articleList="sort" />
-								<!-- <SortArticle :articleList="article[sort.id]"></SortArticle> -->
 							</div>
 						</div>
 					</div>
-
-					<!-- <div v-show="indexType === 2">
-						<articleList :articleList="articles"></articleList>
-						<div class="pagination-wrap">
-							<div @click="pageArticles()" class="pagination" v-if="pagination.total !== articles.length">下一页</div>
-							<div v-else style="user-select: none">~~到底啦~~</div>
+				</div>
+				<!-- *************** -->
+				<div v-if="showmore" style="width: 100%">
+					<div class="sort-article-first" style="width: 95%">
+						<div>
+							<svg viewBox="0 0 1024 1024" width="20" height="20" style="vertical-align: -2px; margin-bottom: -2px">
+								<path
+									d="M367.36 482.304H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3536 114.688-114.688 114.688zM367.36 938.752H195.9936c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3536 114.6368-114.688 114.6368zM828.672 938.752h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368v-171.4176c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368v171.4176c0 63.3344-51.3024 114.6368-114.6368 114.6368zM828.672 482.304h-171.4176c-63.3344 0-114.6368-51.3536-114.6368-114.6368V196.2496c0-63.3344 51.3536-114.6368 114.6368-114.6368h171.4176c63.3344 0 114.6368 51.3536 114.6368 114.6368V367.616c0 63.3344-51.3024 114.688-114.6368 114.688z"
+									fill="#FF623E"
+								></path>
+							</svg>
+							分类
 						</div>
-					</div> -->
+						<div class="article-more" @click="() => clickMore()">
+							<svg viewBox="0 0 1024 1024" width="20" height="20" style="vertical-align: -2px; margin-bottom: -2px">
+								<path
+									d="M347.3 897.3H142.2c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L103.3 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L386.3 872.1c-6.9 15.3-22.1 25.2-39 25.2z"
+									fill="#009F72"
+								></path>
+								<path
+									d="M730.4 897.3H525.3c-30.8 0-51.4-31.7-38.9-59.9l136.1-306.1c4.9-11 4.9-23.6 0-34.6L486.4 190.6c-12.5-28.2 8.1-59.9 38.9-59.9h205.1c16.8 0 32.1 9.9 38.9 25.3l151.4 340.7c4.9 11 4.9 23.6 0 34.6L769.3 872.1c-6.8 15.3-22.1 25.2-38.9 25.2z"
+									fill="#F9DB88"
+								></path>
+							</svg>
+							SORT
+						</div>
+					</div>
+					<div class="commentoter">
+						<div class="comment" @click="changerouter(item)" v-infinite-scroll="load" v-for="item in article" :key="item.img">
+							<div class="avatar">
+								<div class="avatarimage1" v-if="item.img">
+									<img class="image" :src="item.img" alt="" />
+								</div>
+								<div class="avatarimage" v-else>
+									<img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" />
+								</div>
+								<span class="username">{{ item.username }}</span>
+								<div class="ipschool">
+									<el-tag size="small" round v-if="item.subject === 1" class="ml-2" type="warning">表白</el-tag>
+									<el-tag size="small" round v-else-if="item.subject === 2" class="ml-2" type="danger">日常</el-tag>
+									<el-tag size="small" round v-else-if="item.subject === 3" class="ml-2">知识</el-tag>
+									<el-tag size="small" round class="ml-2" type="success" v-else>趣玩</el-tag>
+								</div>
+							</div>
+							<div style="font-size: 16px; font-weight: 600; height: 25px; line-height: 25px">
+								{{ item.title }}
+							</div>
+							<div class="usercomment">
+								{{ item.content }}
+							</div>
+							<div class="imageOter" v-if="item.photo">
+								<img class="image" :src="item.photo[0]" alt="" />
+							</div>
+							<div class="timecontanerall">
+								<div class="timecontaner">
+									<span class="time">{{ item.time }}</span>
+
+									<div v-if="params.school === 1">
+										<el-icon><School /></el-icon>{{ "西南石油大学（成都校区）" }}
+									</div>
+									<div v-else>
+										<el-icon><School /></el-icon>{{ "西南石油大学（南充校区）" }}
+									</div>
+								</div>
+								<div v-if="id === item.uid">
+									<el-button :icon="Delete" @click.stop="deletedongati(item.id)" size="small">删除</el-button>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
-
-			<!-- *************** -->
 
 			<Editpage v-else @returnback="returnback" @refreshpage="refreshpage" :changeParams="changeParams" />
 
@@ -281,9 +298,20 @@ import SortArticle from "../sortArticle/index.vue";
 
 //more
 const articleSearch = ref();
-const selectArticle = () => {};
+// 搜索文章
+const selectArticle = () => {
+	if (articleSearch.value) {
+		showmore.value = true;
+		article.value = article.value.filter((item: any) => {
+			const title = item.title;
+			return title.indexOf(articleSearch.value) !== -1;
+		});
+	} else {
+		showmore.value = false;
+		article.value = globalStore.article;
+	}
+};
 const selectSort = () => {};
-// const showTip = () => {};
 const recommendArticles = [
 	{
 		id: 1,
@@ -295,16 +323,16 @@ const recommendArticles = [
 	{
 		id: 1,
 		username: "lnl",
-		articleTitle: "凤凰古城 | 建于清康熙四十三年（1704年）",
-		createTime: "2024-01-10 17：19：21",
-		articleCover: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg"
+		articleTitle: "我的心境 | 从来没有见过的天堂",
+		createTime: "2024-03-10 17：19：21",
+		articleCover: "https://img0.baidu.com/it/u=3457760878,2087865210&fm=253&fmt=auto&app=120&f=PNG?w=746&h=500"
 	},
 	{
 		id: 1,
 		username: "lnl",
-		articleTitle: "凤凰古 | 城建于清康熙四十三年（1704年）",
+		articleTitle: "再见朝阳 | 破碎的朝阳",
 		createTime: "2024-01-10 17：19：21",
-		articleCover: "https://p1.itc.cn/images01/20200717/def69a4a07f34871bd63ab151e210d9f.jpeg"
+		articleCover: "https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg"
 	}
 ];
 const sortInfo = [
@@ -324,8 +352,13 @@ const constant = {
 		"linear-gradient(120deg, rgba(91, 39, 255, 1) 0%, rgba(0, 212, 255, 1) 100%)"
 	]
 };
-const webInfo = {
-	notices: ["notices1", "notices2"]
+const showmore = ref(false);
+const clickMore = (data: any) => {
+	if (data === "more") {
+		showmore.value = true;
+	} else {
+		showmore.value = false;
+	}
 };
 const indexType = ref(1);
 //____________________________
@@ -334,7 +367,7 @@ const globalStore = GlobalStore();
 const ischangepage = ref(false);
 
 let article = ref(globalStore.article);
-const sortArticle = reactive([[], [], [], [], [], []]) as any;
+let sortArticle = reactive([[], [], [], [], [], []]) as any;
 // article.value.forEach((item: any) => {
 // 	const { subject } = item;
 // 	sortArticle[subject].push(item);
@@ -346,6 +379,7 @@ watch(
 	getArticle,
 	(newvalue: any) => {
 		article.value = newvalue;
+		sortArticle = [[], [], [], [], [], []];
 		newvalue.forEach((item: any) => {
 			const { subject } = item;
 			sortArticle[subject].push(item);

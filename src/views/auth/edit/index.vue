@@ -12,9 +12,11 @@
 						<span class="time">{{ item.data.time }}</span>
 					</div>
 					<div v-if="isSelfPage" class="ipschool">
-						<el-tag size="large" round v-if="item.data.subject === 1" class="ml-2" type="warning">表白</el-tag>
-						<el-tag size="large" round v-else-if="item.data.subject === 4" class="ml-2" type="danger">趣玩</el-tag>
-						<el-tag size="large" round v-else-if="item.data.subject === 2" class="ml-2">日常</el-tag>
+						<el-tag size="large" round v-if="item.data.subject === 0" class="ml-2" type="warning">表白</el-tag>
+						<el-tag size="large" round v-else-if="item.data.subject === 3" class="ml-2" type="danger">趣玩</el-tag>
+						<el-tag size="large" round v-else-if="item.data.subject === 1" class="ml-2" type="danger">吐槽</el-tag>
+						<el-tag size="large" round v-else-if="item.data.subject === 5" class="ml-2">日常</el-tag>
+						<el-tag size="large" round v-else-if="item.data.subject === 4" class="ml-2">实习兼职</el-tag>
 						<el-tag size="large" round class="ml-2" type="success" v-else>知识</el-tag>
 					</div>
 
@@ -176,20 +178,28 @@ const input = ref("");
 const value = ref(1);
 const options = [
 	{
-		value: 1,
+		value: 0,
 		label: "表白"
 	},
 	{
-		value: 2,
+		value: 5,
 		label: "日常"
 	},
 	{
-		value: 3,
+		value: 1,
+		label: "吐槽"
+	},
+	{
+		value: 2,
 		label: "知识"
 	},
 	{
-		value: 4,
+		value: 3,
 		label: "趣玩"
+	},
+	{
+		value: 4,
+		label: "实习兼职"
 	}
 ];
 const value2 = ref(1);

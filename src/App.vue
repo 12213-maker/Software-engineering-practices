@@ -80,7 +80,7 @@ let article = [
 			"https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
 			"https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg"
 		], //文章图片
-		subject: 3, //表白：0，吐槽：1，知识：2，趣玩：3，实习兼职：4，日常：5
+		subject: 0, //表白：0，吐槽：1，知识：2，趣玩：3，实习兼职：4，日常：5
 		stars: 522, //点赞数量
 		school: 1, //学校
 		comment: [
