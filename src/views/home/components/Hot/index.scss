@@ -42,19 +42,18 @@
 }
 .side-f12 {
 	font-size: 12px;
-	line-height: 16px;
+	line-height: 12px;
 }
 .info {
+	cursor: pointer;
+	// width: 280px;
 	overflow: hidden;
-
-	// overflow: hidden;
 	font-size: 13px;
-
-	// color: #777777;
-	// word-break: break-all;
-	// -webkit-line-clamp: 1;
-	// -webkit-box-orient: vertical;
 	text-overflow: ellipsis;
 	word-break: break-all;
 	white-space: nowrap;
+}
+
+.campus-side-panel {
+	width: 330px;
 }

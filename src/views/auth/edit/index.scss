@@ -114,10 +114,11 @@
 				.btnsss {
 					display: flex;
 					flex-direction: row;
+					flex-wrap: wrap;
 					align-items: center;
 					justify-content: space-around;
 					margin-left: 20px;
-					flex-wrap: wrap;
+
 					// background-color: lightblue;
 					.selecttag {
 						// position: absolute;
@@ -185,7 +186,6 @@
 		}
 		.mybottom {
 			padding: 20px;
-
 			// 发送评论
 			.mycomment {
 				display: flex;
@@ -218,7 +218,8 @@
 				position: relative;
 				display: flex;
 				flex-direction: column;
-				margin: 10px 0;
+				margin-bottom: 30px;
+
 				.topcoment {
 					display: flex;
 					flex-direction: row;
@@ -272,9 +273,48 @@
 					}
 				}
 				.reply {
-					margin-top: 20px;
-					margin-bottom: 10px;
-					margin-left: 50px;
+					// background-color: red;
+					display: flex;
+					flex-direction: column;
+					// align-items: center;
+					.reply2 {
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						margin-top: 20px;
+						margin-bottom: 20px;
+						margin-left: 30px;
+					}
+					.userinfo {
+						display: flex;
+						align-items: center;
+						.avatarimage1 {
+							width: 30px;
+							height: 30px;
+							margin-right: 10px;
+							overflow: hidden;
+							border-radius: 50%;
+							img {
+								width: 100%;
+							}
+						}
+						.avatarimage {
+							overflow: hidden;
+						}
+						.username {
+							display: flex;
+							flex-direction: column;
+							margin-right: 20px;
+							font-size: 18px;
+							.name {
+								font-size: 14px;
+								color: rgb(235 115 80);
+							}
+							.time {
+								font-size: 12px;
+							}
+						}
+					}
 				}
 			}
 		}

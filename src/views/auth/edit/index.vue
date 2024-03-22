@@ -30,7 +30,7 @@
 				<div class="usercomment">
 					<el-input v-if="!isSelfPage" v-model="title" placeholder="文章标题" style="margin-bottom: 20px; width: 400px" />
 					<el-input v-if="!isSelfPage" v-model="textarea" :rows="7" type="textarea" placeholder="Please input" />
-					<div v-else class="usercommentsize">
+					<div v-else class="usercommentsize" style="white-space: pre-line">
 						{{ item.data.content }}
 					</div>
 				</div>
@@ -120,17 +120,35 @@
 							<div class="commentinfo">
 								<div class="info">{{ item2.info }}</div>
 							</div>
-							<div class="bottom">
+							<div class="bottom" style="width: 90px">
 								<div>
-									<el-icon><ChatLineSquare /></el-icon>
+									<el-icon><ChatLineSquare /></el-icon> {{ item2?.reply?.length || 0 }}
 								</div>
 								<div>
-									<el-icon><Star /></el-icon>
+									<el-icon><Star /></el-icon> {{ item2?.reply?.length || 0 }}
 								</div>
 							</div>
 						</div>
 						<div class="reply">
-							<el-steps style="max-width: 600px" space="30" v-if="item2.reply" direction="vertical" :active="0">
+							<div class="reply2" v-for="(item3, index) in item2.reply" :key="index">
+								<div class="userinfo">
+									<div class="avatarimage1" v-if="item3.img">
+										<img class="image" :src="item3.img" alt="" />
+									</div>
+									<div class="avatarimage" v-else>
+										<img src="../../../assets/lnl_images/Snipaste_2023-02-05_19-41-13.png" alt="" />
+									</div>
+									<span class="username"
+										><span class="name">{{ item3.username }}</span
+										><span class="time">{{ item3.time }}</span></span
+									>
+								</div>
+								<div class="commentinfo">
+									<div class="info" style="font-size: 14px">{{ item3.info }}</div>
+								</div>
+							</div>
+
+							<!-- <el-steps style="max-width: 600px" space="30" v-if="item2.reply" direction="vertical" :active="0">
 								<el-step
 									:title="item3.username"
 									v-for="(item3, index) in item2.reply"
@@ -139,10 +157,7 @@
 									:description="item3.info"
 									:icon="User"
 								/>
-
-								<!-- <el-step title="Step 2" space="30" /> -->
-								<!-- <el-step title="Step 3" space="30" /> -->
-							</el-steps>
+							</el-steps> -->
 						</div>
 					</div>
 				</div>
@@ -154,12 +169,13 @@
 <script setup lang="ts" name="authMenu">
 import { reactive, ref } from "vue";
 import { GlobalStore } from "@/stores";
-import { Delete, Position, User } from "@element-plus/icons-vue";
+import { Delete, Position } from "@element-plus/icons-vue";
 // import { deletecommunity } from "@/api/modules/lnl-paly";
 import { ElMessage, ElMessageBox } from "element-plus";
 
 const globalStore = GlobalStore();
 const userInformation = globalStore.userInformation;
+// const user = globalStore.user;
 const id = userInformation.id;
 
 const emit = defineEmits(["returnback", "refreshpage"]);
@@ -214,17 +230,17 @@ const options2 = [
 	}
 ];
 
-type DataType = {
-	userImg: string;
-	username: string;
-	subject: number;
-	content: string;
-	img: string;
-	time: string;
-	uid: number;
-	id: number;
-};
-let item = reactive<{ data: DataType }>({
+// type DataType = {
+// 	userImg: string;
+// 	username: string;
+// 	subject: number;
+// 	content: string;
+// 	img: string;
+// 	time: string;
+// 	uid: number;
+// 	id: number;
+// };
+let item = reactive<{ data: any }>({
 	data: {
 		userImg: "",
 		username: "",

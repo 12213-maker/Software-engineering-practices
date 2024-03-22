@@ -38,6 +38,13 @@ img {
 }
 .card-title {
 	height: 20px;
+	line-height: 20px;
+	overflow: hidden;
+	font-size: 15px;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	white-space: nowrap;
+	margin: 0;
 	margin-top: 5px;
 }
 .card-excerpt {

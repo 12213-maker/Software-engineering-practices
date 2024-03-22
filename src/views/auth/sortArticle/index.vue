@@ -157,6 +157,8 @@ const props = withDefaults(defineProps<{ articleList: any; changerouter: any }>(
 	articleList: {},
 	changerouter: () => {}
 });
+
+console.log(props.articleList, "pros");
 </script>
 
 <style scoped lang="scss">

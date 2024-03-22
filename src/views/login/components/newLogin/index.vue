@@ -8,7 +8,7 @@
 				<div class="form-container sign-up-container">
 					<div class="myCenter">
 						<h1>注册</h1>
-						<input v-model="username" type="text" maxlength="30" placeholder="用户名" />
+						<input v-model="username" type="text" maxlength="30" placeholder="手机号" />
 						<input v-model="password" type="password" maxlength="30" placeholder="密码" />
 						<input v-model="email" type="email" placeholder="邮箱" />
 						<input v-model="code" type="text" placeholder="验证码" disabled />
@@ -209,8 +209,16 @@
 <script setup lang="ts" name="login">
 import { ref } from "vue";
 import { GlobalStore } from "@/stores";
-import { ElMessage } from "element-plus";
+import { ElMessage, ElNotification } from "element-plus";
 import ProButton from "../proButton/index.vue";
+import { useRouter } from "vue-router";
+import { HOME_URL } from "@/config/config";
+import { getTimeState } from "@/utils/util";
+import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
+import { TabsStore } from "@/stores/modules/tabs";
+import { KeepAliveStore } from "@/stores/modules/keepAlive";
+const tabsStore = TabsStore();
+const keepAlive = KeepAliveStore();
 
 const username = ref("");
 const account = ref("");
@@ -226,6 +234,7 @@ let passwordFlag = ref(null);
 let intervalCode = ref(null);
 
 const globalStore = GlobalStore();
+const router = useRouter();
 const currentUser = globalStore.user;
 
 const isEmpty = (value: any) => {
@@ -572,41 +581,41 @@ const regist = () => {
 		signIn();
 	}, 500);
 };
-const login = () => {
+const login = async () => {
 	if (isEmpty(account.value) || isEmpty(password.value)) {
-		// ElMessage({
-		// 	message: "请输入账号或密码！",
-		// 	type: "error"
-		// });
 		ElMessage({
 			message: "请输入账号或密码！",
 			type: "error"
 		});
 		return;
 	}
+	const nowUser = currentUser.find((item: any) => {
+		const { phone, password: myPassword } = item.userinfo;
+		return account.value === phone && myPassword == password.value;
+	});
+	if (!nowUser) {
+		ElMessage({
+			message: "账号或密码错误！",
+			type: "error"
+		});
+		return;
+	}
+	globalStore.setUserInformation(nowUser.userinfo);
+	globalStore.setToken("data.token");
+	globalStore.setLogin(true);
+	// 2.添加动态路由
+	await initDynamicRouter();
 
-	// let user = {
-	// 	account: account.value.trim(),
-	// 	password: password.value.trim()
-	// };
-
-	// $http
-	// 	.post($constant.baseURL + "/user/login", user, false, false)
-	// 	.then(res => {
-	// 		if (!isEmpty(res.data)) {
-	// 			$store.commit("loadCurrentUser", res.data);
-	// 			localStorage.setItem("userToken", res.data.accessToken);
-	// 			account.value = "";
-	// 			password.value = "";
-	// 			$router.push({ path: "/" });
-	// 		}
-	// 	})
-	// 	.catch(error => {
-	// 		ElMessage({
-	// 			message: error.message,
-	// 			type: "error"
-	// 		});
-	// 	});
+	// // 3.清空 tabs、keepAlive 保留的数据
+	tabsStore.closeMultipleTab();
+	keepAlive.setKeepAliveName();
+	router.push(HOME_URL);
+	ElNotification({
+		title: getTimeState(),
+		message: `欢迎${nowUser.userinfo.roleId === 1 ? "管理员" : "用户"}：${nowUser.userinfo.username} 登录智慧校园`,
+		type: "success",
+		duration: 3000
+	});
 };
 const signIn = () => document.querySelector("#loginAndRegist").classList.remove("right-panel-active");
 const signUp = () => document.querySelector("#loginAndRegist").classList.add("right-panel-active");

@@ -162,7 +162,13 @@
 					>
 						<div style="color: var(--lightGreen); font-size: 20px; font-weight: bold; margin-bottom: 10px">搜索</div>
 						<div style="display: flex">
-							<input class="ais-SearchBox-input" type="text" v-model="articleSearch" placeholder="搜索文章" maxlength="32" />
+							<input
+								class="ais-SearchBox-input"
+								type="text"
+								v-model="articleSearch"
+								placeholder="                            "
+								maxlength="32"
+							/>
 							<!-- 搜索按钮 -->
 							<div class="ais-SearchBox-submit" @click="selectArticle()">
 								<svg style="margin-top: 3.5px; margin-left: 18px" viewBox="0 0 1024 1024" width="20" height="20">
