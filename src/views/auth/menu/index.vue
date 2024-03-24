@@ -374,10 +374,6 @@ const ischangepage = ref(false);
 
 let article = ref(globalStore.article);
 let sortArticle = reactive([[], [], [], [], [], []]) as any;
-// article.value.forEach((item: any) => {
-// 	const { subject } = item;
-// 	sortArticle[subject].push(item);
-// });
 const titleName = ["表白", "吐槽", "知识", "趣玩", "实习兼职", "日常"];
 
 const getArticle = computed(() => globalStore.article);
@@ -390,6 +386,7 @@ watch(
 			const { subject } = item;
 			sortArticle[subject].push(item);
 		});
+		console.log(sortArticle, "sortArticle");
 	},
 	{ immediate: true, deep: true }
 );

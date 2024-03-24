@@ -8,7 +8,8 @@
 		>
 			<!-- 封面 -->
 			<div class="recent-post-item-image">
-				<el-image class="my-el-image" v-once lazy :src="article.photo[0]" fit="cover"> </el-image>
+				<!-- <el-image class="my-el-image" v-once lazy :src="article.photo[0]" fit="cover"> </el-image> -->
+				<img :src="article.photo[0]" class="my-el-image" alt="" />
 			</div>
 			<!-- 内容 -->
 			<div class="recent-post-item-post">
