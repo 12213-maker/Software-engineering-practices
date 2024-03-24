@@ -1,5 +1,5 @@
 <template>
-	<div class="testimonial-container" style="background-color: rgb(176 231 233)">
+	<div class="testimonial-container" :style="{ 'background-color': color }">
 		<div class="progress-bar"></div>
 		<div class="fas fa-quote-right fa-quote"></div>
 		<div class="fas fa-quote-left fa-quote"></div>
@@ -21,9 +21,12 @@ const globalStore = GlobalStore();
 const user = globalStore.user;
 const infoValue = ref(user[0].userinfo);
 let idx = 1;
+const colorList = ["#a0cfff", "#67c23a", "#e6a23c", "#f56c6c", "#909399"];
+const color = ref(colorList[0]);
 
 function updateTestimonial() {
 	infoValue.value = user[idx].userinfo;
+	color.value = colorList[idx];
 	idx++;
 	if (idx > user.length - 1) {
 		idx = 0;

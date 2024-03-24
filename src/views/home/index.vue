@@ -1,7 +1,7 @@
 <template>
 	<div class="dataVisualize-box">
 		<div class="card top-box">
-			<div class="top-title">热门旅游地区</div>
+			<div class="top-title">1</div>
 			<el-tabs v-model="tabActive" class="demo-tabs">
 				<el-tab-pane v-for="item in tab" :key="item.name" :label="item.label" :name="item.name">
 					<div class="top-content">

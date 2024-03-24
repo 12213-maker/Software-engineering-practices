@@ -1,37 +1,227 @@
-// .content-box {
-// 	position: relative;
+/* 放大 */
+@keyframes scale {
+	0% {
+		transform: scale(1);
+	}
 
-// 	// width: 100%;
-// 	// background: url("https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg");
-// 	// background-size: 100% 100%;
-// 	// transform: translateY(-10px);
-// 	// opacity: 0.5;
-// 	// filter: alpha(opacity=60);
-// 	width: 100%;
-// 	height: 100%;
-// 	.background {
-// 		width: 100%;
-// 		height: 100%;
-// 		background: url("https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg");
-// 		filter: alpha(opacity=60);
-// 		background-size: 100% 100%;
-// 		opacity: 0.5;
-// 		transform: translateY(-10px);
-// 	}
-// 	.userinfo {
-// 		position: absolute;
-// 		left: 50%;
+	50% {
+		transform: scale(1.2);
+	}
 
-// 		// background-color: lightblue;
-// 		display: flex;
-// 		flex-direction: column;
-// 		align-items: center;
-// 		justify-content: center;
-// 		transform: translateX(-50%);
+	100% {
+		transform: scale(1);
+	}
+}
 
-// 		// background-color: lightblue;
-// 	}
-// }
+.article-head {
+	height: 40vh;
+	position: relative;
+	overflow: hidden;
+}
+
+.article-image::before {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.15);
+	content: "";
+}
+.articleimg {
+	width: 100%;
+}
+
+.article-info-container {
+	position: absolute;
+	bottom: 15px;
+	left: 20%;
+	color: white;
+}
+
+.article-info-news {
+	position: absolute;
+	bottom: 10px;
+	right: 20%;
+	cursor: pointer;
+	animation: scale 1s ease-in-out infinite;
+}
+
+.article-title {
+	font-size: 28px;
+	margin-bottom: 15px;
+}
+
+.article-info {
+	font-size: 14px;
+	user-select: none;
+}
+
+.article-info i {
+	margin-right: 6px;
+}
+
+.article-info span:not(:last-child) {
+	margin-right: 5px;
+}
+
+.article-container {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 40px 20px;
+}
+
+.article-update-time {
+	color: #797979;
+	font-size: 12px;
+	margin: 20px 0;
+	user-select: none;
+}
+
+blockquote {
+	line-height: 2;
+	border-left: 0.2rem solid blue;
+	padding: 10px 1rem;
+	background-color: #ecf7fe;
+	border-radius: 4px;
+	margin: 0 0 40px 0;
+	user-select: none;
+	color: black;
+}
+
+.article-sort {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 20px;
+}
+
+.article-sort span {
+	padding: 3px 10px;
+	background-color: orange;
+	border-radius: 5px;
+	font-size: 14px;
+	color: white;
+	transition: all 0.3s;
+	margin-right: 25px;
+	cursor: pointer;
+	user-select: none;
+}
+
+.article-sort span:hover {
+	background-color: red;
+}
+
+.article-like {
+	color: red !important;
+}
+
+.article-like-icon {
+	font-size: 60px;
+	cursor: pointer;
+	color: #797979;
+	transition: all 0.5s;
+	border-radius: 50%;
+	margin-bottom: 20px;
+}
+
+.article-like-icon:hover {
+	transform: rotate(360deg);
+}
+
+.process-wrap {
+	margin: 0 0 40px;
+}
+
+.process-wrap hr {
+	position: relative;
+	margin: 10px auto 60px;
+	border: 2px dashed #39c5bb;
+	overflow: visible;
+}
+
+.process-wrap hr:before {
+	position: absolute;
+	top: -14px;
+	left: 5%;
+	color: #39c5bb;
+	content: "❄";
+	font-size: 30px;
+	line-height: 1;
+	transition: all 1s ease-in-out;
+}
+
+.process-wrap hr:hover:before {
+	left: calc(95% - 20px);
+}
+
+.process-wrap >>> .el-collapse-item__header {
+	border-bottom: unset;
+	font-size: 20px;
+	background-color: white;
+	color: var(--lightGreen);
+}
+
+.process-wrap >>> .el-collapse-item__wrap {
+	background-color: white;
+}
+
+.process-wrap .el-collapse {
+	border-top: unset;
+	border-bottom: unset;
+}
+
+.process-wrap >>> .el-collapse-item__wrap {
+	border-bottom: unset;
+}
+
+.password-content {
+	font-size: 13px;
+	color: #595a5a;
+	line-height: 1.5;
+}
+/* 下移 */
+@keyframes slide-bottom {
+	0% {
+		opacity: 0;
+		transform: translateY(20%);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+#toc-button {
+	position: fixed;
+	right: 3vh;
+	bottom: 8vh;
+	animation: slide-bottom 0.5s ease-in-out both;
+	z-index: 100;
+	cursor: pointer;
+	font-size: 23px;
+	width: 30px;
+}
+
+#toc-button:hover {
+	color: orange;
+}
+
+@media screen and (max-width: 700px) {
+	.article-info-container {
+		left: 20px;
+		max-width: 320px;
+	}
+
+	.article-info-news {
+		right: 20px;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	#toc-button {
+		right: 0.5vh;
+	}
+}
+
 .bowenliebiao {
 	.bowenxinxi {
 		height: 280px;

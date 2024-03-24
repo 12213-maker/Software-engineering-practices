@@ -11,7 +11,7 @@
 			<div class="home2024 center">
 				<div class="title">
 					<div class="info">随机推荐</div>
-					<div class="more">查看更多</div>
+					<!-- <div class="more">查看更多</div> -->
 				</div>
 				<Card />
 			</div>
