@@ -1,0 +1,316 @@
+.friend-wrap {
+	background: var(
+			"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e"
+		)
+		center center / cover no-repeat;
+	width: 100vw;
+	height: 100vh;
+}
+
+.friend-box {
+	display: flex;
+	background-color: white;
+	border-radius: 10px;
+	position: absolute;
+	width: 70vw;
+	max-width: 1000px;
+	height: 80vh;
+	top: 50%;
+	left: 50%;
+	transform: translateX(-50%) translateY(-50%);
+	overflow: hidden;
+}
+
+.friend-aside {
+	width: 60px;
+	border-right: 1px solid #eeeeee;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.friend-bode {
+	flex: 1;
+	display: flex;
+}
+
+.body-left {
+	width: 260px;
+	box-shadow: 3px 0 6px #eeeeee;
+}
+
+.body-right {
+	flex: 1;
+	position: relative;
+}
+
+.user-thumb {
+	width: 36px;
+	height: 36px;
+	margin-top: 15px;
+	margin-left: 12px;
+	cursor: pointer;
+}
+
+.friend-chat {
+	margin-top: 25px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.friend-text {
+	font-size: 13px;
+}
+
+.friend-set {
+	text-align: center;
+	margin-bottom: 20px;
+	cursor: pointer;
+}
+
+.im-input {
+	margin: 13px;
+	width: 240px;
+}
+
+.im-user {
+	display: flex;
+	padding: 10px;
+	cursor: pointer;
+	height: 60px;
+	box-sizing: border-box;
+}
+
+.im-user-group {
+	display: flex;
+	padding: 10px;
+	cursor: pointer;
+	height: 65px;
+	box-sizing: border-box;
+}
+
+.im-active,
+.friend-active,
+.im-group {
+	background: var(
+		"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e"
+	);
+}
+
+.im-user-right {
+	flex: 1;
+	margin-left: 20px;
+}
+
+.aside-list {
+	height: calc(100% - 60px);
+}
+
+.im-down {
+	margin-top: 3px;
+	font-size: 12px;
+	color: #797979;
+}
+
+.aside-active {
+	color: blue;
+	font-weight: 800;
+}
+
+.im-friend {
+	margin-left: 20px;
+	align-self: center;
+	font-size: 15px;
+}
+
+.body-left >>> .n-divider .n-divider__title {
+	color: #797979;
+	font-size: 12px;
+	letter-spacing: 2px;
+}
+
+.group-tag {
+	border-radius: 2px;
+	padding: 2px;
+	background: orange;
+	color: white;
+	margin-right: 12px;
+}
+
+.msg-one {
+	margin: 15px 20px;
+	display: flex;
+	align-items: flex-start;
+}
+
+/* 滚动条 */
+.friend-box ::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.friend-box ::-webkit-scrollbar-thumb {
+	border-radius: 5px;
+	background-color: #cacacb;
+}
+
+.sendMsg .n-button {
+	height: 35px;
+	padding: 15px 25px;
+}
+
+.system-date {
+	font-size: 12px;
+	color: #797979;
+	margin-bottom: 5px;
+}
+
+.system-content {
+	background-color: #cfe7ff;
+	border-radius: 4px;
+	max-width: 80%;
+	padding: 5px 10px;
+	line-height: 25px;
+	word-break: break-all;
+	color: black;
+}
+
+.friend-request {
+	background: #f3f3f3;
+	overflow-y: scroll;
+	height: calc(100% - 60px);
+}
+
+.request-status {
+	font-size: 16px;
+	color: #797979;
+	flex: 1;
+	display: flex;
+	justify-content: right;
+	align-items: center;
+}
+
+.friend-label {
+	color: #797979;
+	margin-right: 30px;
+}
+
+.friend-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 65%;
+	padding-top: 50px;
+}
+
+.body-right .n-card.n-card--bordered {
+	border: none;
+}
+
+#outerImg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	background: rgba(0, 0, 0, 0.6);
+	z-index: 10;
+	width: 100%;
+	height: 100%;
+	display: none;
+}
+
+.mobile-right::before {
+	content: "👈";
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	font-size: 40px;
+	color: white;
+	top: 0;
+	left: 0;
+	background: #595a5a;
+	z-index: 100;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+
+.pagination-wrap {
+	display: flex;
+	justify-content: center;
+	height: 35px;
+	margin-top: 15px;
+	margin-bottom: 10px;
+}
+
+.treeHole-wrap {
+	width: 800px;
+	height: calc(100vh - 100px);
+	overflow-y: scroll;
+}
+
+.treeHole-wrap::-webkit-scrollbar-thumb {
+	background-color: #cacacb;
+	border-radius: 5px;
+}
+
+.treeHole-wrap::-webkit-scrollbar {
+	width: 8px;
+	height: 8px;
+}
+
+.weiyan-edit {
+	width: 350px;
+	background-color: white;
+	border-radius: 10px;
+	padding: 20px;
+}
+
+.email-wrap {
+	padding: 20px;
+	background: white;
+	border-radius: 10px;
+	transition: all 1s ease;
+}
+
+.email-title {
+	line-height: 30px;
+	font-size: 24px;
+	margin-bottom: 15px;
+}
+
+@media screen and (max-width: 1200px) {
+	.friend-box {
+		width: 95vw;
+		height: 95vh;
+	}
+}
+
+@media screen and (max-width: 850px) {
+	.friend-box {
+		width: 100vw;
+		height: 100vh;
+		border-radius: unset;
+	}
+
+	.friend-bode {
+		max-width: calc(100vw - 60px);
+	}
+
+	.body-right {
+		max-width: calc(100vw - 60px);
+	}
+
+	.treeHole-wrap {
+		width: calc(100vw - 40px);
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.msg-one {
+		margin: 15px 10px;
+	}
+
+	.friend-model {
+		width: 90% !important;
+	}
+}

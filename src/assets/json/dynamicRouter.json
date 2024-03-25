@@ -160,6 +160,20 @@
 						"isAffix": false,
 						"isKeepAlive": true
 					}
+				},
+				{
+					"path": "/auth/chatroom",
+					"name": "authChat",
+					"component": "/auth/chatroom/index",
+					"meta": {
+						"icon": "Menu",
+						"title": "聊天室",
+						"isLink": "",
+						"isHide": false,
+						"isFull": false,
+						"isAffix": false,
+						"isKeepAlive": true
+					}
 				}
 			]
 		},

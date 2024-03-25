@@ -1,0 +1,112 @@
+.msg-container {
+	background: #f3f3f3;
+	overflow-y: scroll;
+	height: calc(100% - 240px);
+}
+
+.msg-one {
+	margin: 15px 20px;
+	display: flex;
+	align-items: flex-start;
+}
+
+.message {
+	max-width: 50%;
+	padding: 5px 10px;
+	line-height: 25px;
+	word-break: break-all;
+	position: relative;
+	color: black;
+	margin: 0 12px 0 12px;
+}
+
+.message::before {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	border: 3px solid;
+	top: 0;
+}
+
+.message-left .message {
+	background-color: white;
+	border-radius: 0 4px 4px 4px;
+}
+
+.message-left .message::before {
+	left: -6px;
+	border-color: white white transparent transparent;
+}
+
+.message-right {
+	flex-direction: row-reverse;
+}
+
+.message-right .message {
+	background-color: #cfe7ff;
+	border-radius: 4px 0 4px 4px;
+}
+
+.message-right .message::before {
+	right: -6px;
+	border-color: #cfe7ff transparent transparent #cfe7ff;
+}
+
+.msg-date,
+.msg-user {
+	font-size: 12px;
+	color: #797979;
+}
+
+.myEmoji {
+	transition: all 0.5s;
+	margin-right: 15px;
+	cursor: pointer;
+}
+
+.myEmoji:hover {
+	transform: scale(1.2);
+}
+
+.message-content {
+	width: calc(100% - 30px);
+	margin: 0 15px;
+	box-sizing: border-box;
+	height: calc(100% - 100px);
+	display: block;
+	border: none;
+	outline: none;
+	box-shadow: none;
+	resize: none;
+	font-size: 18px;
+}
+
+.message-send {
+	float: right;
+	padding: 10px 30px 15px;
+}
+
+.message-send .n-button {
+	height: 30px;
+	padding: 10px 25px;
+}
+
+.image-list {
+	overflow: auto;
+	max-width: 400px;
+	max-height: 200px;
+	display: flex;
+	flex-flow: wrap;
+	gap: 10px;
+}
+
+@media screen and (max-width: 400px) {
+	.msg-one {
+		margin: 15px 10px;
+	}
+
+	.image-list {
+		max-width: 230px !important;
+	}
+}
