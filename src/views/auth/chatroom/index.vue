@@ -5,10 +5,11 @@
 				<div>
 					<!-- 头像 -->
 					<div>
-						<n-avatar object-fit="cover" @click="changeAvatar(1)" class="user-thumb" :src="currentUser.img" />
+						<!-- <n-avatar object-fit="cover" @click="changeAvatar(1)" class="user-thumb" :src="currentUser.img" /> -->
+						<img object-fit="cover" @click="changeAvatar(1)" class="user-thumb" :src="currentUser.img" />
 					</div>
 					<!-- 聊天 -->
-					<!-- <div id="chat" class="friend-chat aside-active" @click="isActive($event, 'aside-active', 1)">
+					<div id="chat" class="friend-chat aside-active" @click="isActive($event, 'aside-active', 1)">
 						<div>
 							<svg viewBox="0 0 1024 1024" width="24" height="24">
 								<path
@@ -38,9 +39,9 @@
 							</svg>
 						</div>
 						<div class="friend-text">聊天</div>
-					</div> -->
+					</div>
 					<!-- 好友 -->
-					<!-- <div class="friend-chat" @click="isActive($event, 'aside-active', 2)">
+					<div class="friend-chat" @click="isActive($event, 'aside-active', 2)">
 						<div>
 							<svg viewBox="0 0 1024 1024" width="24" height="24">
 								<path
@@ -70,9 +71,9 @@
 							</svg>
 						</div>
 						<div class="friend-text">好友</div>
-					</div> -->
+					</div>
 					<!-- 群聊 -->
-					<!-- <div class="friend-chat" @click="isActive($event, 'aside-active', 3)">
+					<div class="friend-chat" @click="isActive($event, 'aside-active', 3)">
 						<div>
 							<svg viewBox="0 0 1024 1024" width="24" height="24">
 								<path
@@ -99,24 +100,21 @@
 							</svg>
 						</div>
 						<div class="friend-text">群聊</div>
-					</div> -->
+					</div>
 				</div>
 				<div class="friend-set">
 					<!-- 朋友圈 -->
-					<!-- <div
-						@click.stop="openFriendCircle($store.state.currentUser.id, $store.state.currentUser.avatar)"
-						style="margin-bottom: 15px"
-					>
+					<div @click.stop="openFriendCircle(currentUser.id, currentUser.img)" style="margin-bottom: 15px">
 						<svg viewBox="0 0 1024 1024" width="24" height="24">
 							<path
 								d="M512 1024C229.230021 1024 0 794.769979 0 512S229.230021 0 512 0s512 229.230021 512 512-229.230021 512-512 512z m0.42935-800.000537a279.249308 279.249308 0 0 0-32.561912 1.915975c-26.152788 2.948562-51.221468 9.458583-74.787421 18.912872 0 0 194.316344 191.608218 199.490012 198.731137V239.228512c-5.79086-1.964277-11.707304-3.733199-17.67205-5.379757-23.735547-6.361895-48.707623-9.848218-74.467556-9.848218z m202.969895 83.240252c-7.789484-7.760503-15.950356-14.934943-24.378499-21.587723a286.849878 286.849878 0 0 0-66.285216-39.300562s1.429736 272.315304 0 281.01179l145.044126-144.496704a293.183866 293.183866 0 0 0-8.728687-16.21226c-12.300881-21.220629-27.433325-41.288453-45.65065-59.413468z m63.669401 98.298633S586.82499 599.134457 579.626935 604.290952h205.088738c1.970717-5.770465 3.748226-11.667589 5.373317-17.609795 6.40805-23.703346 9.911547-48.510122 9.911547-74.202432 0-10.979556-0.691254-21.810985-1.951397-32.445987a282.689476 282.689476 0 0 0-18.980494-74.49439zM493.867472 625.806759l145.040905 144.497778a287.548646 287.548646 0 0 0 16.293837-8.69434c21.298985-12.20857 41.414038-27.312034 59.65605-45.487497 7.761577-7.739036 14.938164-15.893468 21.642466-24.290482 16.341065-20.537962 29.531774-42.764344 39.439027-66.050147 0 0-273.31891 1.427589-282.072285 0.024688z m-74.417107-45.38982v204.353476a294.790709 294.790709 0 0 0 17.673123 5.356143c23.764528 6.386583 48.686155 9.872906 74.470776 9.872905 10.991363 0 21.862507-0.68696 32.512537-1.914901a286.830558 286.830558 0 0 0 74.788495-18.938633c0.023614 0-194.270189-191.555623-199.444931-198.72899z m-20.411304-85.230289L254.046457 639.682281c2.713493 5.527883 5.647027 10.932327 8.727614 16.235874 12.252579 21.271078 27.409711 41.31314 45.651724 59.46499 7.764797 7.76265 15.950356 14.909182 24.378499 21.566255 20.630273 16.335698 42.892075 29.425509 66.309903 39.297342 0 0-1.479111-272.339992-0.07621-281.060092z m-165.155958-57.744369c-6.384436 23.678658-9.883639 48.511195-9.88364 74.203505 0 10.952721 0.691254 21.808839 1.947103 32.4213 2.959296 26.083019 9.441409 51.063681 19.006256 74.495463 0 0 192.223262-193.597182 199.420243-198.731136H239.258566c-1.97179 5.745778-3.74608 11.665442-5.375463 17.610868z m133.531102-173.947975c-21.346214 12.232184-41.461266 27.338868-59.654976 45.463883-7.837786 7.787338-14.986465 15.941769-21.66608 24.290482-16.368973 20.537962-29.531774 42.789031-39.463715 66.098448 0 0 273.367212-1.449057 282.095899-0.049375L383.705895 254.80104c-5.519296 2.748914-10.967748 5.624486-16.29169 8.694339z"
 								fill="#07C160"
 							></path>
 						</svg>
-					</div> -->
+					</div>
 
 					<!-- 设置 -->
-					<!-- <div @click.stop="changeAside()">
+					<div @click.stop="changeAside()">
 						<svg viewBox="0 0 1024 1024" width="24" height="24">
 							<path
 								d="M767.1296 808.6528c16.8448 0 32.9728 2.816 48.0256 8.0384 20.6848 7.1168 43.52 1.0752 57.1904-15.9744a459.91936 459.91936 0 0 0 70.5024-122.88c7.8336-20.48 1.0752-43.264-15.9744-57.088-49.6128-40.192-65.0752-125.3888-31.3856-185.856a146.8928 146.8928 0 0 1 30.3104-37.9904c16.2304-14.5408 22.1696-37.376 13.9264-57.6a461.27104 461.27104 0 0 0-67.5328-114.9952c-13.6192-16.9984-36.4544-22.9376-57.0368-15.8208a146.3296 146.3296 0 0 1-48.0256 8.0384c-70.144 0-132.352-50.8928-145.2032-118.7328-4.096-21.6064-20.736-38.5536-42.4448-41.8304-22.0672-3.2768-44.6464-5.0176-67.6864-5.0176-21.4528 0-42.5472 1.536-63.232 4.4032-22.3232 3.1232-40.2432 20.48-43.52 42.752-6.912 46.6944-36.0448 118.016-145.7152 118.4256-17.3056 0.0512-33.8944-2.9696-49.3056-8.448-21.0432-7.4752-44.3904-1.4848-58.368 15.9232A462.14656 462.14656 0 0 0 80.4864 348.16c-7.6288 20.0192-2.7648 43.008 13.4656 56.9344 55.5008 47.8208 71.7824 122.88 37.0688 185.1392a146.72896 146.72896 0 0 1-31.6416 39.168c-16.8448 14.7456-23.0912 38.1952-14.5408 58.9312 16.896 41.0112 39.5776 79.0016 66.9696 113.0496 13.9264 17.3056 37.2736 23.1936 58.2144 15.7184 15.4112-5.4784 32-8.4992 49.3056-8.4992 71.2704 0 124.7744 49.408 142.1312 121.2928 4.9664 20.48 21.4016 36.0448 42.24 39.168 22.2208 3.328 44.9536 5.0688 68.096 5.0688 23.3984 0 46.4384-1.792 68.864-5.1712 21.3504-3.2256 38.144-19.456 42.7008-40.5504 14.8992-68.8128 73.1648-119.7568 143.7696-119.7568z"
@@ -127,19 +125,22 @@
 								fill="#FFE37B"
 							></path>
 						</svg>
-					</div> -->
+					</div>
 				</div>
 			</div>
+
+			<!-- 二排 -->
 			<div class="friend-bode" id="body-group">
 				<div class="body-left" v-show="showBodyLeft">
 					<!-- 搜索 -->
-					<!-- <div>
-						<n-input v-model:value="showFriendValue" round placeholder="搜索" class="im-input"></n-input>
-					</div> -->
+					<div>
+						<!-- <n-input v-model:value="showFriendValue" round placeholder="搜索" class="im-input"></n-input> -->
+						<el-input v-model="showFriendValue" round placeholder="搜索" class="im-input" />
+					</div>
 					<!-- 聊天 -->
 					<div class="aside-list" v-show="type === 1">
 						<!-- 系统消息 -->
-						<!-- <div class="im-user im-active" @click="isActive($event, 'im-active', null, 1)">
+						<div class="im-user im-active" @click="isActive($event, 'im-active', null, 1)">
 							<div>
 								<svg viewBox="0 0 1024 1024" width="40" height="40">
 									<path
@@ -160,11 +161,11 @@
 							<div class="im-user-right">
 								<div>系统消息</div>
 							</div>
-						</div> -->
+						</div>
 
 						<div style="overflow-y: scroll; height: calc(100% - 70px)">
 							<!-- 群聊天 -->
-							<!-- <div
+							<div
 								class="im-user im-group-current"
 								v-for="(item, index) in groupChats"
 								:key="index"
@@ -182,10 +183,10 @@
 										{{ groupMessages[item][groupMessages[item].length - 1].content.substr(0, 8) }}
 									</div>
 								</div>
-							</div> -->
+							</div>
 
 							<!-- 聊天 -->
-							<!-- <div
+							<div
 								class="im-user im-user-current"
 								v-for="(item, index) in imChats"
 								:key="index"
@@ -203,13 +204,13 @@
 										{{ imMessages[item][imMessages[item].length - 1].content.substr(0, 8) }}
 									</div>
 								</div>
-							</div> -->
+							</div>
 						</div>
 					</div>
 					<!-- 好友 -->
 					<div class="aside-list" v-show="type === 2">
 						<!-- 添加好友 -->
-						<!-- <div class="im-user friend-active" @click="isActive($event, 'friend-active', null, 3)">
+						<div class="im-user friend-active" @click="isActive($event, 'friend-active', null, 3)">
 							<div>
 								<svg viewBox="0 0 1024 1024" width="40" height="40">
 									<path
@@ -225,14 +226,14 @@
 							</div>
 
 							<div class="im-friend">好友请求</div>
-						</div> -->
+						</div>
 
-						<!-- <div style="margin: 0 30px 0 30px">
+						<div style="margin: 0 30px 0 30px">
 							<n-divider dashed> {{ Object.keys(friends).length }}位联系人 </n-divider>
-						</div> -->
+						</div>
 
 						<!-- 好友列表 -->
-						<!-- <div style="overflow-y: scroll; height: calc(100% - 140px)">
+						<div style="overflow-y: scroll; height: calc(100% - 140px)">
 							<div
 								class="im-user"
 								v-for="(item, index) in Object.values(friends).reverse()"
@@ -253,10 +254,10 @@
 									{{ item.remark }}
 								</div>
 							</div>
-						</div> -->
+						</div>
 					</div>
 					<!-- 群聊 -->
-					<!-- <div class="aside-list" v-show="type === 3">
+					<div class="aside-list" v-show="type === 3">
 						<div style="margin: 0 30px 0 30px">
 							<n-divider dashed> {{ Object.keys(groups).length }}个群聊 </n-divider>
 						</div>
@@ -281,16 +282,16 @@
 								</div>
 							</div>
 						</div>
-					</div> -->
+					</div>
 				</div>
 				<div class="body-right" v-if="subType === 1">
-					<!-- <div style="height: 60px; background-color: var(--maxWhite)">
+					<div style="height: 60px; background-color: var(--maxWhite)">
 						<span style="line-height: 60px; margin-left: 20px; font-size: 18px">系统消息</span>
-					</div> -->
+					</div>
 					<div style="background: var(--midWhite); overflow-y: scroll; height: calc(100% - 60px)">
 						<div class="msg-one" v-for="(item, index) in systemMessages" :key="index">
 							<!-- 图标 -->
-							<!-- <div>
+							<div>
 								<svg viewBox="0 0 1024 1024" width="50" height="50">
 									<path
 										d="M752.768 955.392H257.92c-112.384 0-203.392-91.008-203.392-203.392V257.152C54.528 144.768 145.536 53.76 257.92 53.76h494.848C865.152 53.76 956.16 144.768 956.16 257.152v494.848c0 112.384-91.008 203.392-203.392 203.392z"
@@ -305,16 +306,17 @@
 										fill="#FFFFFF"
 									></path>
 								</svg>
-							</div> -->
+							</div>
 
 							<!-- 内容 -->
-							<!-- <div style="margin-left: 10px">
+							<div style="margin-left: 10px">
 								<div class="system-date">
 									{{ item.createTime }}
 								</div>
 								<div class="system-content">
 									{{ item.content }}
-								</div> -->
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -322,18 +324,18 @@
 
 			<!-- 聊天 -->
 			<!-- <chat
-					class="body-right"
-					v-if="subType === 2 && (!isEmpty(currentChatFriendId) || !isEmpty(currentChatGroupId))"
-					:currentChatFriendId="currentChatFriendId"
-					:currentChatGroupId="currentChatGroupId"
-					:friends="friends"
-					:groups="groups"
-					:imageList="imageList"
-					:imMessages="imMessages"
-					:groupMessages="groupMessages"
-					@sendMsg="sendMsg"
-					@openFriendCircle="openFriendCircle"
-				></chat> -->
+				class="body-right"
+				v-if="subType === 2 && (!isEmpty(currentChatFriendId) || !isEmpty(currentChatGroupId))"
+				:currentChatFriendId="currentChatFriendId"
+				:currentChatGroupId="currentChatGroupId"
+				:friends="friends"
+				:groups="groups"
+				:imageList="imageList"
+				:imMessages="imMessages"
+				:groupMessages="groupMessages"
+				@sendMsg="sendMsg"
+				@openFriendCircle="openFriendCircle"
+			></chat> -->
 			<!-- 
 				<div class="body-right" v-if="subType === 3">
 					<div style="height: 60px; background-color: var(--maxWhite)">
@@ -468,11 +470,11 @@
 
 			<!-- 头像修改弹出框 -->
 			<!-- <n-modal v-model:show="showAvatarDialog">
-					<div style="padding: 40px; background: var(--white); border-radius: 5px; width: 20%">
-						<div style="margin: 0 0 25px; text-align: center; font-size: 18px">上传图片</div>
-						<uploadPicture :prefix="avatarPrefix" @addPicture="submitAvatar" :maxSize="1" :maxNumber="1"></uploadPicture>
-					</div>
-				</n-modal> -->
+				<div style="padding: 40px; background: var(--white); border-radius: 5px; width: 20%">
+					<div style="margin: 0 0 25px; text-align: center; font-size: 18px">上传图片</div>
+					<uploadPicture :prefix="avatarPrefix" @addPicture="submitAvatar" :maxSize="1" :maxNumber="1"></uploadPicture>
+				</div>
+			</n-modal> -->
 
 			<!-- 修改信息 -->
 			<!-- <n-modal :auto-focus="false" v-model:show="changeModal">
@@ -584,10 +586,9 @@
 		</div>
 	</div>
 
-	<!-- <div id="outerImg">
-			<div id="innerImg" style="position: absolute"><img id="bigImg" src="" /> </div>
-		</div> -->
-	<!-- </div> -->
+	<div id="outerImg">
+		<div id="innerImg" style="position: absolute"><img id="bigImg" src="" /></div>
+	</div>
 </template>
 
 <script setup lang="ts" name="authMenu">
@@ -595,33 +596,54 @@ import { GlobalStore } from "@/stores";
 import { ref } from "vue";
 
 const globalStore = GlobalStore();
-const currentUser = globalStore.user;
+const currentUser = globalStore.userInformation;
+console.log(currentUser, "currentUser");
 
 const showBodyLeft = ref(true);
 const type = ref(1);
 const subType = ref(1);
-const systemMessages = ref([]);
-// const currentChatFriendId = ref(0);
-// const friends = ref({});
-// const groups = ref({});
+const showFriendValue = ref("");
+// const avatarPrefix = ref("");
+const systemMessages = ref([
+	{ createTime: "2024.3.20 08:44", content: "欢迎大家光临" },
+	{ createTime: "2024.3.21 11:25", content: "系统提示，关注眼部健康" }
+]);
+const groups = ref({});
+const groupMessageBadge = ref({});
+//好友列表
+const friends = ref({});
+//群聊天列表
+const groupChats = ref([]);
+//聊天列表
+const imChats = ref([]);
+//消息列表
+const imMessages = ref({});
 
 const changeAvatar = (value: any) => {
 	console.log(value);
 };
+const openFriendCircle = (value: any, value1: any) => {
+	console.log(value, value1);
+};
+const changeAside = () => {};
+// const submitAvatar = () => {};
+const isActive = (value: any, a: any, b: any) => {
+	console.log(value, a, b);
+};
 
-// const isEmpty = (value: any) => {
-// 	if (
-// 		typeof value === "undefined" ||
-// 		value === null ||
-// 		(typeof value === "string" && value.trim() === "") ||
-// 		(Array.prototype.isPrototypeOf(value) && value.length === 0) ||
-// 		(Object.prototype.isPrototypeOf(value) && Object.keys(value).length === 0)
-// 	) {
-// 		return true;
-// 	} else {
-// 		return false;
-// 	}
-// };
+const isEmpty = (value: any) => {
+	if (
+		typeof value === "undefined" ||
+		value === null ||
+		(typeof value === "string" && value.trim() === "") ||
+		(Array.prototype.isPrototypeOf(value) && value.length === 0) ||
+		(Object.prototype.isPrototypeOf(value) && Object.keys(value).length === 0)
+	) {
+		return true;
+	} else {
+		return false;
+	}
+};
 </script>
 
 <style scoped lang="scss">
