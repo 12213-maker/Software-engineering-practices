@@ -131,14 +131,14 @@
 
 			<!-- 二排 -->
 			<div class="friend-bode" id="body-group">
-				<div class="body-left" v-show="showBodyLeft">
+				<div class="body-left" v-show="imUtilData.showBodyLeft">
 					<!-- 搜索 -->
 					<div>
-						<!-- <n-input v-model:value="showFriendValue" round placeholder="搜索" class="im-input"></n-input> -->
-						<el-input v-model="showFriendValue" round placeholder="搜索" class="im-input" />
+						<!-- <n-input v-model:value="data.showFriendValue" round placeholder="搜索" class="im-input"></n-input> -->
+						<el-input v-model="data.showFriendValue" round placeholder="搜索" class="im-input" />
 					</div>
 					<!-- 聊天 -->
-					<div class="aside-list" v-show="type === 1">
+					<div class="aside-list" v-show="data.type === 1">
 						<!-- 系统消息 -->
 						<div class="im-user im-active" @click="isActive($event, 'im-active', null, 1)">
 							<div>
@@ -167,20 +167,21 @@
 							<!-- 群聊天 -->
 							<div
 								class="im-user im-group-current"
-								v-for="(item, index) in groupChats"
+								v-for="(item, index) in data.groupChats"
 								:key="index"
-								v-show="groups[item].groupName.includes(showFriendValue) || isEmpty(showFriendValue)"
+								v-show="groupData.groups[item].groupName.includes(data.showFriendValue) || isEmpty(data.showFriendValue)"
 								@click="isActive($event, 'im-active', null, 2, item, 1)"
 							>
 								<div>
-									<n-badge :value="groupMessageBadge[item]" :max="99">
-										<n-avatar object-fit="cover" :size="40" :src="groups[item].avatar" />
-									</n-badge>
+									<!-- <n-badge :value="data.groupMessageBadge[item]" :max="99">
+										<n-avatar object-fit="cover" :size="40" :src="groupData.groups[item].avatar" />
+									</n-badge> -->
+									<img :src="groupData.groups[item].avatar" style="width: 40px; height: 40px" alt="" />
 								</div>
 								<div class="im-user-right">
-									<div>{{ groups[item].groupName }}</div>
-									<div class="im-down" v-if="!isEmpty(groupMessages[item])">
-										{{ groupMessages[item][groupMessages[item].length - 1].content.substr(0, 8) }}
+									<div>{{ groupData.groups[item].groupName }}</div>
+									<div class="im-down" v-if="!isEmpty(data.groupMessages[item])">
+										{{ data.groupMessages[item][data.groupMessages[item].length - 1].content.substr(0, 8) }}
 									</div>
 								</div>
 							</div>
@@ -188,27 +189,28 @@
 							<!-- 聊天 -->
 							<div
 								class="im-user im-user-current"
-								v-for="(item, index) in imChats"
+								v-for="(item, index) in data.imChats"
 								:key="index"
-								v-show="friends[item].remark.includes(showFriendValue) || isEmpty(showFriendValue)"
+								v-show="friendData.friends[item].remark.includes(data.showFriendValue) || isEmpty(data.showFriendValue)"
 								@click="isActive($event, 'im-active', null, 2, item, 2)"
 							>
 								<div>
-									<n-badge :value="imMessageBadge[item]" :max="99">
-										<n-avatar object-fit="cover" :size="40" :src="friends[item].avatar" />
-									</n-badge>
+									<!-- <n-badge :value="data.imMessageBadge[item]" :max="99">
+										<n-avatar object-fit="cover" :size="40" :src="friendData.friends[item].avatar" />
+									</n-badge> -->
+									<img :src="friendData.friends[item].avatar" style="width: 40px; height: 40px" alt="" />
 								</div>
 								<div class="im-user-right">
-									<div>{{ friends[item].remark }}</div>
-									<div class="im-down" v-if="!isEmpty(imMessages[item])">
-										{{ imMessages[item][imMessages[item].length - 1].content.substr(0, 8) }}
+									<div>{{ friendData.friends[item].remark }}</div>
+									<div class="im-down" v-if="!isEmpty(data.imMessages[item])">
+										{{ data.imMessages[item][data.imMessages[item].length - 1].content.substr(0, 8) }}
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- 好友 -->
-					<div class="aside-list" v-show="type === 2">
+					<div class="aside-list" v-show="data.type === 2">
 						<!-- 添加好友 -->
 						<div class="im-user friend-active" @click="isActive($event, 'friend-active', null, 3)">
 							<div>
@@ -229,16 +231,16 @@
 						</div>
 
 						<div style="margin: 0 30px 0 30px">
-							<n-divider dashed> {{ Object.keys(friends).length }}位联系人 </n-divider>
+							<n-divider dashed> {{ Object.keys(friendData.friends).length }}位联系人 </n-divider>
 						</div>
 
 						<!-- 好友列表 -->
 						<div style="overflow-y: scroll; height: calc(100% - 140px)">
 							<div
 								class="im-user"
-								v-for="(item, index) in Object.values(friends).reverse()"
+								v-for="(item, index) in Object.values(friendData.friends).reverse()"
 								:key="index"
-								v-show="item.remark.includes(showFriendValue) || isEmpty(showFriendValue)"
+								v-show="item.remark.includes(data.showFriendValue) || isEmpty(data.showFriendValue)"
 								@click="isActive($event, 'friend-active', null, 4, item)"
 							>
 								<div>
@@ -257,16 +259,16 @@
 						</div>
 					</div>
 					<!-- 群聊 -->
-					<div class="aside-list" v-show="type === 3">
+					<div class="aside-list" v-show="data.type === 3">
 						<div style="margin: 0 30px 0 30px">
-							<n-divider dashed> {{ Object.keys(groups).length }}个群聊 </n-divider>
+							<n-divider dashed> {{ Object.keys(groupData.groups).length }}个群聊 </n-divider>
 						</div>
 
 						<div
 							class="im-user-group"
-							v-for="(item, index) in Object.values(groups).reverse()"
+							v-for="(item, index) in Object.values(groupData.groups).reverse()"
 							:key="index"
-							v-show="item.groupName.includes(showFriendValue) || isEmpty(showFriendValue)"
+							v-show="item.groupName.includes(data.showFriendValue) || isEmpty(data.showFriendValue)"
 							@click="isActive($event, 'im-group', null, 5, item)"
 						>
 							<div>
@@ -284,13 +286,13 @@
 						</div>
 					</div>
 				</div>
-				<div class="body-right" v-if="subType === 1">
+				<!-- 系统消息 -->
+				<div class="body-right" v-if="data.subType === 1">
 					<div style="height: 60px; background-color: var(--maxWhite)">
 						<span style="line-height: 60px; margin-left: 20px; font-size: 18px">系统消息</span>
 					</div>
 					<div style="background: var(--midWhite); overflow-y: scroll; height: calc(100% - 60px)">
-						<div class="msg-one" v-for="(item, index) in systemMessages" :key="index">
-							<!-- 图标 -->
+						<div class="msg-one" v-for="(item, index) in imUtilData.systemMessages" :key="index">
 							<div>
 								<svg viewBox="0 0 1024 1024" width="50" height="50">
 									<path
@@ -308,7 +310,6 @@
 								</svg>
 							</div>
 
-							<!-- 内容 -->
 							<div style="margin-left: 10px">
 								<div class="system-date">
 									{{ item.createTime }}
@@ -323,144 +324,148 @@
 			</div>
 
 			<!-- 聊天 -->
-			<!-- <chat
+			<Chat
 				class="body-right"
-				v-if="subType === 2 && (!isEmpty(currentChatFriendId) || !isEmpty(currentChatGroupId))"
-				:currentChatFriendId="currentChatFriendId"
-				:currentChatGroupId="currentChatGroupId"
-				:friends="friends"
-				:groups="groups"
-				:imageList="imageList"
-				:imMessages="imMessages"
-				:groupMessages="groupMessages"
+				v-if="data.subType === 2 && (!isEmpty(data.currentChatFriendId) || !isEmpty(data.currentChatGroupId))"
+				:currentChatFriendId="data.currentChatFriendId"
+				:currentChatGroupId="data.currentChatGroupId"
+				:friends="friendData.friends"
+				:groups="groupData.groups"
+				:imageList="imUtilData.imageList"
+				:imMessages="data.imMessages"
+				:groupMessages="data.groupMessages"
 				@sendMsg="sendMsg"
 				@openFriendCircle="openFriendCircle"
-			></chat> -->
-			<!-- 
-				<div class="body-right" v-if="subType === 3">
-					<div style="height: 60px; background-color: var(--maxWhite)">
-						<span style="line-height: 60px; margin-left: 20px; font-size: 18px"> 好友请求 </span>
+			></Chat>
+
+			<div class="body-right" v-if="data.subType === 3">
+				<div style="height: 60px; background-color: var(--maxWhite)">
+					<span style="line-height: 60px; margin-left: 20px; font-size: 18px"> 好友请求 </span>
+				</div>
+				<div class="friend-request">
+					<div style="margin: 20px; display: flex" v-for="(item, index) in friendData.friendRequests" :key="index">
+						<div>
+							<n-avatar object-fit="cover" :size="50" :src="item.avatar" />
+						</div>
+
+						<div style="display: flex; flex: 1">
+							<div style="margin-left: 10px">
+								<div style="font-size: 16px; margin-bottom: 4px">
+									{{ item.username }}
+								</div>
+								<div style="font-size: 12px; color: var(--greyFont)">
+									{{ item.remark }}&nbsp;&nbsp;|&nbsp;&nbsp;{{ item.createTime }}
+								</div>
+							</div>
+							<div class="request-status">
+								<n-button
+									@click="changeFriendStatus(item.friendId, 1, index)"
+									size="small"
+									type="primary"
+									style="margin-right: 10px"
+								>
+									通过
+								</n-button>
+								<n-button @click="changeFriendStatus(item.friendId, -1, index)" size="small" type="error"> 拒绝 </n-button>
+							</div>
+						</div>
 					</div>
-					<div class="friend-request">
-						<div style="margin: 20px; display: flex" v-for="(item, index) in friendRequests" :key="index">
+				</div>
+			</div>
+
+			<div class="body-right" v-if="data.subType === 4 && !isEmpty(friendData.currentFriendId)">
+				<div style="height: 60px; background-color: var(--maxWhite)">
+					<span style="line-height: 60px; margin-left: 20px; font-size: 18px">
+						{{ friendData.friends[friendData.currentFriendId].remark }}
+					</span>
+				</div>
+				<div style="background: var(--midWhite); height: calc(100% - 60px)">
+					<div class="myCenter">
+						<div class="friend-info">
+							<div style="display: flex; align-items: center">
+								<n-avatar object-fit="cover" :size="60" :src="friendData.friends[friendData.currentFriendId].avatar" />
+
+								<span style="margin: 0 5px 0 15px; font-size: 16px">{{
+									friendData.friends[friendData.currentFriendId].remark
+								}}</span>
+								<span style="cursor: pointer; margin-top: 6px" @click="changeDataType(1)">
+									<svg viewBox="0 0 1024 1024" width="20" height="20">
+										<path
+											d="M929.909189 827.019236H93.990821c-16.598379 0-29.997071 13.398692-29.99707 29.997071s13.398692 29.997071 29.99707 29.997071h835.918368c16.598379 0 29.997071-13.398692 29.99707-29.997071 0-16.498389-13.398692-29.997071-29.99707-29.997071z"
+											fill="#FF6600"
+											opacity=".502"
+										></path>
+										<path
+											d="M705.931061 198.080656c3.099697 0 8.999121 0.799922 14.098624 5.899424l28.297236 28.297237c5.099502 5.099502 5.899424 10.998926 5.899424 14.098623 0 3.099697-0.799922 8.999121-5.899424 14.098623L392.161703 616.739772l-86.991505 28.997168 27.597305-82.791915 358.964945-358.964945c5.099502-5.199492 11.098916-5.899424 14.198613-5.899424m0-59.994141c-20.497998 0-40.896006 7.799238-56.594473 23.397715L281.672493 529.148325l-0.699932-0.699931-70.693096 212.079289 212.079289-70.693097 0.699932 0.699932 367.664095-367.664095c31.196953-31.196953 31.196953-81.892003 0-113.088956l-28.297237-28.297237c-15.598477-15.598477-35.996485-23.397715-56.494483-23.397715z"
+											fill="#FF6600"
+										></path>
+										<path
+											d="M578.626494 230.803461L621.049351 188.381603l141.40619 141.406191-42.421857 42.421857z"
+											fill="#FF6600"
+										></path>
+									</svg>
+								</span>
+							</div>
+
+							<div style="margin-top: 4px; cursor: pointer" @click="removeFriend(friendData.currentFriendId)">
+								<span style="vertical-align: -4px; margin-right: 2px">
+									<svg viewBox="0 0 1024 1024" width="20" height="20">
+										<path
+											d="M920 242.82H768v-75.45C768 128 736.66 96 698 96H326c-38.66 0-70 32-70 71.37v75.45H104c-22.09 0-40 18.26-40 40.79 0 22.52 17.91 40.78 40 40.78h88v532.24c0 39.42 31.34 71.37 70 71.37h500c38.66 0 70-32 70-71.37V324.39h88c22.09 0 40-18.26 40-40.78 0-22.53-17.91-40.79-40-40.79z m-584-24.47c0-22.52 17.91-40.78 40-40.78h272c22.09 0 40 18.26 40 40.78v24.47H336z m416 587.3c0 22.52-17.91 40.78-40 40.78H312c-22.09 0-40-18.26-40-40.78V324.39h480z"
+											fill="#999999"
+										></path>
+										<path
+											d="M360 424a40 40 0 0 0-40 40v240a40 40 0 0 0 80 0V464a40 40 0 0 0-40-40zM512 424a40 40 0 0 0-40 40v240a40 40 0 0 0 80 0V464a40 40 0 0 0-40-40zM624 464v240a40 40 0 0 0 80 0V464a40 40 0 0 0-80 0z"
+											fill="#999999"
+										></path>
+									</svg>
+								</span>
+								<span style="color: var(--greyFont)">删除好友</span>
+							</div>
+						</div>
+					</div>
+
+					<n-divider />
+
+					<div class="myCenter">
+						<div style="width: 65%; font-size: 16px">
+							<div style="margin-bottom: 10px">
+								<span class="friend-label">用户名</span>
+								<span>{{ friendData.friends[friendData.currentFriendId].username }}</span>
+							</div>
+							<div style="margin-bottom: 10px">
+								<span class="friend-label"> 性&nbsp;&nbsp;&nbsp;别 </span>
+								<span>
+									<template v-if="friendData.friends[friendData.currentFriendId].gender === 1"> 男 </template>
+									<template v-else-if="friendData.friends[friendData.currentFriendId].gender === 2"> 女 </template>
+									<template v-else> 薛定谔的猫 </template>
+								</span>
+							</div>
 							<div>
-								<n-avatar object-fit="cover" :size="50" :src="item.avatar" />
-							</div>
-
-							<div style="display: flex; flex: 1">
-								<div style="margin-left: 10px">
-									<div style="font-size: 16px; margin-bottom: 4px">
-										{{ item.username }}
-									</div>
-									<div style="font-size: 12px; color: var(--greyFont)">
-										{{ item.remark }}&nbsp;&nbsp;|&nbsp;&nbsp;{{ item.createTime }}
-									</div>
-								</div>
-								<div class="request-status">
-									<n-button
-										@click="changeFriendStatus(item.friendId, 1, index)"
-										size="small"
-										type="primary"
-										style="margin-right: 10px"
-									>
-										通过
-									</n-button>
-									<n-button @click="changeFriendStatus(item.friendId, -1, index)" size="small" type="error"> 拒绝 </n-button>
-								</div>
+								<span class="friend-label">简&nbsp;&nbsp;&nbsp;介</span>
+								<span>{{
+									isEmpty(friendData.friends[friendData.currentFriendId].introduction)
+										? "暂无简介"
+										: friendData.friends[friendData.currentFriendId].introduction
+								}}</span>
 							</div>
 						</div>
 					</div>
-				</div> -->
 
-			<!-- <div class="body-right" v-if="subType === 4 && !isEmpty(currentFriendId)">
-					<div style="height: 60px; background-color: var(--maxWhite)">
-						<span style="line-height: 60px; margin-left: 20px; font-size: 18px">
-							{{ friends[currentFriendId].remark }}
-						</span>
+					<n-divider />
+
+					<div class="myCenter sendMsg">
+						<n-button @click="sendFriendMessage()" type="info"> 发消息 </n-button>
 					</div>
-					<div style="background: var(--midWhite); height: calc(100% - 60px)">
-						<div class="myCenter">
-							<div class="friend-info">
-								<div style="display: flex; align-items: center">
-									<n-avatar object-fit="cover" :size="60" :src="friends[currentFriendId].avatar" />
-
-									<span style="margin: 0 5px 0 15px; font-size: 16px">{{ friends[currentFriendId].remark }}</span>
-									<span style="cursor: pointer; margin-top: 6px" @click="changeDataType(1)">
-										<svg viewBox="0 0 1024 1024" width="20" height="20">
-											<path
-												d="M929.909189 827.019236H93.990821c-16.598379 0-29.997071 13.398692-29.99707 29.997071s13.398692 29.997071 29.99707 29.997071h835.918368c16.598379 0 29.997071-13.398692 29.99707-29.997071 0-16.498389-13.398692-29.997071-29.99707-29.997071z"
-												fill="#FF6600"
-												opacity=".502"
-											></path>
-											<path
-												d="M705.931061 198.080656c3.099697 0 8.999121 0.799922 14.098624 5.899424l28.297236 28.297237c5.099502 5.099502 5.899424 10.998926 5.899424 14.098623 0 3.099697-0.799922 8.999121-5.899424 14.098623L392.161703 616.739772l-86.991505 28.997168 27.597305-82.791915 358.964945-358.964945c5.099502-5.199492 11.098916-5.899424 14.198613-5.899424m0-59.994141c-20.497998 0-40.896006 7.799238-56.594473 23.397715L281.672493 529.148325l-0.699932-0.699931-70.693096 212.079289 212.079289-70.693097 0.699932 0.699932 367.664095-367.664095c31.196953-31.196953 31.196953-81.892003 0-113.088956l-28.297237-28.297237c-15.598477-15.598477-35.996485-23.397715-56.494483-23.397715z"
-												fill="#FF6600"
-											></path>
-											<path
-												d="M578.626494 230.803461L621.049351 188.381603l141.40619 141.406191-42.421857 42.421857z"
-												fill="#FF6600"
-											></path>
-										</svg>
-									</span>
-								</div>
-
-								<div style="margin-top: 4px; cursor: pointer" @click="removeFriend(currentFriendId)">
-									<span style="vertical-align: -4px; margin-right: 2px">
-										<svg viewBox="0 0 1024 1024" width="20" height="20">
-											<path
-												d="M920 242.82H768v-75.45C768 128 736.66 96 698 96H326c-38.66 0-70 32-70 71.37v75.45H104c-22.09 0-40 18.26-40 40.79 0 22.52 17.91 40.78 40 40.78h88v532.24c0 39.42 31.34 71.37 70 71.37h500c38.66 0 70-32 70-71.37V324.39h88c22.09 0 40-18.26 40-40.78 0-22.53-17.91-40.79-40-40.79z m-584-24.47c0-22.52 17.91-40.78 40-40.78h272c22.09 0 40 18.26 40 40.78v24.47H336z m416 587.3c0 22.52-17.91 40.78-40 40.78H312c-22.09 0-40-18.26-40-40.78V324.39h480z"
-												fill="#999999"
-											></path>
-											<path
-												d="M360 424a40 40 0 0 0-40 40v240a40 40 0 0 0 80 0V464a40 40 0 0 0-40-40zM512 424a40 40 0 0 0-40 40v240a40 40 0 0 0 80 0V464a40 40 0 0 0-40-40zM624 464v240a40 40 0 0 0 80 0V464a40 40 0 0 0-80 0z"
-												fill="#999999"
-											></path>
-										</svg>
-									</span>
-									<span style="color: var(--greyFont)">删除好友</span>
-								</div>
-							</div>
-						</div>
-
-						<n-divider />
-
-						<div class="myCenter">
-							<div style="width: 65%; font-size: 16px">
-								<div style="margin-bottom: 10px">
-									<span class="friend-label">用户名</span>
-									<span>{{ friends[currentFriendId].username }}</span>
-								</div>
-								<div style="margin-bottom: 10px">
-									<span class="friend-label"> 性&nbsp;&nbsp;&nbsp;别 </span>
-									<span>
-										<template v-if="friends[currentFriendId].gender === 1"> 男 </template>
-										<template v-else-if="friends[currentFriendId].gender === 2"> 女 </template>
-										<template v-else> 薛定谔的猫 </template>
-									</span>
-								</div>
-								<div>
-									<span class="friend-label">简&nbsp;&nbsp;&nbsp;介</span>
-									<span>{{
-										isEmpty(friends[currentFriendId].introduction) ? "暂无简介" : friends[currentFriendId].introduction
-									}}</span>
-								</div>
-							</div>
-						</div>
-
-						<n-divider />
-
-						<div class="myCenter sendMsg">
-							<n-button @click="sendFriendMessage()" type="info"> 发消息 </n-button>
-						</div>
-					</div>
-				</div> -->
+				</div>
+			</div>
 
 			<!-- 群 -->
 			<!-- <groupInfo
 					class="body-right"
-					v-if="subType === 5 && !isEmpty(currentGroupId)"
-					:groups="groups"
-					:currentGroupId="currentGroupId"
+					v-if="data.subType === 5 && !isEmpty(groupData.currentGroupId)"
+					:groups="groupData.groups"
+					:currentGroupId="groupData.currentGroupId"
 					@exitGroup="exitGroup"
 					@dissolveGroup="dissolveGroup"
 					@changeDataType="changeDataType"
@@ -529,7 +534,7 @@
 							<proButton
 								:info="'加好友'"
 								style="margin-left: 20px"
-								v-else-if="isEmpty(friends[pagination.userId])"
+								v-else-if="isEmpty(friendData.friends[pagination.userId])"
 								@click="addFriend()"
 								:before="$constant.before_color_2"
 								:after="$constant.after_color_2"
@@ -593,41 +598,318 @@
 
 <script setup lang="ts" name="authMenu">
 import { GlobalStore } from "@/stores";
-import { ref } from "vue";
+import { nextTick, reactive } from "vue";
+import Chat from "./chat/index.vue";
 
 const globalStore = GlobalStore();
 const currentUser = globalStore.userInformation;
 console.log(currentUser, "currentUser");
 
-const showBodyLeft = ref(true);
-const type = ref(1);
-const subType = ref(1);
-const showFriendValue = ref("");
+// const showBodyLeft = ref(true);
+//当前聊天信息
+// const currentChatFriendId = ref(null);
+//当前群聊天信息
+// const currentChatGroupId = ref(null);
+
+//表情包
+// const imageList = ref([]);
+
+// const type = ref(1); //1：聊天 ，2：好友 ，3：群聊
+// const subType = ref(1);
 // const avatarPrefix = ref("");
-const systemMessages = ref([
-	{ createTime: "2024.3.20 08:44", content: "欢迎大家光临" },
-	{ createTime: "2024.3.21 11:25", content: "系统提示，关注眼部健康" }
-]);
-const groups = ref({});
-const groupMessageBadge = ref({});
-//好友列表
-const friends = ref({});
+
+// const showFriendValue = ref("");
+// const systemMessages = ref([
+// 	{ createTime: "2024.3.20 08:44", content: "欢迎大家光临" },
+// 	{ createTime: "2024.3.21 11:25", content: "系统提示，关注眼部健康" }
+// ]);
+
+//————————————————————————————
+
+//群消息列表
+// const groupMessages = ref([
+// 	[{ content: "content111" }, { content: "12content" }],
+// 	[{ content: "content111" }, { content: "2222" }]
+// ]);
 //群聊天列表
-const groupChats = ref([]);
+// const groupChats = ref([0, 1]);
+
+// ————————————————————————————
+
+let friendData = reactive({
+	//好友请求
+	friendRequests: [
+		{ username: "username1", remark: "remark1", createTime: "", avatar: "", friendId: "friendId1" },
+		{ username: "username2", remark: "remark2", createTime: "", avatar: "", friendId: "friendId2" },
+		{ username: "username3", remark: "remark3", createTime: "", avatar: "", friendId: "friendId3" }
+	],
+	//好友列表
+	friends: [
+		{ remark: "user1", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" },
+		{ remark: "user2", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" },
+		{ remark: "user3", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" }
+	],
+	//当前朋友信息
+	currentFriendId: null
+});
+
+let groupData = reactive({
+	//群组列表
+	groups: [
+		{
+			id: 1,
+			inType: 1,
+			groupName: "group1",
+			masterUserId: 0,
+			groupType: 1,
+			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
+			introduction: "introduce1",
+			notice: "notice1",
+			createTime: "createTime1",
+			masterFlag: false,
+			adminFlag: false
+		},
+		{
+			id: 2,
+			inType: 1,
+			groupName: "group2",
+			masterUserId: 1,
+			groupType: 1,
+			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
+			introduction: "introduce2",
+			notice: "notice2",
+			createTime: "createTime2",
+			masterFlag: false,
+			adminFlag: false
+		}
+	],
+	//当前群信息
+	currentGroupId: null
+});
+
+let data = reactive({
+	//消息列表
+	imMessages: [
+		[{ content: "content111" }, { content: "12content" }],
+		[{ content: "content111" }, { content: "2222" }],
+		[{ content: "3333" }]
+	],
+	//消息标记
+	imMessageBadge: {},
+	//聊天列表
+	imChats: [0, 1, 2],
+	//当前聊天信息
+	currentChatFriendId: null,
+
+	//群消息列表
+	groupMessages: [
+		[{ content: "content111" }, { content: "12content" }],
+		[{ content: "content111" }, { content: "2222" }]
+	],
+	//群消息标记
+	groupMessageBadge: {},
+	//群聊天列表
+	groupChats: [0, 1],
+	//当前群聊天信息
+	currentChatGroupId: null,
+
+	type: 1, //1：聊天 ，2：好友 ，3：群聊
+	subType: 1,
+	showFriendValue: ""
+});
+
+let imUtilData = reactive({
+	//系统消息
+	systemMessages: [
+		{ createTime: "2024.3.20 08:44", content: "欢迎大家光临" },
+		{ createTime: "2024.3.21 11:25", content: "系统提示，关注眼部健康" }
+	],
+	showBodyLeft: true,
+	//表情包
+	imageList: []
+});
+
+// 群
+// const groups = ref([
+// 	{
+// 		id: 1,
+// 		inType: 1,
+// 		groupName: "group1",
+// 		masterUserId: 0,
+// 		groupType: 1,
+// 		avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
+// 		introduction: "introduce1",
+// 		notice: "notice1",
+// 		createTime: "createTime1",
+// 		masterFlag: false,
+// 		adminFlag: false
+// 	},
+// 	{
+// 		id: 2,
+// 		inType: 1,
+// 		groupName: "group2",
+// 		masterUserId: 1,
+// 		groupType: 1,
+// 		avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
+// 		introduction: "introduce2",
+// 		notice: "notice2",
+// 		createTime: "createTime2",
+// 		masterFlag: false,
+// 		adminFlag: false
+// 	}
+// ]);
+
+// //当前朋友信息
+// const currentFriendId = ref(null);
+// //好友列表
+// const friendData.friends = ref([
+// 	{ remark: "user1", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" },
+// 	{ remark: "user2", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" },
+// 	{ remark: "user3", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" }
+// ]);
+// //好友请求
+// const friendRequests = ref([
+// 	{ username: "username1", remark: "remark1", createTime: "", avatar: "", friendId: "friendId1" },
+// 	{ username: "username2", remark: "remark2", createTime: "", avatar: "", friendId: "friendId2" },
+// 	{ username: "username3", remark: "remark3", createTime: "", avatar: "", friendId: "friendId3" }
+// ]);
+
+// const groupMessageBadge = ref({});
+
 //聊天列表
-const imChats = ref([]);
+// const imChats = ref([0, 1, 2]);
 //消息列表
-const imMessages = ref({});
+// const imMessages = ref([
+// 	[{ content: "content111" }, { content: "12content" }],
+// 	[{ content: "content111" }, { content: "2222" }],
+// 	[{ content: "3333" }]
+// ]);
 
 const changeAvatar = (value: any) => {
+	console.log(value);
+};
+const removeFriend = (value: any) => {
 	console.log(value);
 };
 const openFriendCircle = (value: any, value1: any) => {
 	console.log(value, value1);
 };
 const changeAside = () => {};
+const sendFriendMessage = () => {};
+const sendMsg = () => {};
 // const submitAvatar = () => {};
-const isActive = (value: any, a: any, b: any) => {
+const isActive = (e, className, type, subType, current, imType) => {
+	console.log(e, className, type, subType, current, imType, "isActive");
+
+	if (!isEmpty(type)) {
+		data.type = type;
+		let actives = ["im-active", "friend-active", "im-group"];
+		for (let activeClass of actives) {
+			for (let tab of document.getElementsByClassName(activeClass)) {
+				tab.classList.remove(activeClass);
+			}
+		}
+	}
+	if (!isEmpty(subType)) {
+		data.subType = subType;
+		if (subType === 4 && !isEmpty(current)) {
+			friendData.currentFriendId = current.friendId;
+		}
+		if (subType === 5 && !isEmpty(current)) {
+			groupData.currentGroupId = current.id;
+		}
+
+		if (subType === 2 && !isEmpty(current) && !isEmpty(imType)) {
+			if (imType === 1) {
+				data.currentChatFriendId = null;
+				data.currentChatGroupId = current;
+				data.groupMessageBadge[current] = 0;
+			} else if (imType === 2) {
+				data.currentChatGroupId = null;
+				data.currentChatFriendId = current;
+				data.imMessageBadge[current] = 0;
+			}
+		}
+		nextTick(() => {
+			let msgContainer = document.getElementsByClassName("msg-container");
+			if (msgContainer && msgContainer.length > 0) {
+				msgContainer[0].scrollTop = msgContainer[0].scrollHeight;
+			}
+			// imgShow();
+			mobileRight();
+			hiddenBodyLeft();
+		});
+	}
+};
+function hiddenBodyLeft() {
+	if (mobile()) {
+		$(".body-right").click(function () {
+			imUtilData.showBodyLeft = false;
+			mobileRight();
+		});
+	}
+}
+function mobileRight() {
+	if (imUtilData.showBodyLeft && mobile()) {
+		$(".body-right").addClass("mobile-right");
+	} else if (!imUtilData.showBodyLeft && mobile()) {
+		$(".body-right").removeClass("mobile-right");
+	}
+}
+function mobile() {
+	let flag = navigator.userAgent.match(
+		/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i
+	);
+	return flag && flag.length && flag.length > 0;
+}
+// const imgShow = () => {
+// 	$(".message img").click(function () {
+// 		let src = $(this).attr("src");
+// 		$("#bigImg").attr("src", src);
+
+// 		/** 获取当前点击图片的真实大小，并显示弹出层及大图 */
+// 		$("<img/>")
+// 			.attr("src", src)
+// 			.load(function () {
+// 				let windowW = $(window).width(); //获取当前窗口宽度
+// 				let windowH = $(window).height(); //获取当前窗口高度
+// 				let realWidth = this.width; //获取图片真实宽度
+// 				let realHeight = this.height; //获取图片真实高度
+// 				let imgWidth, imgHeight;
+// 				let scale = 0.8; //缩放尺寸，当图片真实宽度和高度大于窗口宽度和高度时进行缩放
+
+// 				if (realHeight > windowH * scale) {
+// 					//判断图片高度
+// 					imgHeight = windowH * scale; //如大于窗口高度，图片高度进行缩放
+// 					imgWidth = (imgHeight / realHeight) * realWidth; //等比例缩放宽度
+// 					if (imgWidth > windowW * scale) {
+// 						//如宽度仍大于窗口宽度
+// 						imgWidth = windowW * scale; //再对宽度进行缩放
+// 					}
+// 				} else if (realWidth > windowW * scale) {
+// 					//如图片高度合适，判断图片宽度
+// 					imgWidth = windowW * scale; //如大于窗口宽度，图片宽度进行缩放
+// 					imgHeight = (imgWidth / realWidth) * realHeight; //等比例缩放高度
+// 				} else {
+// 					//如果图片真实高度和宽度都符合要求，高宽不变
+// 					imgWidth = realWidth;
+// 					imgHeight = realHeight;
+// 				}
+// 				$("#bigImg").css("width", imgWidth); //以最终的宽度对图片缩放
+
+// 				let w = (windowW - imgWidth) / 2; //计算图片与窗口左边距
+// 				let h = (windowH - imgHeight) / 2; //计算图片与窗口上边距
+// 				$("#innerImg").css({ top: h, left: w }); //设置top和left属性
+// 				$("#outerImg").fadeIn("fast"); //淡入显示
+// 			});
+
+// 		$("#outerImg").click(function () {
+// 			//再次点击淡出消失弹出层
+// 			$(this).fadeOut("fast");
+// 		});
+// 	});
+// };
+const changeFriendStatus = (value: any, a: any, b: any) => {
 	console.log(value, a, b);
 };
 
