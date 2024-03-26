@@ -1,0 +1,225 @@
+.content-box {
+  /* position: relative; */
+}
+
+.content-box .backgroundtrue {
+  position: absolute;
+  width: 100%;
+  background-size: 100% 100%;
+  -webkit-transform: translateY(-10px);
+          transform: translateY(-10px);
+}
+
+.content-box .body {
+  position: relative;
+  top: -40px;
+  z-index: 999;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 100vw;
+  padding: 20px 0;
+  padding-top: 50px;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.content-box .body .left {
+  width: 50%;
+  margin-right: 20px;
+  -webkit-transform: translate(22%);
+          transform: translate(22%);
+}
+
+.content-box .body .left .comment {
+  padding: 20px;
+  padding-left: 120px;
+  margin-bottom: 20px;
+  color: #4f4f4f;
+  cursor: pointer;
+  background-color: white;
+  border-radius: 10px;
+}
+
+.content-box .body .left .comment .avatar {
+  position: relative;
+  left: -60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.content-box .body .left .comment .avatar .ipschool {
+  position: absolute;
+  right: -60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.content-box .body .left .comment .avatar .avatarimage1 {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.content-box .body .left .comment .avatar .avatarimage1 img {
+  width: 100%;
+}
+
+.content-box .body .left .comment .avatar .avatarimage {
+  overflow: hidden;
+}
+
+.content-box .body .left .comment .avatar .username {
+  margin-right: 20px;
+  font-size: 18px;
+}
+
+.content-box .body .left .comment .avatar .score {
+  color: #f56c6c;
+}
+
+.content-box .body .left .comment .usercomment {
+  padding: 20px 0;
+  font-size: 17px;
+  color: #4f4f4f;
+}
+
+.content-box .body .left .comment .imageOter {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100px;
+  height: 100px;
+}
+
+.content-box .body .left .comment .imageOter .image {
+  width: 100%;
+  margin: 0 3px;
+}
+
+.content-box .body .left .comment .timecontanerall {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.content-box .body .left .comment .timecontanerall .timecontaner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.content-box .body .left .comment .timecontanerall .timecontaner .time {
+  display: block;
+  margin-top: 5px;
+  margin-right: 30px;
+}
+
+.content-box .body .right {
+  position: absolute;
+  top: 50px;
+  left: 10%;
+  width: 20%;
+}
+
+.content-box .body .right .user-image {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+}
+
+.content-box .body .right .selfinformation {
+  margin-bottom: 15px;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.content-box .body .right .selfinformation .avatar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-bottom: 10px;
+}
+
+.content-box .body .right .selfinformation .username {
+  font-size: 21px;
+  text-align: center;
+}
+
+.content-box .body .right .selfinformation .desx {
+  height: 40px;
+  padding-top: 10px;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+.content-box .body .right .selfinformation .button {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.content-box .body .right .notice {
+  margin-bottom: 15px;
+  overflow: hidden;
+  font-size: 18px;
+  border-radius: 15px;
+}
+
+.content-box .body .right .notice .noticeinfo {
+  padding-top: 10px;
+  font-size: 13px;
+}
+
+.content-box .body .right .notice .switchschool {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.content-box .body .right .tag {
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.content-box .body .right .tag .ml-2 {
+  margin: 7px 4px;
+  cursor: pointer;
+}
+/*# sourceMappingURL=index.css.map */

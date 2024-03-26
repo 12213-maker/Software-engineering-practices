@@ -1,0 +1,27 @@
+.homeContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.homeContainer .left {
+  width: 25%;
+  background-color: red;
+}
+
+.homeContainer .center {
+  width: 50%;
+  background-color: black;
+}
+
+.homeContainer .right {
+  width: 25%;
+  background-color: blue;
+}
+/*# sourceMappingURL=index.css.map */

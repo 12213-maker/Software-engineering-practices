@@ -1,0 +1,51 @@
+.campus-side {
+  width: 100%;
+  padding-top: 5px;
+  margin-left: 8px;
+}
+
+.campus-side-card .con {
+  position: relative;
+  height: 40px;
+  padding: 0 20px 0 24px;
+  margin-bottom: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.wbpro-side-tit {
+  height: 40px;
+  padding: 0 18px;
+}
+
+.campus-side-title {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.side-rank-num {
+  position: absolute;
+  left: 0;
+  width: 20px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ff8200;
+  text-align: center;
+}
+
+.side-f12 {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.info {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  white-space: nowrap;
+}
+/*# sourceMappingURL=index.css.map */

@@ -603,38 +603,7 @@ import Chat from "./chat/index.vue";
 
 const globalStore = GlobalStore();
 const currentUser = globalStore.userInformation;
-console.log(currentUser, "currentUser");
-
-// const showBodyLeft = ref(true);
-//当前聊天信息
-// const currentChatFriendId = ref(null);
-//当前群聊天信息
-// const currentChatGroupId = ref(null);
-
-//表情包
-// const imageList = ref([]);
-
-// const type = ref(1); //1：聊天 ，2：好友 ，3：群聊
-// const subType = ref(1);
-// const avatarPrefix = ref("");
-
-// const showFriendValue = ref("");
-// const systemMessages = ref([
-// 	{ createTime: "2024.3.20 08:44", content: "欢迎大家光临" },
-// 	{ createTime: "2024.3.21 11:25", content: "系统提示，关注眼部健康" }
-// ]);
-
-//————————————————————————————
-
-//群消息列表
-// const groupMessages = ref([
-// 	[{ content: "content111" }, { content: "12content" }],
-// 	[{ content: "content111" }, { content: "2222" }]
-// ]);
-//群聊天列表
-// const groupChats = ref([0, 1]);
-
-// ————————————————————————————
+// const user = globalStore.user;
 
 let friendData = reactive({
 	//好友请求
@@ -690,9 +659,61 @@ let groupData = reactive({
 let data = reactive({
 	//消息列表
 	imMessages: [
-		[{ content: "content111" }, { content: "12content" }],
-		[{ content: "content111" }, { content: "2222" }],
-		[{ content: "3333" }]
+		[
+			{
+				content: "content111",
+				fromId: 1,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26"
+			},
+			{
+				content: "12content",
+				fromId: 2,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26"
+			}
+		],
+		[
+			{
+				content: "content111",
+				fromId: 2,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26"
+			},
+			{
+				content: "2222",
+				fromId: 1,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26"
+			}
+		],
+		[
+			{
+				content: "3333",
+				fromId: 0,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26"
+			},
+			{
+				content: "content111",
+				fromId: 2,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26"
+			},
+			{
+				content: "mushrrom",
+				fromId: 0,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26"
+			}
+		]
 	],
 	//消息标记
 	imMessageBadge: {},
@@ -703,8 +724,50 @@ let data = reactive({
 
 	//群消息列表
 	groupMessages: [
-		[{ content: "content111" }, { content: "12content" }],
-		[{ content: "content111" }, { content: "2222" }]
+		[
+			{
+				content: "content111",
+				fromId: 1,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26",
+				username: "lnl"
+			},
+			{
+				content: "content111",
+				fromId: 2,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26",
+				username: "lnl"
+			},
+			{
+				content: "gengyuxinrtenm",
+				fromId: 0,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26",
+				username: "lnl"
+			}
+		],
+		[
+			{
+				content: "content111",
+				fromId: 1,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26",
+				username: "lnl"
+			},
+			{
+				content: "content111",
+				fromId: 2,
+				avatar:
+					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26",
+				username: "lnl"
+			}
+		]
 	],
 	//群消息标记
 	groupMessageBadge: {},
@@ -718,6 +781,12 @@ let data = reactive({
 	showFriendValue: ""
 });
 
+//群消息列表-用户信息
+// const userGroupMessages = data.groupMessages.map((item: any) => {
+// 	const {} = item;
+// });
+// console.log(userGroupMessages, "userGroupMessages");
+
 let imUtilData = reactive({
 	//系统消息
 	systemMessages: [
@@ -728,62 +797,6 @@ let imUtilData = reactive({
 	//表情包
 	imageList: []
 });
-
-// 群
-// const groups = ref([
-// 	{
-// 		id: 1,
-// 		inType: 1,
-// 		groupName: "group1",
-// 		masterUserId: 0,
-// 		groupType: 1,
-// 		avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
-// 		introduction: "introduce1",
-// 		notice: "notice1",
-// 		createTime: "createTime1",
-// 		masterFlag: false,
-// 		adminFlag: false
-// 	},
-// 	{
-// 		id: 2,
-// 		inType: 1,
-// 		groupName: "group2",
-// 		masterUserId: 1,
-// 		groupType: 1,
-// 		avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
-// 		introduction: "introduce2",
-// 		notice: "notice2",
-// 		createTime: "createTime2",
-// 		masterFlag: false,
-// 		adminFlag: false
-// 	}
-// ]);
-
-// //当前朋友信息
-// const currentFriendId = ref(null);
-// //好友列表
-// const friendData.friends = ref([
-// 	{ remark: "user1", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" },
-// 	{ remark: "user2", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" },
-// 	{ remark: "user3", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" }
-// ]);
-// //好友请求
-// const friendRequests = ref([
-// 	{ username: "username1", remark: "remark1", createTime: "", avatar: "", friendId: "friendId1" },
-// 	{ username: "username2", remark: "remark2", createTime: "", avatar: "", friendId: "friendId2" },
-// 	{ username: "username3", remark: "remark3", createTime: "", avatar: "", friendId: "friendId3" }
-// ]);
-
-// const groupMessageBadge = ref({});
-
-//聊天列表
-// const imChats = ref([0, 1, 2]);
-//消息列表
-// const imMessages = ref([
-// 	[{ content: "content111" }, { content: "12content" }],
-// 	[{ content: "content111" }, { content: "2222" }],
-// 	[{ content: "3333" }]
-// ]);
 
 const changeAvatar = (value: any) => {
 	console.log(value);
@@ -796,7 +809,33 @@ const openFriendCircle = (value: any, value1: any) => {
 };
 const changeAside = () => {};
 const sendFriendMessage = () => {};
-const sendMsg = () => {};
+const sendMsg = (val: any) => {
+	//通过messageType判断是个人消息（1）还是群组消息 （2）
+	const value = JSON.parse(val);
+	const { messageType, toId, groupId } = value;
+	// console.log(JSON.parse(value), messageType, "messageType");
+	if (messageType == 1) {
+		console.log("friend-sendMsg", value);
+		data.imMessages[toId].push({ ...value, createTime: getTime() });
+	} else {
+		console.log("group-sendMsg", value);
+		data.groupMessages[groupId].push({ ...value, createTime: getTime() });
+	}
+};
+const getTime = () => {
+	let d = new Date();
+	let str =
+		(d.getMonth() + 1 >= 10 ? +(d.getMonth() + 1) : "0" + (d.getMonth() + 1)) +
+		"-" +
+		(d.getDate() >= 10 ? d.getDate() : "0" + d.getDate()) +
+		" " +
+		(d.getHours() >= 10 ? d.getHours() : "0" + d.getHours()) +
+		":" +
+		(d.getMinutes() >= 10 ? d.getMinutes() : "0" + d.getMinutes()) +
+		":" +
+		(d.getSeconds() >= 10 ? d.getSeconds() : "0" + d.getSeconds());
+	return str;
+};
 // const submitAvatar = () => {};
 const isActive = (e, className, type, subType, current, imType) => {
 	console.log(e, className, type, subType, current, imType, "isActive");
@@ -843,10 +882,10 @@ const isActive = (e, className, type, subType, current, imType) => {
 };
 function hiddenBodyLeft() {
 	if (mobile()) {
-		$(".body-right").click(function () {
-			imUtilData.showBodyLeft = false;
-			mobileRight();
-		});
+		// $(".body-right").click(function () {
+		// 	imUtilData.showBodyLeft = false;
+		// 	mobileRight();
+		// });
 	}
 }
 function mobileRight() {

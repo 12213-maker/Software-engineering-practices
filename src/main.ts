@@ -44,6 +44,9 @@ const app = createApp(App);
 // 	attempt: 2
 // });
 
+// const $ = require("jquery");
+// window.$ = $;
+
 app.config.errorHandler = errorHandler;
 
 // 注册element Icons组件

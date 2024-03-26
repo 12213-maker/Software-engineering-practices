@@ -1,0 +1,31 @@
+.emoji-body {
+	max-width: 400px;
+}
+
+.emoji-item {
+	cursor: pointer;
+	display: inline-block;
+}
+
+.emoji-item:hover {
+	transition: all 0.2s;
+	border-radius: 0.25rem;
+	background: #dddddd;
+}
+
+.emoji {
+	margin: 0.25rem;
+	/* 把此元素放置在父元素的中部 */
+	vertical-align: middle;
+}
+
+.body-enter-active,
+.body-leave-active {
+	transition: all 0.3s;
+}
+
+.body-enter,
+.body-leave-to {
+	opacity: 0;
+	transform: scale(0.5);
+}

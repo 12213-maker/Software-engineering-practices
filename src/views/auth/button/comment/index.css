@@ -1,0 +1,121 @@
+.comment-head {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 40px 0 20px 0;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: var(--themeBackground);
+}
+
+.commentInfo-title {
+  margin-bottom: 20px;
+  color: var(--greyFont);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.commentInfo-detail {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.commentInfo-avatar {
+  border-radius: 5px;
+}
+
+.commentInfo-username {
+  color: var(--orangeRed);
+  font-size: 16px;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.commentInfo-username-small {
+  color: var(--orangeRed);
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.commentInfo-master {
+  color: var(--green);
+  border: 1px solid var(--green);
+  border-radius: 0.2rem;
+  font-size: 12px;
+  padding: 2px 4px;
+  margin-right: 5px;
+}
+
+.commentInfo-other {
+  font-size: 12px;
+  color: var(--greyFont);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.commentInfo-reply {
+  font-size: 12px;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  color: var(--white);
+  background: var(--themeBackground);
+  border-radius: 0.2rem;
+  padding: 3px 6px;
+}
+
+.commentInfo-content {
+  margin: 15px 0 25px;
+  padding: 18px 20px;
+  background: var(--commentContent);
+  border-radius: 12px;
+  color: var(--black);
+  word-break: break-word;
+}
+
+.pagination-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-bottom: 10px;
+}
+
+.pagination {
+  padding: 6px 20px;
+  border: 1px solid var(--lightGray);
+  border-radius: 3rem;
+  color: var(--greyFont);
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: 12px;
+}
+
+.pagination:hover {
+  border: 1px solid var(--themeBackground);
+  color: var(--themeBackground);
+  -webkit-box-shadow: 0 0 5px var(--themeBackground);
+          box-shadow: 0 0 5px var(--themeBackground);
+}
+/*# sourceMappingURL=index.css.map */

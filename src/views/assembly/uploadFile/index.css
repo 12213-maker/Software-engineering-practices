@@ -1,0 +1,55 @@
+.upload {
+  height: auto;
+}
+
+.upload .card {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.upload .card .upload-list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  width: 90%;
+  margin: 10px 0;
+}
+
+.upload .img-box {
+  margin-bottom: 10px;
+}
+
+.upload .form-box {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  width: 100%;
+}
+
+.upload .form-box .card {
+  margin-right: 10px;
+}
+
+.upload .form-box .card:last-child {
+  margin-right: 0;
+}
+
+.upload .form-box .card .el-form {
+  width: 100%;
+}
+/*# sourceMappingURL=index.css.map */

@@ -162,8 +162,6 @@ const options = [
 const clickgivemymessage = async () => {
 	let d = new Date();
 	let str =
-		d.getFullYear() +
-		"-" +
 		(d.getMonth() + 1 >= 10 ? +(d.getMonth() + 1) : "0" + (d.getMonth() + 1)) +
 		"-" +
 		(d.getDate() >= 10 ? d.getDate() : "0" + d.getDate()) +

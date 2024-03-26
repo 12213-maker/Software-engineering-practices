@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": ";AAAA,mBAAmB",
+    "sources": [
+        "var.scss"
+    ],
+    "names": [],
+    "file": "var.css"
+}

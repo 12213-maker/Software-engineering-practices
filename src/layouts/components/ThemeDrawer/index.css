@@ -1,0 +1,203 @@
+.divider {
+  margin-top: 15px;
+}
+
+.divider .el-icon {
+  position: relative;
+  top: 2px;
+  right: 5px;
+  font-size: 15px;
+}
+
+.theme-item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin: 14px 0;
+}
+
+.theme-item span {
+  font-size: 14px;
+}
+
+.layout-box {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  padding: 10px 0 0;
+}
+
+.layout-box .layout-item {
+  position: relative;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  width: 95px;
+  height: 67px;
+  padding: 6px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 0 5px 1px var(--el-border-color-lighter);
+          box-shadow: 0 0 5px 1px var(--el-border-color-lighter);
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.layout-box .layout-item .layout-dark {
+  background-color: var(--el-color-primary);
+  border-radius: 3px;
+}
+
+.layout-box .layout-item .layout-light {
+  background-color: var(--el-color-primary-light-5);
+  border-radius: 3px;
+}
+
+.layout-box .layout-item .layout-content {
+  background-color: var(--el-color-primary-light-8);
+  border: 1px dashed var(--el-color-primary);
+  border-radius: 3px;
+}
+
+.layout-box .layout-item .el-icon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  color: var(--el-color-primary);
+  -webkit-transition: all 0.2s;
+  transition: all 0.2s;
+}
+
+.layout-box .layout-item:hover {
+  -webkit-box-shadow: 0 0 5px 1px var(--el-border-color-darker);
+          box-shadow: 0 0 5px 1px var(--el-border-color-darker);
+}
+
+.layout-box .is-active {
+  -webkit-box-shadow: 0 0 0 2px var(--el-color-primary) !important;
+          box-shadow: 0 0 0 2px var(--el-color-primary) !important;
+}
+
+.layout-box .layout-vertical {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.layout-box .layout-vertical .layout-dark {
+  width: 20%;
+}
+
+.layout-box .layout-vertical .layout-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 72%;
+}
+
+.layout-box .layout-vertical .layout-container .layout-light {
+  height: 20%;
+}
+
+.layout-box .layout-vertical .layout-container .layout-content {
+  height: 67%;
+}
+
+.layout-box .layout-classic {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.layout-box .layout-classic .layout-dark {
+  height: 22%;
+}
+
+.layout-box .layout-classic .layout-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 70%;
+}
+
+.layout-box .layout-classic .layout-container .layout-light {
+  width: 20%;
+}
+
+.layout-box .layout-classic .layout-container .layout-content {
+  width: 70%;
+}
+
+.layout-box .layout-transverse {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.layout-box .layout-transverse .layout-dark {
+  height: 20%;
+}
+
+.layout-box .layout-transverse .layout-content {
+  height: 67%;
+}
+
+.layout-box .layout-columns {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.layout-box .layout-columns .layout-dark {
+  width: 14%;
+}
+
+.layout-box .layout-columns .layout-light {
+  width: 17%;
+}
+
+.layout-box .layout-columns .layout-content {
+  width: 55%;
+}
+/*# sourceMappingURL=index.css.map */
