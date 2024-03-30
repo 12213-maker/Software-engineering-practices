@@ -5,7 +5,6 @@
 				<div>
 					<!-- 头像 -->
 					<div>
-						<!-- <n-avatar object-fit="cover" @click="changeAvatar(1)" class="user-thumb" :src="currentUser.img" /> -->
 						<img object-fit="cover" @click="changeAvatar(1)" class="user-thumb" :src="currentUser.img" />
 					</div>
 					<!-- 聊天 -->
@@ -244,11 +243,10 @@
 								@click="isActive($event, 'friend-active', null, 4, item)"
 							>
 								<div>
-									<n-avatar
+									<img
 										object-fit="cover"
-										style="cursor: pointer"
+										style="cursor: pointer; width: 40px; height: 40px"
 										@click.stop="openFriendCircle(item.friendId, item.avatar)"
-										:size="40"
 										:src="item.avatar"
 									/>
 								</div>
@@ -272,7 +270,8 @@
 							@click="isActive($event, 'im-group', null, 5, item)"
 						>
 							<div>
-								<n-avatar object-fit="cover" :size="45" :src="item.avatar" />
+								<!-- <n-avatar object-fit="cover" :size="45" :src="item.avatar" /> -->
+								<img object-fit="cover" style="width: 45px; height: 45px" :src="item.avatar" />
 							</div>
 							<div class="im-user-right">
 								<div>{{ item.groupName }}</div>
@@ -288,10 +287,10 @@
 				</div>
 				<!-- 系统消息 -->
 				<div class="body-right" v-if="data.subType === 1">
-					<div style="height: 60px; background-color: var(--maxWhite)">
+					<div style="height: 60px; background-color: #fcfcfc">
 						<span style="line-height: 60px; margin-left: 20px; font-size: 18px">系统消息</span>
 					</div>
-					<div style="background: var(--midWhite); overflow-y: scroll; height: calc(100% - 60px)">
+					<div style="background: #f3f3f3; overflow-y: scroll; height: calc(100% - 60px)">
 						<div class="msg-one" v-for="(item, index) in imUtilData.systemMessages" :key="index">
 							<div>
 								<svg viewBox="0 0 1024 1024" width="50" height="50">
@@ -339,13 +338,14 @@
 			></Chat>
 
 			<div class="body-right" v-if="data.subType === 3">
-				<div style="height: 60px; background-color: var(--maxWhite)">
+				<div style="height: 60px; background-color: #fcfcfc">
 					<span style="line-height: 60px; margin-left: 20px; font-size: 18px"> 好友请求 </span>
 				</div>
 				<div class="friend-request">
 					<div style="margin: 20px; display: flex" v-for="(item, index) in friendData.friendRequests" :key="index">
 						<div>
-							<n-avatar object-fit="cover" :size="50" :src="item.avatar" />
+							<!-- <n-avatar object-fit="cover" :size="50" :src="item.avatar" /> -->
+							<img object-fit="cover" style="width: 50px; height: 50px" :src="item.avatar" />
 						</div>
 
 						<div style="display: flex; flex: 1">
@@ -353,9 +353,7 @@
 								<div style="font-size: 16px; margin-bottom: 4px">
 									{{ item.username }}
 								</div>
-								<div style="font-size: 12px; color: var(--greyFont)">
-									{{ item.remark }}&nbsp;&nbsp;|&nbsp;&nbsp;{{ item.createTime }}
-								</div>
+								<div style="font-size: 12px; color: #797979">{{ item.remark }}&nbsp;&nbsp;|&nbsp;&nbsp;{{ item.createTime }}</div>
 							</div>
 							<div class="request-status">
 								<n-button
@@ -374,16 +372,20 @@
 			</div>
 
 			<div class="body-right" v-if="data.subType === 4 && !isEmpty(friendData.currentFriendId)">
-				<div style="height: 60px; background-color: var(--maxWhite)">
+				<div style="height: 60px; background-color: #fcfcfc">
 					<span style="line-height: 60px; margin-left: 20px; font-size: 18px">
 						{{ friendData.friends[friendData.currentFriendId].remark }}
 					</span>
 				</div>
-				<div style="background: var(--midWhite); height: calc(100% - 60px)">
+				<div style="background: #f3f3f3; height: calc(100% - 60px)">
 					<div class="myCenter">
 						<div class="friend-info">
 							<div style="display: flex; align-items: center">
-								<n-avatar object-fit="cover" :size="60" :src="friendData.friends[friendData.currentFriendId].avatar" />
+								<img
+									object-fit="cover"
+									style="width: 60px; height: 60px"
+									:src="friendData.friends[friendData.currentFriendId].avatar"
+								/>
 
 								<span style="margin: 0 5px 0 15px; font-size: 16px">{{
 									friendData.friends[friendData.currentFriendId].remark
@@ -420,7 +422,7 @@
 										></path>
 									</svg>
 								</span>
-								<span style="color: var(--greyFont)">删除好友</span>
+								<span style="color: #797979">删除好友</span>
 							</div>
 						</div>
 					</div>
@@ -495,54 +497,63 @@
 				</n-modal> -->
 
 			<!-- 朋友圈 -->
-			<!-- <n-modal class="friend-model" v-model:show="showFriendCircle" :mask-closable="false">
-					<div style="background-color: var(--background); border-radius: 10px">
-						<div class="treeHole-wrap">
-							<treeHole
-								:avatar="weiYanAvatar"
-								:treeHoleList="treeHoleList"
-								@launch="launch"
-								@deleteTreeHole="deleteTreeHole"
-							></treeHole>
-						</div>
-						<div class="pagination-wrap">
-							<proButton
-								:info="'关闭'"
-								@click="cleanFriendCircle()"
-								:before="$constant.before_color_1"
-								:after="$constant.after_color_1"
-							>
-							</proButton>
-							<proButton
-								:info="'下一页'"
-								style="margin-left: 20px"
-								@click="pageWeiYan()"
-								v-if="pagination.total !== treeHoleList.length"
-								:before="$constant.after_color_1"
-								:after="$constant.tree_hole_color[1]"
-							>
-							</proButton>
-							<proButton
-								:info="'随笔'"
-								style="margin-left: 20px"
-								v-if="$store.state.currentUser.id === pagination.userId"
-								@click="launch()"
-								:before="$constant.before_color_2"
-								:after="$constant.after_color_2"
-							>
-							</proButton>
-							<proButton
-								:info="'加好友'"
-								style="margin-left: 20px"
-								v-else-if="isEmpty(friendData.friends[pagination.userId])"
-								@click="addFriend()"
-								:before="$constant.before_color_2"
-								:after="$constant.after_color_2"
-							>
-							</proButton>
-						</div>
+			<el-dialog
+				v-model="friendCircleData.showFriendCircle"
+				top="20px"
+				style="height: 620px; overflow-y: scroll; overflow-x: hidden"
+				title="朋友动态"
+				center
+				append-to-body
+				width="800"
+			>
+				<div style="background-color: white; border-radius: 10px">
+					<div class="treeHole-wrap">
+						<TreeHole
+							:avatar="friendCircleData.weiYanAvatar"
+							:treeHoleList="friendCircleData.treeHoleList"
+							:id="currentUser.id"
+							@launch="launch"
+							@deleteTreeHole="deleteTreeHole"
+						></TreeHole>
 					</div>
-				</n-modal> -->
+					<div class="pagination-wrap">
+						<ProButton
+							:info="'关闭'"
+							@click="cleanFriendCircle()"
+							before="black"
+							after="linear-gradient(45deg, #f43f3b, #ec008c)"
+						>
+						</ProButton>
+						<ProButton
+							:info="'下一页'"
+							style="margin-left: 20px"
+							@click="pageWeiYan()"
+							v-if="friendCircleData.pagination.total !== friendCircleData.treeHoleList.length"
+							before="linear-gradient(45deg, #f43f3b, #ec008c)"
+							after="#e73c7e"
+						>
+						</ProButton>
+						<ProButton
+							:info="'随笔'"
+							style="margin-left: 20px"
+							v-if="currentUser.id === friendCircleData.pagination.userId"
+							@click="launch()"
+							before="rgb(131, 123, 199)"
+							after="linear-gradient(45deg, #f43f3b, #ec008c)"
+						>
+						</ProButton>
+						<ProButton
+							:info="'加好友'"
+							style="margin-left: 20px"
+							v-else-if="isEmpty(friendData.friends[friendCircleData.pagination.userId])"
+							@click="addFriend()"
+							before="rgb(131, 123, 199)"
+							after="linear-gradient(45deg, #f43f3b, #ec008c)"
+						>
+						</ProButton>
+					</div>
+				</div>
+			</el-dialog>
 
 			<!-- 发朋友动态 -->
 			<!-- <n-modal v-model:show="weiYanDialogVisible" :mask-closable="false" preset="dialog">
@@ -570,21 +581,21 @@
 							<n-input v-model:value="password" type="password" show-password-on="mousedown"></n-input>
 						</div>
 						<div class="myCenter" style="margin-top: 30px">
-							<proButton
+							<ProButton
 								:info="codeString"
 								@click="getCode()"
 								:before="$constant.before_color_1"
 								:after="$constant.after_color_1"
 								style="margin-right: 20px"
 							>
-							</proButton>
-							<proButton
+							</ProButton>
+							<ProButton
 								:info="'提交'"
 								@click="submitDialog()"
 								:before="$constant.before_color_2"
 								:after="$constant.after_color_2"
 							>
-							</proButton>
+							</ProButton>
 						</div>
 					</div>
 				</n-modal> -->
@@ -599,11 +610,15 @@
 <script setup lang="ts" name="authMenu">
 import { GlobalStore } from "@/stores";
 import { nextTick, reactive } from "vue";
+import { ElDialog, ElMessageBox, ElMessage } from "element-plus";
+
 import Chat from "./chat/index.vue";
+import TreeHole from "./treeHole/index.vue";
+import ProButton from "./ProButton/index.vue";
 
 const globalStore = GlobalStore();
 const currentUser = globalStore.userInformation;
-// const user = globalStore.user;
+const article = globalStore.article;
 
 let friendData = reactive({
 	//好友请求
@@ -614,9 +629,21 @@ let friendData = reactive({
 	],
 	//好友列表
 	friends: [
-		{ remark: "user1", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" },
-		{ remark: "user2", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" },
-		{ remark: "user3", avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500" }
+		{
+			friendId: 1,
+			remark: "user1",
+			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500"
+		},
+		{
+			friendId: 3,
+			remark: "user2",
+			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500"
+		},
+		{
+			friendId: 2,
+			remark: "user3",
+			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500"
+		}
 	],
 	//当前朋友信息
 	currentFriendId: null
@@ -781,6 +808,21 @@ let data = reactive({
 	showFriendValue: ""
 });
 
+let friendCircleData = reactive({
+	showFriendCircle: false,
+	treeHoleList: [],
+	weiYanDialogVisible: false,
+	isPublic: true,
+	weiYanAvatar: "",
+	weiYanUsername: "",
+	pagination: {
+		current: 1,
+		size: 10,
+		total: 0,
+		userId: null
+	}
+});
+
 //群消息列表-用户信息
 // const userGroupMessages = data.groupMessages.map((item: any) => {
 // 	const {} = item;
@@ -804,11 +846,62 @@ const changeAvatar = (value: any) => {
 const removeFriend = (value: any) => {
 	console.log(value);
 };
-const openFriendCircle = (value: any, value1: any) => {
-	console.log(value, value1);
+const openFriendCircle = (userId, avatar, username) => {
+	friendCircleData.pagination.userId = userId;
+	friendCircleData.weiYanAvatar = avatar;
+	friendCircleData.weiYanUsername = username;
+	getWeiYan();
+};
+function getWeiYan() {
+	const newweiyan = article.filter(item => {
+		return item.id === friendCircleData.pagination.userId;
+	});
+	friendCircleData.treeHoleList = friendCircleData.treeHoleList.concat(newweiyan);
+	friendCircleData.pagination.total = newweiyan.length;
+	friendCircleData.showFriendCircle = true;
+
+	// $http
+	// 	.post($constant.baseURL + "/weiYan/listWeiYan", friendCircleData.pagination)
+	// 	.then(res => {
+	// 		if (!isEmpty(res.data)) {
+	// 			res.data.records.forEach(c => {
+	// 				c.content = c.content.replace(/\n{2,}/g, '<div style="height: 12px"></div>');
+	// 				c.content = c.content.replace(/\n/g, "<br/>");
+	// 				c.content = faceReg(c.content);
+	// 				c.content = pictureReg(c.content);
+	// 			});
+	// 			friendCircleData.treeHoleList = friendCircleData.treeHoleList.concat(res.data.records);
+	// 			friendCircleData.pagination.total = res.data.total;
+	// 			friendCircleData.showFriendCircle = true;
+	// 		}
+	// 	})
+	// 	.catch(error => {
+	// 		ElMessage({
+	// 			message: error.message,
+	// 			type: "error"
+	// 		});
+	// 	});
+}
+const deleteTreeHole = () => {};
+const cleanFriendCircle = () => {};
+const pageWeiYan = () => {};
+const launch = () => {};
+const addFriend = () => {
+	ElMessageBox.alert("确认提交好友申请，添加 " + friendCircleData.weiYanUsername + " 为好友？", "好友申请", {
+		confirmButtonText: "OK",
+		callback: () => {
+			ElMessage({
+				type: "success",
+				message: `提交成功！`
+			});
+		}
+	});
 };
 const changeAside = () => {};
 const sendFriendMessage = () => {};
+const changeDataType = value => {
+	console.log(value);
+};
 const sendMsg = (val: any) => {
 	//通过messageType判断是个人消息（1）还是群组消息 （2）
 	const value = JSON.parse(val);
@@ -838,8 +931,6 @@ const getTime = () => {
 };
 // const submitAvatar = () => {};
 const isActive = (e, className, type, subType, current, imType) => {
-	console.log(e, className, type, subType, current, imType, "isActive");
-
 	if (!isEmpty(type)) {
 		data.type = type;
 		let actives = ["im-active", "friend-active", "im-group"];
