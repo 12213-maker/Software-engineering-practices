@@ -133,7 +133,6 @@
 				<div class="body-left" v-show="imUtilData.showBodyLeft">
 					<!-- 搜索 -->
 					<div>
-						<!-- <n-input v-model:value="data.showFriendValue" round placeholder="搜索" class="im-input"></n-input> -->
 						<el-input v-model="data.showFriendValue" round placeholder="搜索" class="im-input" />
 					</div>
 					<!-- 聊天 -->
@@ -230,7 +229,8 @@
 						</div>
 
 						<div style="margin: 0 30px 0 30px">
-							<n-divider dashed> {{ Object.keys(friendData.friends).length }}位联系人 </n-divider>
+							<!-- <n-divider dashed> {{ Object.keys(friendData.friends).length }}位联系人 </n-divider> -->
+							<div>{{ Object.keys(friendData.friends).length }}位联系人</div>
 						</div>
 
 						<!-- 好友列表 -->
@@ -259,7 +259,7 @@
 					<!-- 群聊 -->
 					<div class="aside-list" v-show="data.type === 3">
 						<div style="margin: 0 30px 0 30px">
-							<n-divider dashed> {{ Object.keys(groupData.groups).length }}个群聊 </n-divider>
+							<div>{{ Object.keys(groupData.groups).length }}个群聊</div>
 						</div>
 
 						<div
@@ -270,7 +270,6 @@
 							@click="isActive($event, 'im-group', null, 5, item)"
 						>
 							<div>
-								<!-- <n-avatar object-fit="cover" :size="45" :src="item.avatar" /> -->
 								<img object-fit="cover" style="width: 45px; height: 45px" :src="item.avatar" />
 							</div>
 							<div class="im-user-right">
@@ -286,7 +285,7 @@
 					</div>
 				</div>
 				<!-- 系统消息 -->
-				<div class="body-right" v-if="data.subType === 1">
+				<div class="body-right" style="width: 1000px" v-if="data.subType === 1">
 					<div style="height: 60px; background-color: #fcfcfc">
 						<span style="line-height: 60px; margin-left: 20px; font-size: 18px">系统消息</span>
 					</div>
@@ -344,7 +343,6 @@
 				<div class="friend-request">
 					<div style="margin: 20px; display: flex" v-for="(item, index) in friendData.friendRequests" :key="index">
 						<div>
-							<!-- <n-avatar object-fit="cover" :size="50" :src="item.avatar" /> -->
 							<img object-fit="cover" style="width: 50px; height: 50px" :src="item.avatar" />
 						</div>
 
@@ -356,15 +354,15 @@
 								<div style="font-size: 12px; color: #797979">{{ item.remark }}&nbsp;&nbsp;|&nbsp;&nbsp;{{ item.createTime }}</div>
 							</div>
 							<div class="request-status">
-								<n-button
+								<el-button
 									@click="changeFriendStatus(item.friendId, 1, index)"
 									size="small"
 									type="primary"
 									style="margin-right: 10px"
 								>
 									通过
-								</n-button>
-								<n-button @click="changeFriendStatus(item.friendId, -1, index)" size="small" type="error"> 拒绝 </n-button>
+								</el-button>
+								<el-button @click="changeFriendStatus(item.friendId, -1, index)" size="small" type="error"> 拒绝 </el-button>
 							</div>
 						</div>
 					</div>
@@ -427,7 +425,7 @@
 						</div>
 					</div>
 
-					<n-divider />
+					<!-- <n-divider /> -->
 
 					<div class="myCenter">
 						<div style="width: 65%; font-size: 16px">
@@ -454,26 +452,28 @@
 						</div>
 					</div>
 
-					<n-divider />
+					<!-- <n-divider /> -->
 
 					<div class="myCenter sendMsg">
-						<n-button @click="sendFriendMessage()" type="info"> 发消息 </n-button>
+						<el-button @click="sendFriendMessage()" type="info"> 发消息 </el-button>
 					</div>
 				</div>
 			</div>
 
 			<!-- 群 -->
-			<!-- <groupInfo
-					class="body-right"
-					v-if="data.subType === 5 && !isEmpty(groupData.currentGroupId)"
-					:groups="groupData.groups"
-					:currentGroupId="groupData.currentGroupId"
-					@exitGroup="exitGroup"
-					@dissolveGroup="dissolveGroup"
-					@changeDataType="changeDataType"
-					@sendGroupMessage="sendGroupMessage"
-					@changeAvatar="changeAvatar"
-				></groupInfo> -->
+			<GroupInfo
+				class="body-right"
+				v-if="data.subType === 5 && !isEmpty(groupData.currentGroupId)"
+				:groups="groupData.groups"
+				:currentGroupId="groupData.currentGroupId"
+				:groupMessages="data.groupMessages"
+				:user="globalStore.user"
+				@exitGroup="exitGroup"
+				@dissolveGroup="dissolveGroup"
+				@changeDataType="changeDataType"
+				@sendGroupMessage="sendGroupMessage"
+				@changeAvatar="changeAvatar"
+			></GroupInfo>
 
 			<!-- 头像修改弹出框 -->
 			<!-- <n-modal v-model:show="showAvatarDialog">
@@ -491,7 +491,7 @@
 							<n-input v-model:value="changeData" maxlength="30" show-count clearable />
 						</div>
 						<div class="myCenter" style="margin-top: 30px">
-							<n-button @click="submitChange()" type="info"> 提交 </n-button>
+							<el-button @click="submitChange()" type="info"> 提交 </el-button>
 						</div>
 					</div>
 				</n-modal> -->
@@ -501,10 +501,11 @@
 				v-model="friendCircleData.showFriendCircle"
 				top="20px"
 				style="height: 620px; overflow-y: scroll; overflow-x: hidden"
-				title="朋友动态"
+				title="朋友圈"
 				center
 				append-to-body
 				width="800"
+				id="eldialog"
 			>
 				<div style="background-color: white; border-radius: 10px">
 					<div class="treeHole-wrap">
@@ -553,20 +554,31 @@
 						</ProButton>
 					</div>
 				</div>
-			</el-dialog>
-
-			<!-- 发朋友动态 -->
-			<!-- <n-modal v-model:show="weiYanDialogVisible" :mask-closable="false" preset="dialog">
+				<el-dialog v-model="friendCircleData.weiYanDialogVisible" width="500" title="随笔" append-to-body>
 					<div class="weiyan-edit">
 						<div class="myCenter" style="padding-bottom: 20px">
-							<el-radio-group v-model="isPublic">
+							<el-radio-group v-model="friendCircleData.isPublic">
 								<el-radio-button :label="true">公开</el-radio-button>
 								<el-radio-button :label="false">私密</el-radio-button>
 							</el-radio-group>
 						</div>
-						<commentBox @submitComment="submitWeiYan"></commentBox>
+						<CommentBox @submitComment="submitWeiYan" :currentUser="currentUser"></CommentBox>
 					</div>
-				</n-modal> -->
+				</el-dialog>
+			</el-dialog>
+
+			<!-- 发朋友动态 -->
+			<!-- <el-dialog v-model="friendCircleData.weiYanDialogVisible">
+				<div class="weiyan-edit">
+					<div class="myCenter" style="padding-bottom: 20px">
+						<el-radio-group v-model="friendCircleData.isPublic">
+							<el-radio-button :label="true">公开</el-radio-button>
+							<el-radio-button :label="false">私密</el-radio-button>
+						</el-radio-group>
+					</div>
+					<commentBox @submitComment="submitWeiYan"></commentBox>
+				</div>
+			</el-dialog> -->
 
 			<!-- 绑定邮箱 -->
 			<!-- <n-modal v-model:show="emailVisible">
@@ -615,6 +627,8 @@ import { ElDialog, ElMessageBox, ElMessage } from "element-plus";
 import Chat from "./chat/index.vue";
 import TreeHole from "./treeHole/index.vue";
 import ProButton from "./ProButton/index.vue";
+import GroupInfo from "./groupInfo/index.vue";
+import CommentBox from "./commentBox/index.vue";
 
 const globalStore = GlobalStore();
 const currentUser = globalStore.userInformation;
@@ -623,24 +637,53 @@ const article = globalStore.article;
 let friendData = reactive({
 	//好友请求
 	friendRequests: [
-		{ username: "username1", remark: "remark1", createTime: "", avatar: "", friendId: "friendId1" },
-		{ username: "username2", remark: "remark2", createTime: "", avatar: "", friendId: "friendId2" },
-		{ username: "username3", remark: "remark3", createTime: "", avatar: "", friendId: "friendId3" }
+		{
+			username: "username1",
+			remark: "remark1",
+			createTime: "2024.3.31",
+			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
+			friendId: "friendId1"
+		},
+		{
+			username: "username2",
+			remark: "remark2",
+			createTime: "2024.3.31",
+			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
+			friendId: "friendId2"
+		},
+		{
+			username: "username3",
+			remark: "remark3",
+			createTime: "2024.3.31",
+			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
+			friendId: "friendId3"
+		}
 	],
 	//好友列表
 	friends: [
 		{
-			friendId: 1,
+			username: "username1",
+			gender: 1,
+			friendId: 0,
+			introduction: "introduction1",
 			remark: "user1",
 			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500"
 		},
 		{
-			friendId: 3,
+			username: "username2",
+			gender: 2,
+			friendId: 1,
+			introduction: "introduction2",
+
 			remark: "user2",
 			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500"
 		},
 		{
+			username: "username3",
 			friendId: 2,
+			gender: 1,
+			introduction: "introduction3",
+
 			remark: "user3",
 			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500"
 		}
@@ -653,8 +696,8 @@ let groupData = reactive({
 	//群组列表
 	groups: [
 		{
-			id: 1,
-			inType: 1,
+			id: 0,
+			inType: true,
 			groupName: "group1",
 			masterUserId: 0,
 			groupType: 1,
@@ -663,10 +706,10 @@ let groupData = reactive({
 			notice: "notice1",
 			createTime: "createTime1",
 			masterFlag: false,
-			adminFlag: false
+			adminFlag: true
 		},
 		{
-			id: 2,
+			id: 1,
 			inType: 1,
 			groupName: "group2",
 			masterUserId: 1,
@@ -675,8 +718,8 @@ let groupData = reactive({
 			introduction: "introduce2",
 			notice: "notice2",
 			createTime: "createTime2",
-			masterFlag: false,
-			adminFlag: false
+			masterFlag: true,
+			adminFlag: true
 		}
 	],
 	//当前群信息
@@ -823,6 +866,17 @@ let friendCircleData = reactive({
 	}
 });
 
+let changeDataData = reactive({
+	//修改信息
+	changeData: "",
+	changeType: null,
+	changeModal: false,
+
+	avatarType: null,
+	avatarPrefix: "",
+	showAvatarDialog: false
+});
+
 //群消息列表-用户信息
 // const userGroupMessages = data.groupMessages.map((item: any) => {
 // 	const {} = item;
@@ -843,8 +897,27 @@ let imUtilData = reactive({
 const changeAvatar = (value: any) => {
 	console.log(value);
 };
-const removeFriend = (value: any) => {
-	console.log(value);
+const removeFriend = (currentFriendId: any) => {
+	ElMessageBox.confirm("你确定删除" + friendData.friends[currentFriendId].remark + "?", "警告", {
+		confirmButtonText: "确定",
+		cancelButtonText: "取消",
+		type: "warning"
+	})
+		.then(() => {
+			data.subType === 1;
+			friendData.currentFriendId = null;
+			ElMessage({
+				message: "删除成功！",
+				type: "success"
+			});
+			isActive(null, "im-active", 1, null, null, null);
+		})
+		.catch(() => {
+			ElMessage({
+				type: "info",
+				message: "删除取消"
+			});
+		});
 };
 const openFriendCircle = (userId, avatar, username) => {
 	friendCircleData.pagination.userId = userId;
@@ -854,38 +927,18 @@ const openFriendCircle = (userId, avatar, username) => {
 };
 function getWeiYan() {
 	const newweiyan = article.filter(item => {
-		return item.id === friendCircleData.pagination.userId;
+		return item.uid === friendCircleData.pagination.userId;
 	});
 	friendCircleData.treeHoleList = friendCircleData.treeHoleList.concat(newweiyan);
 	friendCircleData.pagination.total = newweiyan.length;
 	friendCircleData.showFriendCircle = true;
-
-	// $http
-	// 	.post($constant.baseURL + "/weiYan/listWeiYan", friendCircleData.pagination)
-	// 	.then(res => {
-	// 		if (!isEmpty(res.data)) {
-	// 			res.data.records.forEach(c => {
-	// 				c.content = c.content.replace(/\n{2,}/g, '<div style="height: 12px"></div>');
-	// 				c.content = c.content.replace(/\n/g, "<br/>");
-	// 				c.content = faceReg(c.content);
-	// 				c.content = pictureReg(c.content);
-	// 			});
-	// 			friendCircleData.treeHoleList = friendCircleData.treeHoleList.concat(res.data.records);
-	// 			friendCircleData.pagination.total = res.data.total;
-	// 			friendCircleData.showFriendCircle = true;
-	// 		}
-	// 	})
-	// 	.catch(error => {
-	// 		ElMessage({
-	// 			message: error.message,
-	// 			type: "error"
-	// 		});
-	// 	});
 }
 const deleteTreeHole = () => {};
 const cleanFriendCircle = () => {};
 const pageWeiYan = () => {};
-const launch = () => {};
+const launch = () => {
+	friendCircleData.weiYanDialogVisible = true;
+};
 const addFriend = () => {
 	ElMessageBox.alert("确认提交好友申请，添加 " + friendCircleData.weiYanUsername + " 为好友？", "好友申请", {
 		confirmButtonText: "OK",
@@ -897,11 +950,157 @@ const addFriend = () => {
 		}
 	});
 };
-const changeAside = () => {};
-const sendFriendMessage = () => {};
-const changeDataType = value => {
-	console.log(value);
+const changeAside = () => {
+	imUtilData.showBodyLeft = !imUtilData.showBodyLeft;
+	mobileRight();
 };
+const sendFriendMessage = async () => {
+	for (let i = 0; i < data.imChats.length; i++) {
+		if (data.imChats[i] === friendData.currentFriendId) {
+			data.imChats.splice(i, 1);
+			break;
+		}
+	}
+	data.imChats.splice(0, 0, friendData.currentFriendId);
+	await nextTick();
+	isActive(document.getElementById("chat"), "aside-active", 1);
+	isActive(document.getElementsByClassName("im-user-current")[0], "im-active", null, 2, friendData.currentFriendId, 2);
+	getMessages(friendData.currentFriendId);
+};
+function getMessages(friendId, current = 1, size = 100) {
+	console.log(friendId, current, size);
+	if (!data.imMessages.hasOwnProperty(friendId)) {
+		// $http
+		// 	.get($constant.baseURL + "/imChatUserMessage/listFriendMessage", {
+		// 		friendId: friendId,
+		// 		current: current,
+		// 		size: size
+		// 	})
+		// 	.then(res => {
+		// 		if (!$common.isEmpty(res.data) && !$common.isEmpty(res.data.records)) {
+		// 			res.data.records.forEach(message => {
+		// 				message.content = parseMessage(message.content);
+		// 			});
+		// 			data.imMessages[friendId] = res.data.records;
+		// 		} else {
+		// 			data.imMessages[friendId] = [];
+		// 		}
+		// 		nextTick(() => {
+		// 			let msgContainer = document.getElementsByClassName("msg-container");
+		// 			if (msgContainer && msgContainer.length > 0) {
+		// 				msgContainer[0].scrollTop = msgContainer[0].scrollHeight;
+		// 			}
+		// 			imgShow();
+		// 		});
+		// 	})
+		// 	.catch(error => {
+		// 		ElMessage({
+		// 			message: error.message,
+		// 			type: "error"
+		// 		});
+		// 	});
+	}
+}
+const submitWeiYan = content => {
+	let weiYan = {
+		content: content,
+		isPublic: friendCircleData.isPublic,
+		time: new Date().toLocaleDateString()
+	};
+	friendCircleData.pagination.current = 1;
+	friendCircleData.pagination.size = 10;
+	friendCircleData.treeHoleList.unshift(weiYan);
+	friendCircleData.weiYanDialogVisible = false;
+	getWeiYan();
+
+	// $http
+	// 	.post($constant.baseURL + "/weiYan/saveWeiYan", weiYan)
+	// 	.then(res => {
+	// 		friendCircleData.pagination.current = 1;
+	// 		friendCircleData.pagination.size = 10;
+	// 		friendCircleData.treeHoleList = [];
+	// 		friendCircleData.weiYanDialogVisible = false;
+	// 		getWeiYan();
+	// 	})
+	// 	.catch(error => {
+	// 		ElMessage({
+	// 			message: error.message,
+	// 			type: "error"
+	// 		});
+	// 	});
+};
+const exitGroup = () => {};
+const dissolveGroup = () => {};
+async function sendGroupMessage() {
+	for (let i = 0; i < data.groupChats.length; i++) {
+		if (data.groupChats[i] === groupData.currentGroupId) {
+			data.groupChats.splice(i, 1);
+			break;
+		}
+	}
+	data.groupChats.splice(0, 0, groupData.currentGroupId);
+	await nextTick();
+	isActive(document.getElementById("chat"), "aside-active", 1);
+	isActive(document.getElementsByClassName("im-group-current")[0], "im-active", null, 2, groupData.currentGroupId, 1);
+	getGroupMessages(groupData.currentGroupId);
+	if (groupData.groups[groupData.currentGroupId].groupType === 2) {
+		// $http
+		// 	.get($constant.baseURL + "/imChatGroup/addGroupTopic", { id: groupData.currentGroupId })
+		// 	.then(res => {})
+		// 	.catch(error => {
+		// 		ElMessage({
+		// 			message: error.message,
+		// 			type: "error"
+		// 		});
+		// 	});
+	}
+}
+function getGroupMessages(groupId, current = 1, size = 100) {
+	console.log(groupId, current, size);
+	if (!data.groupMessages.hasOwnProperty(groupId)) {
+		// $http
+		// 	.get($constant.baseURL + "/imChatUserGroupMessage/listGroupMessage", {
+		// 		groupId: groupId,
+		// 		current: current,
+		// 		size: size
+		// 	})
+		// 	.then(res => {
+		// 		if (!$common.isEmpty(res.data) && !$common.isEmpty(res.data.records)) {
+		// 			res.data.records.forEach(message => {
+		// 				message.content = parseMessage(message.content);
+		// 			});
+		// 			data.groupMessages[groupId] = res.data.records;
+		// 		} else {
+		// 			data.groupMessages[groupId] = [];
+		// 		}
+		// 		nextTick(() => {
+		// 			let msgContainer = document.getElementsByClassName("msg-container");
+		// 			if (msgContainer && msgContainer.length > 0) {
+		// 				msgContainer[0].scrollTop = msgContainer[0].scrollHeight;
+		// 			}
+		// 			imgShow();
+		// 		});
+		// 	})
+		// 	.catch(error => {
+		// 		ElMessage({
+		// 			message: error.message,
+		// 			type: "error"
+		// 		});
+		// 	});
+	}
+}
+const changeDataType = type => {
+	closeModal();
+	changeDataData.changeType = type;
+	changeDataData.changeModal = true;
+};
+function closeModal() {
+	changeDataData.avatarType = null;
+	changeDataData.avatarPrefix = "";
+
+	changeDataData.changeData = "";
+	changeDataData.changeType = null;
+}
 const sendMsg = (val: any) => {
 	//通过messageType判断是个人消息（1）还是群组消息 （2）
 	const value = JSON.parse(val);

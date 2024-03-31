@@ -1418,6 +1418,8 @@ const user = [
 		userinfo: {
 			id: 0,
 			password: 123456,
+			adminFlag: true,
+			userStatus: 1,
 			account: "admin", //校园账号
 			username: "更与行人别",
 			roleId: 1, //1-管理员  0-普通用户
@@ -1451,6 +1453,8 @@ const user = [
 		userinfo: {
 			id: 1,
 			password: 123456,
+			adminFlag: false,
+			userStatus: 2,
 			account: "admin1", //校园账号
 			username: "兔兔",
 			description: "欲买桂花同载酒,终不似,少年游",
@@ -1487,6 +1491,8 @@ const user = [
 			password: 123456,
 			account: "admin2", //校园账号
 			username: "知觉钝化",
+			adminFlag: false,
+
 			description: "我从一出生就是一个自闭小孩",
 			roleId: 1,
 			img: "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fc-ssl.duitang.com%2Fuploads%2Fblog%2F202106%2F22%2F20210622210133_f97c0.thumb.1000_0.jpeg&refer=http%3A%2F%2Fc-ssl.duitang.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712652190&t=f9c79aa803549c9402ba43ab6e156d74", //头像
@@ -1524,6 +1530,7 @@ const user = [
 			roleId: 0,
 			phone: "19980834457",
 			adress: "四川", //地址
+			adminFlag: false,
 			sex: 1,
 			email: "222592790@qq.com",
 
@@ -1551,6 +1558,8 @@ const user = [
 			password: 123456,
 			account: "admin2", //校园账号
 			username: "知觉钝化2",
+			adminFlag: false,
+
 			description: "我从一出生就是一个自闭小孩",
 			Biography: `
 	\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0关于夏天\n
