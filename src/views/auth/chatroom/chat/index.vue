@@ -31,7 +31,13 @@
 						/>
 					</div>
 
-					<div class="message">{{ item.content }}</div>
+					<img
+						v-if="item.img"
+						style="width: 200px; height: 200px; margin-right: 40px; margin-left: 20px"
+						:src="item.img"
+						alt=""
+					/>
+					<div v-else class="message">{{ item.content }}</div>
 
 					<div class="msg-date" v-if="!isEmpty(item.createTime)">
 						{{ item.createTime }}
@@ -53,13 +59,21 @@
 						/>
 					</div>
 
+					<img
+						v-if="item.img"
+						style="width: 200px; height: 200px; margin-right: 40px; margin-left: 20px"
+						:src="item.img"
+						alt=""
+					/>
 					<div
+						v-else
 						class="message"
-						v-html="item.content"
 						:style="{
 							background: item.fromId !== currentUser.id ? tree_hole_color[item.fromId % tree_hole_color.length] : ''
 						}"
-					></div>
+					>
+						{{ item.content }}
+					</div>
 
 					<div class="msg-user">{{ item.username }}</div>
 
@@ -410,12 +424,48 @@
 		</div>
 
 		<!-- 聊天图片弹出框 -->
-		<!-- <n-modal v-model:show="showPictureDialog">
-			<div style="padding: 40px; background: var(--white); border-radius: 5px; width: 20%">
+		<el-dialog v-model="data.showPictureDialog">
+			<div style="padding: 40px; background: white; border-radius: 5px">
 				<div style="margin: 0 0 25px; text-align: center; font-size: 18px">上传图片</div>
-				<uploadPicture :prefix="picturePrefix" @addPicture="addPicture" :maxSize="2" :maxNumber="1"></uploadPicture>
+				<!-- 上传图片 -->
+				<div>
+					<el-upload
+						class="upload-demo"
+						list-type="picture-card"
+						:before-upload="beforeAvatarUpload"
+						:on-change="change"
+						:auto-upload="false"
+						:limit="2"
+					>
+						<div class="el-upload__text">
+							<svg viewBox="0 0 1024 1024" width="40" height="40">
+								<path
+									d="M666.2656 629.4528l-113.7664-112.4864c-20.7872-20.5824-54.3232-20.5312-75.1104 0.1024l-113.3056 112.4864c-20.8896 20.736-21.0432 54.528-0.256 75.4688 20.736 20.8896 54.528 21.0432 75.4688 0.256l22.6304-22.4256v189.5936c0 29.44 23.9104 53.3504 53.3504 53.3504s53.3504-23.9104 53.3504-53.3504v-189.5424l22.6816 22.4256a53.1456 53.1456 0 0 0 37.5296 15.4112c13.7728 0 27.4944-5.2736 37.9392-15.8208 20.6336-20.9408 20.4288-54.7328-0.512-75.4688z"
+									fill="#FFE37B"
+								></path>
+								<path
+									d="M820.992 469.504h-5.376c-3.072-163.328-136.3456-294.8096-300.4416-294.8096S217.856 306.1248 214.784 469.504H209.408c-100.7104 0-182.3744 81.664-182.3744 182.3744s81.664 182.3744 182.3744 182.3744h209.7664V761.856c-30.208 5.5808-62.464-3.3792-85.6576-26.7264-37.3248-37.5808-37.0688-98.5088 0.512-135.7824l113.3056-112.4864c37.2224-36.9664 97.8432-37.0176 135.168-0.1536l113.7664 112.4864c18.2272 18.0224 28.3648 42.0864 28.5184 67.7376 0.1536 25.6512-9.728 49.8176-27.7504 68.0448a95.40096 95.40096 0 0 1-68.3008 28.5184c-5.9392 0-11.776-0.512-17.5104-1.5872v72.3456h209.7664c100.7104 0 182.3744-81.664 182.3744-182.3744S921.7024 469.504 820.992 469.504z"
+									fill="#8C7BFD"
+								></path>
+							</svg>
+							<div>拖拽上传 / 点击上传</div>
+						</div>
+						<template #tip>
+							<div class="el-upload__tip">一次最多上传1张图片，且每张图片不超过2M！</div>
+						</template>
+
+						<template #file="{ file }">
+							<div>
+								<img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+							</div>
+						</template>
+					</el-upload>
+					<div style="text-align: center; margin-top: 20px">
+						<el-button type="success" style="font-size: 12px" @click="submitUpload"> 上传 </el-button>
+					</div>
+				</div>
 			</div>
-		</n-modal> -->
+		</el-dialog>
 	</div>
 </template>
 
@@ -457,7 +507,7 @@ const tree_hole_color = ["#ee7752", "#e73c7e", "#23a6d5", "#23d5ab", "rgb(131, 1
 let data = reactive({
 	//发送消息
 	msg: "",
-
+	imgFlag: false,
 	//聊天图片
 	showPictureDialog: false,
 	picturePrefix: "",
@@ -501,10 +551,12 @@ function doSend() {
 			content: data.msg,
 			fromId: currentUser.id,
 			toId: props.currentChatFriendId,
-			avatar: currentUser.img
+			avatar: currentUser.img,
+			img: data.imgFlag ? data.msg : null
 		};
 		emit("sendMsg", JSON.stringify(message));
 		data.msg = "";
+		data.imgFlag = false;
 	} else if (!isEmpty(props.currentChatGroupId)) {
 		let message = {
 			messageType: 2,
@@ -512,12 +564,21 @@ function doSend() {
 			fromId: currentUser.id,
 			groupId: props.currentChatGroupId,
 			avatar: currentUser.img,
-			username: currentUser.username
+			username: currentUser.username,
+			img: data.imgFlag ? data.msg : null
 		};
 		emit("sendMsg", JSON.stringify(message));
 		data.msg = "";
+		data.imgFlag = false;
 	}
 }
+function submitUpload() {
+	data.showPictureDialog = false;
+	data.msg = "https://pic.imgdb.cn/item/660bbd3b9f345e8d03c7ec6f.jpg";
+	data.imgFlag = true;
+	doSend();
+}
+
 function sendPicture() {
 	if (!isEmpty(props.currentChatFriendId)) {
 		data.picturePrefix = "im/friendMessage";
@@ -622,4 +683,7 @@ function sendShehui() {
 
 <style scoped lang="scss">
 @import "./index.scss";
+.upload-demo {
+	margin-left: 25%;
+}
 </style>

@@ -344,10 +344,7 @@ const inputstatus = async () => {
 		stars: 0,
 		comment: [],
 		adress: "四川",
-		photo: [
-			"https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg",
-			"https://p4.itc.cn/images01/20210611/ead4451f926b4b189011e19646944486.jpeg"
-		], //文章图片
+		photo: ["https://pic.imgdb.cn/item/660bb7d09f345e8d03a2e5c2.jpg", "https://pic.imgdb.cn/item/660bb7e29f345e8d03a36422.jpg"], //文章图片
 		content: textarea.value,
 		subject: value.value,
 		// file: formdata.get("file"),
