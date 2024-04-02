@@ -26,7 +26,7 @@
 					<div>
 						<img
 							style="cursor: pointer; width: 40px; height: 40px"
-							@click="props.openFriendCircle(item.fromId, item.avatar)"
+							@click="openFriendCircle(item.fromId, item.avatar)"
 							:src="item.avatar"
 						/>
 					</div>
@@ -48,7 +48,7 @@
 					<div>
 						<img
 							style="cursor: pointer; width: 40px; height: 40px"
-							@click="props.openFriendCircle(item.fromId, item.avatar, item.username)"
+							@click="openFriendCircle(item.fromId, item.avatar, item.username)"
 							:src="item.avatar"
 						/>
 					</div>
@@ -463,6 +463,9 @@ let data = reactive({
 	picturePrefix: "",
 	showPopoverImage: false
 });
+function openFriendCircle(userId, avatar, username) {
+	emit("openFriendCircle", userId, avatar, username);
+}
 const isEmpty = (value: any) => {
 	if (
 		typeof value === "undefined" ||

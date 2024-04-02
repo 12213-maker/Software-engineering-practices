@@ -394,4 +394,10 @@ console.log(changeAvatar, changeGroupUserStatus, dissolveGroup, exitGroup, updat
 .group-avatar:hover {
 	transform: rotate(360deg);
 }
+/* 居中 */
+.myCenter {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 </style>

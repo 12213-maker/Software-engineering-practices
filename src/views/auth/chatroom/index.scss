@@ -1,11 +1,11 @@
 .friend-wrap {
+	position: relative;
 	width: 100%;
 	height: 100%;
 	background: var(
 			"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e"
 		)
 		center center / cover no-repeat;
-	position: relative;
 }
 .friend-box {
 	position: absolute;
@@ -29,6 +29,7 @@
 }
 .friend-bode {
 	display: flex;
+
 	// flex: 1;
 }
 .body-left {
@@ -105,7 +106,7 @@
 	margin-left: 20px;
 	font-size: 15px;
 }
-.body-left >>> .n-divider .n-divider__title {
+.body-left >>> .el-divider .el-divider__title {
 	font-size: 12px;
 	color: #797979;
 	letter-spacing: 2px;
@@ -132,7 +133,7 @@
 	background-color: #cacacb;
 	border-radius: 5px;
 }
-.sendMsg .n-button {
+.sendMsg .el-button {
 	height: 35px;
 	padding: 15px 25px;
 }
@@ -174,7 +175,12 @@
 	width: 65%;
 	padding-top: 50px;
 }
-.body-right .n-card.n-card--bordered {
+.myCenter {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.body-right .el-card.el-card--bordered {
 	border: none;
 }
 #outerImg {
@@ -271,4 +277,82 @@
 	.friend-model {
 		width: 90% !important;
 	}
+}
+body {
+	font-family: SmileySans, serif;
+	color: black;
+	word-break: break-word;
+}
+
+@font-face {
+	font-family: SmileySans;
+	src: url("");
+	font-display: swap;
+}
+
+/* 居中 */
+// .myCenter {
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: center;
+// }
+.transformCenter {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/* 两边 */
+.myBetween {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+/* 滚动条 */
+.group-card ::-webkit-scrollbar {
+}
+.image-list::-webkit-scrollbar {
+	display: none;
+}
+
+/* el弹出框样式 */
+.el-message {
+	top: 80px !important;
+	border: 0;
+}
+.el-message * {
+	font-weight: 600;
+	color: white !important;
+}
+.el-message--success {
+	background: orange;
+}
+.el-message--warning {
+	background: linear-gradient(-90deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+}
+.el-message--error {
+	background: linear-gradient(to right, #ff4b2b, #ff416c);
+}
+.message img {
+	max-width: 250px !important;
+}
+.v-x-scroll {
+	overflow: unset;
+}
+.el-base-icon.el-dialog__icon {
+	display: none;
+}
+
+@media screen and (max-width: 400px) {
+	.emoji-body {
+		max-width: 230px !important;
+	}
+	.el-modal {
+		width: 70% !important;
+	}
+}
+.mycentersdf {
+	margin: 40px 0;
 }

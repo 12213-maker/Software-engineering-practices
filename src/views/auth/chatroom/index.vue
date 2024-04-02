@@ -351,18 +351,15 @@
 								<div style="font-size: 16px; margin-bottom: 4px">
 									{{ item.username }}
 								</div>
-								<div style="font-size: 12px; color: #797979">{{ item.remark }}&nbsp;&nbsp;|&nbsp;&nbsp;{{ item.createTime }}</div>
+								<div style="font-size: 12px; color: #797979">
+									{{ item.introduction }}&nbsp;&nbsp;|&nbsp;&nbsp;{{ item.createTime }}
+								</div>
 							</div>
 							<div class="request-status">
-								<el-button
-									@click="changeFriendStatus(item.friendId, 1, index)"
-									size="small"
-									type="primary"
-									style="margin-right: 10px"
-								>
+								<el-button @click="changeFriendStatus(item, true, index)" size="small" type="primary" style="margin-right: 10px">
 									通过
 								</el-button>
-								<el-button @click="changeFriendStatus(item.friendId, -1, index)" size="small" type="error"> 拒绝 </el-button>
+								<el-button @click="changeFriendStatus(item, false, index)" size="small" type="error"> 拒绝 </el-button>
 							</div>
 						</div>
 					</div>
@@ -427,7 +424,7 @@
 
 					<!-- <n-divider /> -->
 
-					<div class="myCenter">
+					<div class="myCenter mycentersdf">
 						<div style="width: 65%; font-size: 16px">
 							<div style="margin-bottom: 10px">
 								<span class="friend-label">用户名</span>
@@ -638,54 +635,59 @@ let friendData = reactive({
 	//好友请求
 	friendRequests: [
 		{
-			username: "username1",
-			remark: "remark1",
-			createTime: "2024.3.31",
-			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
-			friendId: "friendId1"
+			username: "天黑请闭眼",
+			remark: "狼人来了",
+			createTime: "2024.4.01",
+			gender: 2,
+			introduction: "何因不归去？淮上有秋山。",
+			avatar: "https://th.bing.com/th/id/OIP.KDI3HSzBappPBptpqI95hgHaHa?rs=1&pid=ImgDetMain",
+			friendId: 24
 		},
 		{
-			username: "username2",
-			remark: "remark2",
-			createTime: "2024.3.31",
-			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
-			friendId: "friendId2"
-		},
-		{
-			username: "username3",
-			remark: "remark3",
-			createTime: "2024.3.31",
-			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
-			friendId: "friendId3"
+			username: "雪球",
+			remark: "该用户没有填写申请信息",
+			createTime: "2024.3.28",
+			gender: 2,
+			introduction: "菊暗荷枯一夜霜。新苞绿叶照林光。",
+			avatar: "https://www.keaitupian.cn/cjpic/frombd/2/253/345021056/2258748408.jpg",
+			friendId: 256
 		}
 	],
 	//好友列表
 	friends: [
 		{
-			username: "username1",
+			username: "江上清风",
 			gender: 1,
 			friendId: 0,
-			introduction: "introduction1",
-			remark: "user1",
-			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500"
+			introduction: "尘嚣渐上，清风拂过",
+			remark: "江上清风",
+			avatar: "https://th.bing.com/th/id/OIP.LBVc5ejf51_KnIOfa0bbMQHaHa?rs=1&pid=ImgDetMain"
 		},
 		{
-			username: "username2",
+			username: "梨花香",
 			gender: 2,
 			friendId: 1,
-			introduction: "introduction2",
-
-			remark: "user2",
-			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500"
+			introduction: "之子归穷泉，重壤永幽隔。",
+			remark: "小梨子",
+			avatar: "https://img.keaitupian.cn/newupload/12/1703669201418926.jpg"
 		},
 		{
-			username: "username3",
+			username: "新绿",
 			friendId: 2,
 			gender: 1,
-			introduction: "introduction3",
-
-			remark: "user3",
-			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500"
+			introduction: "菊暗荷枯一夜霜。新苞绿叶照林光。",
+			remark: "新绿",
+			avatar:
+				"https://th.bing.com/th/id/R.6bfb7773d071c287e14267714ba25f4a?rik=K%2bfQ1WIyhKjVWA&riu=http%3a%2f%2fp0.itc.cn%2fq_70%2fimages03%2f20210107%2fd29d844a11e343c3a5965c326c337999.png&ehk=orK8yeMPYMKc098Td4DZIUbLSqXcBbkLHrWSa90fn%2bk%3d&risl=&pid=ImgRaw&r=0"
+		},
+		{
+			username: "下雨打伞",
+			remark: "我是木子",
+			gender: 2,
+			introduction: "东篱把酒黄昏后，有暗香盈袖。",
+			createTime: "2024.3.31",
+			avatar: "https://th.bing.com/th/id/OIP.7n3odPDZN0jcejDCjYg25AAAAA?rs=1&pid=ImgDetMain",
+			friendId: 3
 		}
 	],
 	//当前朋友信息
@@ -698,26 +700,26 @@ let groupData = reactive({
 		{
 			id: 0,
 			inType: true,
-			groupName: "group1",
+			groupName: "交流群",
 			masterUserId: 0,
 			groupType: 1,
-			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
-			introduction: "introduce1",
-			notice: "notice1",
-			createTime: "createTime1",
+			avatar: "https://tu.tuhenmei.com/zb_users/upload/2022/09/202209261664204981145753.jpg",
+			introduction: "要相信自己，别人能做到的，你也做不到。",
+			notice: "本群禁止发表任何不符合核心价值观的言论",
+			createTime: "2024.3.30",
 			masterFlag: false,
 			adminFlag: true
 		},
 		{
 			id: 1,
 			inType: 1,
-			groupName: "group2",
+			groupName: "互助群",
 			masterUserId: 1,
 			groupType: 1,
-			avatar: "https://img2.baidu.com/it/u=986259122,812426950&fm=253&fmt=auto&app=120&f=JPEG?w=506&h=500",
-			introduction: "introduce2",
-			notice: "notice2",
-			createTime: "createTime2",
+			avatar: "https://img.touxiangwu.com/zb_users/upload/2022/12/202212051670224509235738.jpg",
+			introduction: "赠人玫瑰手留余香",
+			notice: "hello，欢迎大家踊跃发言",
+			createTime: "2024.4.01",
 			masterFlag: true,
 			adminFlag: true
 		}
@@ -731,64 +733,102 @@ let data = reactive({
 	imMessages: [
 		[
 			{
-				content: "content111",
+				content: "我们中午吃什么",
 				fromId: 1,
-				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				avatar: "https://th.bing.com/th/id/OIP.LBVc5ejf51_KnIOfa0bbMQHaHa?rs=1&pid=ImgDetMain",
 				createTime: "2024.3.26"
 			},
 			{
-				content: "12content",
-				fromId: 2,
-				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				content: "饿了",
+				fromId: 1,
+				avatar: "https://th.bing.com/th/id/OIP.LBVc5ejf51_KnIOfa0bbMQHaHa?rs=1&pid=ImgDetMain",
 				createTime: "2024.3.26"
+			},
+			{
+				content: "不知道，我刚醒",
+				fromId: 0,
+				avatar:
+					"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
+				createTime: "2024.3.26",
+				username: "更与行人别"
 			}
 		],
 		[
 			{
-				content: "content111",
+				content: "救救救，作业写完了没有",
 				fromId: 2,
-				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				avatar: "https://img.keaitupian.cn/newupload/12/1703669201418926.jpg",
 				createTime: "2024.3.26"
 			},
 			{
-				content: "2222",
+				content: "我一点没动怎么办",
 				fromId: 1,
-				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				avatar: "https://img.keaitupian.cn/newupload/12/1703669201418926.jpg",
 				createTime: "2024.3.26"
+			},
+			{
+				content: "不慌，我也没动",
+				fromId: 0,
+				avatar:
+					"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
+				createTime: "2024.3.26",
+				username: "更与行人别"
 			}
 		],
 		[
 			{
-				content: "3333",
+				content: "你新买的笔记本好用吗",
 				fromId: 0,
 				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
-				createTime: "2024.3.26"
+					"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
+				createTime: "2024.3.26",
+				username: "更与行人别"
 			},
 			{
-				content: "content111",
+				content: "挺好用的，不卡了，很多软件都带的起来了",
 				fromId: 2,
 				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+					"https://th.bing.com/th/id/R.6bfb7773d071c287e14267714ba25f4a?rik=K%2bfQ1WIyhKjVWA&riu=http%3a%2f%2fp0.itc.cn%2fq_70%2fimages03%2f20210107%2fd29d844a11e343c3a5965c326c337999.png&ehk=orK8yeMPYMKc098Td4DZIUbLSqXcBbkLHrWSa90fn%2bk%3d&risl=&pid=ImgRaw&r=0",
 				createTime: "2024.3.26"
 			},
 			{
-				content: "mushrrom",
+				content: "哦哦哦ok",
 				fromId: 0,
 				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+					"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
+				createTime: "2024.3.26",
+				username: "更与行人别"
+			}
+		],
+		[
+			{
+				content: "hello",
+				fromId: 0,
+				avatar:
+					"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
+				createTime: "2024.3.26",
+				username: "更与行人别"
+			},
+			{
+				content: "请问你是？",
+				fromId: 2,
+				avatar: "https://th.bing.com/th/id/OIP.7n3odPDZN0jcejDCjYg25AAAAA?rs=1&pid=ImgDetMain",
 				createTime: "2024.3.26"
+			},
+			{
+				content: "李楠林",
+				fromId: 0,
+				avatar:
+					"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
+				createTime: "2024.3.26",
+				username: "更与行人别"
 			}
 		]
 	],
 	//消息标记
 	imMessageBadge: {},
 	//聊天列表
-	imChats: [0, 1, 2],
+	imChats: [0, 1, 2, 3],
 	//当前聊天信息
 	currentChatFriendId: null,
 
@@ -796,46 +836,118 @@ let data = reactive({
 	groupMessages: [
 		[
 			{
-				content: "content111",
-				fromId: 1,
-				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				content: "有没有哪个姐妹想跟我拼卸妆油 买一送一的券 常常新品",
+				fromId: 3,
+				avatar: "https://th.bing.com/th/id/OIP.7n3odPDZN0jcejDCjYg25AAAAA?rs=1&pid=ImgDetMain",
 				createTime: "2024.3.26",
-				username: "lnl"
+				username: "下雨打伞"
 			},
 			{
-				content: "content111",
+				content: "非常划算",
+				fromId: 3,
+				avatar: "https://th.bing.com/th/id/OIP.7n3odPDZN0jcejDCjYg25AAAAA?rs=1&pid=ImgDetMain",
+				createTime: "2024.3.26",
+				username: "下雨打伞"
+			},
+			{
+				content: "我来",
 				fromId: 2,
 				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+					"https://th.bing.com/th/id/R.32e8e6e562856c8c7d6e3dfbe1e784ad?rik=4%2bCtkB534D1Uig&riu=http%3a%2f%2fimg.touxiangwu.com%2fzb_users%2fupload%2f2022%2f09%2f202209181663487177644679.jpg&ehk=ttkazPGT2GQxTzpG2wx6hqpDPKOOVMB9Sm%2bCf71e4Gg%3d&risl=&pid=ImgRaw&r=0",
 				createTime: "2024.3.26",
-				username: "lnl"
+				username: "永远睡不醒"
+			},
+
+			{
+				content: "求问学校一食堂新开的冒菜店好吃吗？",
+				fromId: 7,
+				avatar: "https://img.keaitupian.cn/newupload/03/1678954972979547.jpg",
+				createTime: "2024.3.26",
+				username: "IM"
 			},
 			{
-				content: "gengyuxinrtenm",
-				fromId: 0,
-				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				content: "一般般",
+				fromId: 6,
+				avatar: "https://www.keaitupian.cn/cjpic/frombd/1/253/3738365390/1553920197.jpg",
 				createTime: "2024.3.26",
-				username: "lnl"
+				username: "枯木逢春"
+			},
+			{
+				content: "油太多了",
+				fromId: 4,
+				avatar:
+					"https://th.bing.com/th/id/R.67e146ac9d5250c694234c3e91e2a1ea?rik=cf65uwnfEYcVVQ&riu=http%3a%2f%2fimg.touxiangwu.com%2fzb_users%2fupload%2f2022%2f11%2f202211211668993141172107.jpg&ehk=M2w2kr3ov5wJZ7qxYhAaKXgQaDUFHdhFD11YGmuvJMI%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26",
+				username: "头发秃秃"
 			}
 		],
 		[
 			{
-				content: "content111",
+				content: "谁知道咋们学校哪里有可以复制钥匙的地方啊？",
 				fromId: 1,
-				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				avatar: "https://img.touxiangkong.com/zb_users/upload/2022/11/202211251669334101684245.jpg",
 				createTime: "2024.3.26",
-				username: "lnl"
+				username: "穷i奥兹"
 			},
 			{
-				content: "content111",
+				content: "以前超市那边有一家，不知道现在在哪里了",
 				fromId: 2,
-				avatar:
-					"https://ts1.cn.mm.bing.net/th/id/R-C.541d315de4b11e79e0bcb84f35ccf30b?rik=V96LdUGfUZJu5g&riu=http%3a%2f%2fimage.qianye88.com%2fpic%2f812f74e3a664e1c2b1e0e8cde0480e8c&ehk=o55Cw49jjhzmX%2bO%2fvYRXQsoMo3R%2f%2fuXTqpx%2bM88E63M%3d&risl=&pid=ImgRaw&r=0",
+				avatar: "https://img.keaitupian.cn/newupload/02/1644634852112922.jpg",
 				createTime: "2024.3.26",
-				username: "lnl"
+				username: "梦竹"
+			},
+			{
+				content: "你可以去宿舍一楼问问阿姨，阿姨应该有备用钥匙",
+				fromId: 3,
+				avatar: "https://www.keaitupian.cn/cjpic/frombd/0/253/917700144/2195167382.jpg",
+				createTime: "2024.3.26",
+				username: "2333333"
+			},
+			{
+				content: "谁有发带，急用",
+				fromId: 4,
+				avatar: "https://tu.tuhenmei.com/zb_users/upload/2022/09/202209261664204982565709.jpg",
+				createTime: "2024.3.26",
+				username: "史蒂夫"
+			},
+			{
+				content: "请问六楼洗衣机里面的衣服是谁的啊？已经洗好了",
+				fromId: 5,
+				avatar:
+					"https://th.bing.com/th/id/R.6d98fa8a40654775f36d85878fb64775?rik=ePsjtFES8uHU2Q&riu=http%3a%2f%2fimg.keaiming.com%2fuploads%2fallimg%2f2020090117%2fodeigdwepf2.jpg&ehk=%2b6Ifqf6BdbXTBWDxPDtfE9Rl28ZblMHR%2fAXZMeIBNTE%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26",
+				username: "大帅哥发"
+			},
+			{
+				content: "我的我的，我马上去收",
+				fromId: 6,
+				avatar:
+					"https://th.bing.com/th/id/R.44930a74220df536e22f5e8783fa50d3?rik=km6DH0vYlR6Thw&riu=http%3a%2f%2fimg.touxiangwu.com%2fzb_users%2fupload%2f2022%2f12%2f202212011669868204112560.jpg&ehk=492voQsHRokswxYyf7FAtTYkA4qgqzPAa9iup2pDifE%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26",
+				username: "东方红"
+			},
+			{
+				content: "大家有什么好听的歌吗？",
+				fromId: 7,
+				avatar:
+					"https://th.bing.com/th/id/R.222083e8f91f275970eed1f82fa984b7?rik=kNS%2f6kr4RzTTyg&riu=http%3a%2f%2fimg.touxiangwu.com%2fzb_users%2fupload%2f2022%2f10%2f202210051664980143480438.jpg&ehk=Abvwpx6aFLh9QlsGNFpwVg3tuT2fhRE2KGgKPry6bI0%3d&risl=&pid=ImgRaw&r=0",
+				createTime: "2024.3.26",
+				username: "收割机"
+			},
+			{
+				content: "this town",
+				fromId: 8,
+				avatar: "https://img.touxiangwu.com/uploads/allimg/2022053117/0i0kcydxwzn.jpg",
+				createTime: "2024.3.26",
+				username: "一家人"
+			},
+			{
+				content: "水星记",
+				fromId: 0,
+				avatar:
+					"https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fsafe-img.xhscdn.com%2Fbw1%2F146c162c-2c43-4323-b86d-b435e10fc1f1%3FimageView2%2F2%2Fw%2F1080%2Fformat%2Fjpg&refer=http%3A%2F%2Fsafe-img.xhscdn.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1712298447&t=abf160de712c33b88e3cf8b649be612e",
+				createTime: "2024.3.26",
+				username: "更与行人别"
 			}
 		]
 	],
@@ -845,7 +957,6 @@ let data = reactive({
 	groupChats: [0, 1],
 	//当前群聊天信息
 	currentChatGroupId: null,
-
 	type: 1, //1：聊天 ，2：好友 ，3：群聊
 	subType: 1,
 	showFriendValue: ""
@@ -876,12 +987,6 @@ let changeDataData = reactive({
 	avatarPrefix: "",
 	showAvatarDialog: false
 });
-
-//群消息列表-用户信息
-// const userGroupMessages = data.groupMessages.map((item: any) => {
-// 	const {} = item;
-// });
-// console.log(userGroupMessages, "userGroupMessages");
 
 let imUtilData = reactive({
 	//系统消息
@@ -920,6 +1025,7 @@ const removeFriend = (currentFriendId: any) => {
 		});
 };
 const openFriendCircle = (userId, avatar, username) => {
+	console.log("pengyouqun");
 	friendCircleData.pagination.userId = userId;
 	friendCircleData.weiYanAvatar = avatar;
 	friendCircleData.weiYanUsername = username;
@@ -1238,8 +1344,21 @@ function mobile() {
 // 		});
 // 	});
 // };
-const changeFriendStatus = (value: any, a: any, b: any) => {
-	console.log(value, a, b);
+const changeFriendStatus = (value, flag, index) => {
+	if (flag) {
+		friendData.friends.push({ ...value, friendId: friendData.friends.length });
+		friendData.friendRequests.splice(index, 1);
+		ElMessage({
+			message: "成功通过！",
+			type: "success"
+		});
+	} else {
+		friendData.friendRequests.splice(index, 1);
+		ElMessage({
+			message: "成功拒绝！",
+			type: "info"
+		});
+	}
 };
 
 const isEmpty = (value: any) => {
