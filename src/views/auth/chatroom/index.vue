@@ -996,7 +996,23 @@ let imUtilData = reactive({
 	],
 	showBodyLeft: true,
 	//表情包
-	imageList: []
+	imageList: [
+		"https://img0.baidu.com/it/u=267921930,2299316357&fm=253&fmt=auto&app=120&f=JPEG?w=571&h=500",
+		"https://q2.itc.cn/q_70/images03/20240310/4a63cad709614c17b1a3d29e32ac99c4.jpeg",
+		"https://q5.itc.cn/q_70/images03/20240223/733eb63394764e29bad4810218236e39.jpeg",
+		"https://wx4.sinaimg.cn/mw690/007ZVs3Jly1hn1z6isrtej31kw1kw7c0.jpg",
+		"https://ww2.sinaimg.cn/mw690/006KvmyPgy1hnnf5k57n2j30zu0zu0uc.jpg",
+		"https://q4.itc.cn/q_70/images03/20240223/69e81449f63844b095954ef23ff58e9e.jpeg",
+		"https://wx3.sinaimg.cn/mw690/006KvmyPgy1hnnf5mavnjj30zu0zudhp.jpg",
+		"https://ww2.sinaimg.cn/mw690/006KvmyPgy1hnnf5l7778j30zu0zu0ub.jpg",
+		"https://q7.itc.cn/q_70/images03/20240223/57ae385e4abc4945bc8dbac5faa646d5.jpeg",
+		"https://ww1.sinaimg.cn/mw690/0060W0Exly1hnyez0jsjej60w70w6whp02.jpg",
+		"https://q2.itc.cn/q_70/images03/20240310/4901fac8939f41ccb7771c7f0afdcaea.jpeg",
+		"https://k.sinaimg.cn/n/sinakd20107/560/w1080h1080/20240223/c4e8-34573cf51f8553bf0f38e9a852b14de3.jpg/w700d1q75cms.jpg",
+		"https://k.sinaimg.cn/n/sinakd20109/162/w481h481/20240223/f60c-f8598d1f723f601e4d426c7064cde5b0.jpg/w700d1q75cms.jpg",
+		"https://k.sinaimg.cn/n/sinakd20113/448/w1024h1024/20240223/5355-e5ab4543d048435cc09170f111d60351.jpg/w700d1q75cms.jpg",
+		"https://q8.itc.cn/q_70/images03/20240310/3ff73dc1f6c44d22be563ea40bb608de.jpeg"
+	]
 });
 
 const changeAvatar = (value: any) => {

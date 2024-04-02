@@ -199,18 +199,54 @@
 					</template>
 
 					<div id="image-scroll-container" class="image-list">
-						<n-image
+						<img
 							v-for="(item, index) in props.imageList"
 							:src="item"
 							@click="sendImage(item)"
 							:key="index"
-							width="70"
-							height="70"
+							style="width: 70px; height: 70px"
 							lazy
 							preview-disabled
 							:intersection-observer-options="{ root: '#image-scroll-container' }"
-						>
-						</n-image>
+						/>
+					</div>
+				</el-popover>
+
+				<el-popover placement="top" :width="380" trigger="click">
+					<template #reference>
+						<el-button style="width: 30px; height: 30px" text
+							><div class="myEmoji" @click="data.showPopoverImage = !data.showPopoverImage">
+								<svg viewBox="0 0 1024 1024" width="25" height="25">
+									<path
+										d="M829.64898 849.502041H194.35102c-43.885714 0-79.412245-35.526531-79.412244-79.412245V253.910204c0-43.885714 35.526531-79.412245 79.412244-79.412245h635.29796c43.885714 0 79.412245 35.526531 79.412244 79.412245v516.179592c0 43.885714-35.526531 79.412245-79.412244 79.412245z"
+										fill="#D2F4FF"
+									></path>
+									<path
+										d="M909.061224 656.195918l-39.706122-48.065306L626.416327 365.714286c-19.330612-19.330612-50.677551-19.330612-70.008164 0L419.526531 502.073469c-2.612245 2.612245-5.22449 3.134694-6.791837 3.134694-1.567347 0-4.702041-0.522449-6.791837-3.134694L368.326531 464.979592c-19.330612-19.330612-50.677551-19.330612-70.008164 0l-143.673469 143.673469-39.706122 48.065306v113.893878c0 43.885714 35.526531 79.412245 79.412244 79.412245h635.29796c43.885714 0 79.412245-35.526531 79.412244-79.412245v-114.416327"
+										fill="#16C4AF"
+									></path>
+									<path
+										d="M273.763265 313.469388m-49.632653 0a49.632653 49.632653 0 1 0 99.265306 0 49.632653 49.632653 0 1 0-99.265306 0Z"
+										fill="#E5404F"
+									></path>
+									<path
+										d="M644.179592 768h-365.714286c-11.493878 0-20.897959-9.404082-20.897959-20.897959s9.404082-20.897959 20.897959-20.897959h365.714286c11.493878 0 20.897959 9.404082 20.897959 20.897959s-9.404082 20.897959-20.897959 20.897959zM461.322449 670.82449h-182.857143c-11.493878 0-20.897959-9.404082-20.897959-20.897959s9.404082-20.897959 20.897959-20.89796h182.857143c11.493878 0 20.897959 9.404082 20.897959 20.89796s-9.404082 20.897959-20.897959 20.897959z"
+										fill="#0B9682"
+									></path>
+								</svg></div
+						></el-button>
+					</template>
+					<div id="image-scroll-container" class="image-list">
+						<img
+							v-for="(item, index) in props.imageList"
+							:src="item"
+							@click="sendImage(item)"
+							:key="index"
+							style="width: 70px; height: 70px"
+							lazy
+							preview-disabled
+							:intersection-observer-options="{ root: '#image-scroll-container' }"
+						/>
 					</div>
 				</el-popover>
 
@@ -578,7 +614,13 @@ function submitUpload() {
 	data.imgFlag = true;
 	doSend();
 }
-
+function sendImage(url: any) {
+	// data.msg += "[" + currentUser.username + "," + url + "]";
+	data.showPopoverImage = false;
+	data.msg = url;
+	data.imgFlag = true;
+	doSend();
+}
 function sendPicture() {
 	if (!isEmpty(props.currentChatFriendId)) {
 		data.picturePrefix = "im/friendMessage";
@@ -587,11 +629,6 @@ function sendPicture() {
 		data.picturePrefix = "im/groupMessage";
 		data.showPictureDialog = true;
 	}
-}
-function sendImage(url: any) {
-	data.msg += "[" + currentUser.username + "," + url + "]";
-	data.showPopoverImage = false;
-	doSend();
 }
 function sendPoetry(type: any) {
 	if (type === 1) {
