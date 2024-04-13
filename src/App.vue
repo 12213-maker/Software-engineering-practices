@@ -1415,6 +1415,7 @@ let article = [
 const user = [
 	{
 		id: 0,
+		roleId: 1,
 		userinfo: {
 			id: 0,
 			password: 123456,
@@ -1450,6 +1451,7 @@ const user = [
 	},
 	{
 		id: 1,
+		roleId: 2,
 		userinfo: {
 			id: 1,
 			password: 123456,
@@ -1485,6 +1487,7 @@ const user = [
 	},
 	{
 		id: 2,
+		roleId: 2,
 		userinfo: {
 			id: 2,
 			password: 123456,
@@ -1518,6 +1521,7 @@ const user = [
 	},
 	{
 		id: 3,
+		roleId: 2,
 		userinfo: {
 			id: 3,
 			password: 123456,
@@ -1551,6 +1555,7 @@ const user = [
 	},
 	{
 		id: 4,
+		roleId: 2,
 		userinfo: {
 			id: 4,
 			password: 123456,

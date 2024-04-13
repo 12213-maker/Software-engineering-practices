@@ -7,12 +7,11 @@
 			:requestApi="getTableList"
 			:initParam="initParam"
 			:dataCallback="dataCallback"
+			:data="user"
 		>
-			<!-- 表格 header 按钮 -->
 			<template #tableHeader>
 				<el-button type="primary" :icon="Upload" plain @click="dialogVisible = true"> 添加用户 </el-button>
 			</template>
-			<!-- 表格操作 -->
 			<template #operation="scope">
 				<el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row)">查看</el-button>
 				<el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
@@ -34,12 +33,15 @@ import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import UserDrawer from "@/views/proTable/components/UserDrawer.vue";
 import { Delete, EditPen, Upload, View, Refresh } from "@element-plus/icons-vue";
-import { userUserInfo, PutuserUserInfo, DeleteuserUserInfo, PutResetPassword } from "@/api/modules/lnl-paly";
+import { userUserInfo, PutuserUserInfo, PutResetPassword } from "@/api/modules/lnl-paly";
 import Adduser from "./components/Adduser.vue";
 import { ElMessage, ElMessageBox } from "element-plus";
+import { GlobalStore } from "@/stores";
 
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const proTable = ref();
+const globalStore = GlobalStore();
+const user = globalStore.user;
 
 // 如果表格需要初始化请求参数，直接定义传给 ProTable(之后每次请求都会自动带上该参数，此参数更改之后也会一直带上，改变此参数会自动刷新表格数据)
 const initParam = reactive({
@@ -73,13 +75,7 @@ const columns: ColumnProps[] = [
 		prop: "img",
 		label: "用户图片",
 		render: scope => {
-			return (
-				<el-avatar
-					size={50}
-					shape={"square"}
-					src={getIcon(" https://737a8db5.r1.cpolar.top/img/user/" + scope.row.img)}
-				></el-avatar>
-			);
+			return <el-avatar size={50} shape={"square"} src={scope.row.img}></el-avatar>;
 		}
 	},
 	{
@@ -146,7 +142,7 @@ const deleteAccount = async (params: User.ResUserList) => {
 		type: "warning",
 		draggable: true
 	}).then(async () => {
-		await DeleteuserUserInfo({ id: params.id });
+		// await DeleteuserUserInfo({ id: params.id });
 		proTable.value.getdataback();
 		ElMessage({
 			type: "success",
@@ -159,7 +155,7 @@ const deleteAccount = async (params: User.ResUserList) => {
 	proTable.value.getdataback();
 };
 const returntag = (id: any) => {
-	if (id == 2) {
+	if (id !== 0) {
 		return <el-tag type="warnig">普通用户</el-tag>;
 	} else {
 		return <el-tag type="success">管理员</el-tag>;
@@ -167,9 +163,9 @@ const returntag = (id: any) => {
 };
 
 //处理图片
-const getIcon = (name: string) => {
-	return new URL(name, import.meta.url).href;
-};
+// const getIcon = (name: string) => {
+// 	return new URL(name, import.meta.url).href;
+// };
 // 重置用户密码
 const resetPass = async (params: User.ResUserList) => {
 	ElMessageBox.confirm(`是否重置用户${params.username}的密码?`, "温馨提示", {
@@ -178,6 +174,10 @@ const resetPass = async (params: User.ResUserList) => {
 		type: "warning",
 		draggable: true
 	}).then(async () => {
+		ElMessage({
+			type: "success",
+			message: `重置密码成功!`
+		});
 		await PutResetPassword({ id: params.id });
 		proTable.value.getdataback();
 		ElMessage({

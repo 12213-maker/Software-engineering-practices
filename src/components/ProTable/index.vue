@@ -105,7 +105,7 @@ import { handleProp } from "@/utils/util";
 import ColSetting from "./components/ColSetting.vue";
 import TableColumn from "./components/TableColumn.vue";
 import router from "@/routers";
-import { GlobalStore } from "@/stores";
+// import { GlobalStore } from "@/stores";
 
 interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	columns: ColumnProps[]; // 列配置项
@@ -118,6 +118,7 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
 	selectId?: string; // 当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
+	data: any;
 }
 
 const loading = ref(true);
@@ -129,6 +130,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	initParam: {},
 	border: true,
 	toolButton: true,
+	data: [],
 	selectId: "id",
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
@@ -242,7 +244,10 @@ const openColSetting = () => colRef.value.openColSetting();
 //请求数据
 const getdataback = async () => {
 	loading.value = true;
-	const { data, code } = await props.requestApi(paramsTrue);
+	console.log(props.data, "props.dataF");
+	// const { data, code } = await props.requestApi(paramsTrue);
+	// const data = [];
+	const code = 2;
 	if (code === 0) {
 		ElMessageBox.confirm(`暂无权限，请联系管理员`, "温馨提示", {
 			confirmButtonText: "确定",
@@ -254,8 +259,8 @@ const getdataback = async () => {
 		});
 		return;
 	}
-	tabledata.data = data.records;
-	params.total = data.total;
+	tabledata.data = props.data.map(item => item.userinfo);
+	params.total = props.data.length;
 	loading.value = false;
 };
 

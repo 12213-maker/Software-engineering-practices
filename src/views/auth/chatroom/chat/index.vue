@@ -615,7 +615,6 @@ function submitUpload() {
 	doSend();
 }
 function sendImage(url: any) {
-	// data.msg += "[" + currentUser.username + "," + url + "]";
 	data.showPopoverImage = false;
 	data.msg = url;
 	data.imgFlag = true;

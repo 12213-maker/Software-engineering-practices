@@ -11,10 +11,7 @@
 		>
 			<el-form-item label="" prop="avatar">
 				<div class="avatarimg">
-					<el-avatar
-						:size="120"
-						:src="getIcon(' https://737a8db5.r1.cpolar.top/img/user/' +drawerProps.rowData!.img)"
-					></el-avatar>
+					<el-avatar :size="120" :src="drawerProps.rowData!.img"></el-avatar>
 				</div>
 			</el-form-item>
 			<el-form-item label="用户姓名" prop="username">
@@ -88,9 +85,9 @@ const acceptParams = (params: DrawerProps): void => {
 };
 
 //处理图片
-const getIcon = (name: string) => {
-	return new URL(name, import.meta.url).href;
-};
+// const getIcon = (name: string) => {
+// 	return new URL(name, import.meta.url).href;
+// };
 
 // 提交数据（新增/编辑）
 const ruleFormRef = ref<FormInstance>();
@@ -101,10 +98,11 @@ const handleSubmit = () => {
 			const { id, description, birthday, password, username, roleId, sex, phone } = drawerProps.value.rowData;
 
 			if (drawerProps.value!.usernameOrigin === username) {
-				await drawerProps.value.api!({ id, description, birthday, password, roleId, sex, phone });
+				// await drawerProps.value.api!({ id, description, birthday, password, roleId, sex, phone });
 			} else {
-				await drawerProps.value.api!({ id, description, birthday, password, username, roleId, sex, phone });
+				// await drawerProps.value.api!({ id, description, birthday, password, username, roleId, sex, phone });
 			}
+			console.log(id, description, birthday, password, username, roleId, sex, phone);
 			ElMessage.success({ message: `${drawerProps.value.title}用户成功！` });
 			emit("refresh");
 			drawerVisible.value = false;

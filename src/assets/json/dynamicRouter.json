@@ -241,7 +241,7 @@
 					"component": "/dashboard/lnl-reportmanagement/index",
 					"meta": {
 						"icon": "UserFilled",
-						"title": "地点管理",
+						"title": "文章管理",
 						"isLink": "",
 						"isHide": false,
 						"isFull": false,
