@@ -136,6 +136,29 @@ let params = reactive({
 	pageSize: 10, // 每页的数据条数
 	pageNum: 1 //当前的页数
 });
+let records = reactive([
+	{
+		reason: "我不喜欢他说的话",
+		time: "2024.4.09",
+		comment: "也就一般般吧",
+		type: 2,
+		status: 1
+	},
+	{
+		reason: "内容胡编乱造",
+		time: "2024.4.12",
+		comment: "文章里面的内容没有事实依据，望周知",
+		type: 2,
+		status: 0
+	},
+	{
+		reason: "你才难看",
+		time: "2024.4.12",
+		comment: "难看",
+		type: 2,
+		status: 0
+	}
+]);
 //地点params
 const positionParams = reactive<{ info: undefined | string }>({
 	info: undefined
@@ -237,8 +260,9 @@ const loading = ref(true);
 //请求数据
 const getdataback = async () => {
 	loading.value = true;
-	const { pageNum, pageSize } = params;
-	const { data, code } = await props.requestApi({ ...positionParams, pageNum, pageSize, info: selectStatus.value });
+	// const { pageNum, pageSize } = params;
+	// const { data, code } = await props.requestApi({ ...positionParams, pageNum, pageSize, info: selectStatus.value });
+	const code = 2;
 	if (code === 0) {
 		ElMessageBox.confirm(`暂无权限，请联系管理员`, "温馨提示", {
 			confirmButtonText: "确定",
@@ -250,9 +274,9 @@ const getdataback = async () => {
 		});
 		return;
 	}
-	tabledata.data = data.records;
+	tabledata.data = records;
 	loading.value = false;
-	params.total = data.total;
+	params.total = records.length;
 };
 
 //每页条数改变时触发 选择一页显示多少行

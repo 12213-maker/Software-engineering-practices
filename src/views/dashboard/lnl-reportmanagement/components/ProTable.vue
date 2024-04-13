@@ -1,20 +1,20 @@
 <template>
 	<div class="search">
 		<div class="input">
-			<div class="title">地点:</div>
+			<div class="title">标题:</div>
 			<div class="input_elinput"><el-input v-model="selectParams.name" /></div>
 		</div>
 		<div class="input">
-			<div class="title">城市:</div>
+			<div class="title">作者:</div>
 			<div class="input_elinput"><el-input v-model="selectParams.city" /></div>
 		</div>
 		<div class="input">
-			<div class="title titlespacial">游玩方式:</div>
+			<div class="title titlespacial">文章类型:</div>
 			<el-select v-model="selectParams.type1" class="m-2" placeholder="Select">
 				<el-option v-for="item in selectChoices.type1" :key="item.value" :label="item.label" :value="item.value" />
 			</el-select>
 		</div>
-		<div class="input">
+		<!-- <div class="input">
 			<div class="title">种类:</div>
 			<el-select v-model="selectParams.type2" class="m-2" placeholder="Select">
 				<el-option
@@ -24,7 +24,7 @@
 					:value="item.value"
 				/>
 			</el-select>
-		</div>
+		</div> -->
 		<div class="input order">
 			<div class="title">排序:</div>
 			<el-select v-model="selectParams.order" class="m-2" placeholder="Select">
@@ -139,6 +139,7 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
 	selectId?: string; // 当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
+	data: any;
 }
 
 const loading = ref(true);
@@ -150,6 +151,7 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	initParam: {},
 	border: true,
 	toolButton: true,
+	data: [],
 	selectId: "id",
 	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
 });
@@ -163,15 +165,15 @@ let params = reactive({
 	pageNum: 1 //当前的页数
 });
 //地点params
-const positionParams = reactive({
-	type1: 1,
-	type2: 0,
-	order: 1,
-	name: undefined,
-	city: "成都",
-	page: 1,
-	limit: 10
-});
+// const positionParams = reactive({
+// 	type1: 1,
+// 	type2: 0,
+// 	order: 1,
+// 	name: undefined,
+// 	city: "成都",
+// 	page: 1,
+// 	limit: 10
+// });
 
 // 是否显示搜索模块
 const isShowSearch = ref(true);
@@ -254,8 +256,9 @@ const openColSetting = () => colRef.value.openColSetting();
 //请求数据
 const getdataback = async () => {
 	loading.value = true;
-	const { pageNum, pageSize } = params;
-	const { data, code } = await props.requestApi({ ...positionParams, page: pageNum, limit: pageSize, ...selectParams });
+	// const { pageNum, pageSize } = params;
+	// const { data, code } = await props.requestApi({ ...positionParams, page: pageNum, limit: pageSize, ...selectParams });
+	const code = 2;
 	if (code === 0) {
 		ElMessageBox.confirm(`暂无权限，请联系管理员`, "温馨提示", {
 			confirmButtonText: "确定",
@@ -267,9 +270,9 @@ const getdataback = async () => {
 		});
 		return;
 	}
-	tabledata.data = data.records;
+	tabledata.data = props.data;
 	loading.value = false;
-	params.total = data.total;
+	params.total = props.data.length;
 };
 
 //每页条数改变时触发 选择一页显示多少行
@@ -288,19 +291,19 @@ const handleCurrentChange2 = (val: any) => {
 const selectChoices = {
 	type1: [
 		{
-			label: "美食",
+			label: "表白",
 			value: 1
 		},
 		{
-			label: "娱乐",
+			label: "吐槽",
 			value: 2
 		},
 		{
-			label: "景点",
+			label: "知识",
 			value: 3
 		},
 		{
-			label: "住宿",
+			label: "趣玩",
 			value: 4
 		}
 	],
@@ -387,8 +390,8 @@ const selectChoices = {
 		]
 	],
 	order: [
-		{ label: "评分降序", value: 1 },
-		{ label: "评分升序", value: 2 }
+		{ label: "点赞量升序", value: 1 },
+		{ label: "点赞量降序", value: 2 }
 	]
 };
 const selectParams = reactive({

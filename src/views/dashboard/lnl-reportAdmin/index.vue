@@ -18,8 +18,8 @@
 		</ProTable>
 		<UserDrawer ref="drawerRef" @refresh="refresh" />
 		<el-dialog :destroy-on-close="true" v-model="dialogVisible" title="处理评论" width="40%">
-			<div>举报评论：{{ dialogInfo.comment.comment }}</div>
-			<div>举报原因：{{ dialogInfo.description }}</div>
+			<div>举报评论：{{ dialogInfo.comment }}</div>
+			<div>举报原因：{{ dialogInfo.reason }}</div>
 
 			<template #footer>
 				<span class="dialog-footer">
@@ -70,7 +70,7 @@ const columns: ColumnProps[] = [
 		}
 	},
 	{
-		prop: "comment.comment",
+		prop: "comment",
 		label: "评论"
 	},
 	{
@@ -87,7 +87,7 @@ const columns: ColumnProps[] = [
 			return handleReason(scope.row);
 		}
 	},
-	{ prop: "description", label: "详细理由" },
+	{ prop: "reason", label: "详细理由" },
 	{ prop: "operation", label: "操作", fixed: "right", width: 160 }
 ];
 const refresh = () => {
@@ -96,7 +96,7 @@ const refresh = () => {
 
 //处理用户信息
 const handleReason = (scope: any) => {
-	switch (scope.reason) {
+	switch (scope.type) {
 		case 1:
 			return <el-tag>垃圾广告</el-tag>;
 		case 2:
@@ -138,7 +138,7 @@ const handelclickchuli2 = async (value: any) => {
 	}
 	//点击已处理
 	else {
-		await reportadminhandle({ id: dialogInfo.value.id, status: 2 });
+		// await reportadminhandle({ id: dialogInfo.value.id, status: 2 });
 		proTable.value.getdataback();
 		ElMessage({
 			type: "success",

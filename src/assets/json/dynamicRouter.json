@@ -262,20 +262,6 @@
 						"isAffix": false,
 						"isKeepAlive": true
 					}
-				},
-				{
-					"path": "/management/message",
-					"name": "message",
-					"component": "/dashboard/lnl-message/index",
-					"meta": {
-						"icon": "UserFilled",
-						"title": "留言管理",
-						"isLink": "",
-						"isHide": false,
-						"isFull": false,
-						"isAffix": false,
-						"isKeepAlive": true
-					}
 				}
 			]
 		}
